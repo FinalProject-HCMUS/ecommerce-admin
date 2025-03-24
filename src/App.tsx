@@ -18,7 +18,7 @@ function App() {
             <Route path="/products" element={<PrivateRoute element={Products} />} />
             <Route path="/categories" element={<PrivateRoute element={Categories} />} />
             <Route path="/customers" element={<PrivateRoute element={Customers} />} />
-            <Route path="/" element={<Navigate to="/products" />} />
+            <Route path="/" element={<Navigate to="/customers" />} />
           </Route>
         </Routes>
       </AuthProvider>

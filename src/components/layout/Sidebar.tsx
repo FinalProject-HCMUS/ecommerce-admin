@@ -1,9 +1,11 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Package, List, LogOut, Users } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
 
   return (
     <div className="w-64 bg-white h-screen border-r border-gray-200 flex flex-col">
@@ -43,7 +45,7 @@ const Sidebar = () => {
 
       <div className="p-4 border-t border-gray-200">
         <button
-          onClick={() => logout}
+          onClick={() => logout(navigate)}
           className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 w-full"
         >
           <LogOut size={20} />

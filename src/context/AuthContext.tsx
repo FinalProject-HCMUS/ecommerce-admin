@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Login } from '../types';
+import { toast } from 'react-toastify';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -17,9 +18,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { username, password } = credentials;
         if (username === 'admin' && password === '123') {
             setIsAuthenticated(true);
-            navigate('/products');
+            navigate('/customers');
         } else {
-            alert('Invalid username or password');
+            toast.error('Invalid username or password', { autoClose: 1000, position: 'top-center' });
         }
     };
 
