@@ -7,6 +7,7 @@ import Pagination from "../components/common/Pagination";
 import CustomerTable from "../components/customer/CustomerTable";
 import { Plus } from "lucide-react";
 import DeleteConfirmationModal from "../components/common/DeleteConfirm";
+import EditCustomerModal from "../components/customer/EditCustomerModal";
 
 const ITEMS_PER_PAGE = 10;
 const Customers = () => {
@@ -44,6 +45,13 @@ const Customers = () => {
             setCustomerToDelete(null);
         }
     };
+    const handleUpdateCustomer = (updatedCustomer: any) => {
+        const updatedCustomers = customers.map((customer) =>
+            customer.id === updatedCustomer.id ? updatedCustomer : customer
+        );
+        setCustomers(updatedCustomers);
+        toast.success('Customer updated successfully', { autoClose: 1000 });
+    };
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
@@ -70,6 +78,12 @@ const Customers = () => {
                         onPageChange={setCurrentPage}
                     />
                 </div>
+                <EditCustomerModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSubmit={handleUpdateCustomer}
+                    user={selectedCustomer}
+                />
                 <DeleteConfirmationModal
                     isOpen={!!customerToDelete}
                     onClose={() => setCustomerToDelete(null)}
