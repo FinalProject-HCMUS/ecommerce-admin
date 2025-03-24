@@ -1,23 +1,29 @@
 import { X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { User } from '../../types';
 import MotionModalWrapper from '../common/MotionModal';
 
-interface EditCustomerModalProps {
+interface AddCustomerModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updatedUser: User) => void;
-    user?: User;
+    onSubmit: (newUser: User) => void;
 }
 
-const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, user, onSubmit }) => {
-    const [formData, setFormData] = useState<User>(user || ({} as User));
-
-    useEffect(() => {
-        if (user) {
-            setFormData(user); // Properly initialize formData with the provided user
-        }
-    }, [user]);
+const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, onSubmit }) => {
+    const [formData, setFormData] = useState<User>({
+        id: '', // This can be generated on the backend
+        email: '',
+        phoneNum: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        weight: 0,
+        height: 0,
+        password: '',
+        photo: './images/default.png', // Default photo
+        role: 'USER',
+        enabled: true,
+    });
 
     if (!isOpen) return null;
 
@@ -43,7 +49,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(formData); // Pass the updated user data to the parent component
+        onSubmit(formData); // Pass the new user data to the parent component
         onClose();
     };
 
@@ -52,7 +58,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white rounded-lg w-full max-w-4xl mx-4">
                     <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                        <h2 className="text-2xl font-semibold text-gray-800">Edit Customer</h2>
+                        <h2 className="text-2xl font-semibold text-gray-800">Add New Customer</h2>
                         <button
                             onClick={onClose}
                             className="text-gray-500 hover:text-gray-700"
@@ -64,7 +70,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                     <form onSubmit={handleSubmit} className="p-6">
                         <div className="flex flex-col items-center mb-6">
                             <img
-                                src={formData.photo || './images/user.png'}
+                                src={formData.photo}
                                 alt="User"
                                 className="w-24 h-24 rounded-full object-cover mb-2"
                             />
@@ -72,7 +78,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 htmlFor="photo-upload"
                                 className="text-blue-500 hover:underline cursor-pointer"
                             >
-                                Change Photo
+                                Upload Photo
                             </label>
                             <input
                                 id="photo-upload"
@@ -91,7 +97,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="text"
                                     name="firstName"
-                                    value={formData.firstName || ''}
+                                    value={formData.firstName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
@@ -105,7 +111,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="text"
                                     name="lastName"
-                                    value={formData.lastName || ''}
+                                    value={formData.lastName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
@@ -119,20 +125,21 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="email"
                                     name="email"
-                                    value={formData.email || ''}
+                                    value={formData.email}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
                             </div>
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Password
                                 </label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     name="password"
-                                    value='U2FtcGxlUGFzc3dvcmQxMjM='
+                                    value={formData.password}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
@@ -146,7 +153,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="number"
                                     name="phoneNum"
-                                    value={formData.phoneNum || ''}
+                                    value={formData.phoneNum}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
@@ -160,12 +167,13 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="text"
                                     name="address"
-                                    value={formData.address || ''}
+                                    value={formData.address}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
                             </div>
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Weight
@@ -173,12 +181,13 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="number"
                                     name="weight"
-                                    value={formData.weight || ''}
+                                    value={formData.weight}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
                             </div>
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Height
@@ -186,7 +195,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 <input
                                     type="number"
                                     name="height"
-                                    value={formData.height || ''}
+                                    value={formData.height}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
@@ -199,7 +208,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 </label>
                                 <select
                                     name="role"
-                                    value={formData.role || 'USER'}
+                                    value={formData.role}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 >
@@ -241,7 +250,7 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
                                 type="submit"
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                             >
-                                Update
+                                Add
                             </button>
                         </div>
                     </form>
@@ -251,4 +260,4 @@ const EditCustomerModal: React.FC<EditCustomerModalProps> = ({ isOpen, onClose, 
     );
 };
 
-export default EditCustomerModal;
+export default AddCustomerModal;

@@ -8,6 +8,7 @@ import CustomerTable from "../components/customer/CustomerTable";
 import { Plus } from "lucide-react";
 import DeleteConfirmationModal from "../components/common/DeleteConfirm";
 import EditCustomerModal from "../components/customer/EditCustomerModal";
+import AddCustomerModal from "../components/customer/AddCustomerModal";
 
 const ITEMS_PER_PAGE = 10;
 const Customers = () => {
@@ -45,7 +46,25 @@ const Customers = () => {
             setCustomerToDelete(null);
         }
     };
-    const handleUpdateCustomer = (updatedCustomer: any) => {
+    const handleAddCustomer = (customerData: Omit<User, 'id'>) => {
+        const newCustomer: User = {
+            id: (customers.length + 1).toString(),
+            firstName: customerData.firstName,
+            lastName: customerData.lastName,
+            email: customerData.email,
+            address: customerData.address,
+            role: customerData.role,
+            enabled: customerData.enabled,
+            photo: customerData.photo,
+            weight: customerData.weight,
+            height: customerData.height,
+            phoneNum: customerData.phoneNum,
+            password: customerData.password,
+        };
+        setCustomers([...customers, newCustomer]);
+        toast.success('Customer added successfully', { autoClose: 1000 });
+    };
+    const handleUpdateCustomer = (updatedCustomer: User) => {
         const updatedCustomers = customers.map((customer) =>
             customer.id === updatedCustomer.id ? updatedCustomer : customer
         );
@@ -78,6 +97,11 @@ const Customers = () => {
                         onPageChange={setCurrentPage}
                     />
                 </div>
+                <AddCustomerModal
+                    isOpen={isAddModalOpen}
+                    onClose={() => setIsAddModalOpen(false)}
+                    onSubmit={handleAddCustomer}
+                />
                 <EditCustomerModal
                     isOpen={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)}
