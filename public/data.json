@@ -446,5 +446,77 @@
             "url": "./images/sample2.png",
             "product_id": "1"
         }
+    ],
+    "users": [
+        {
+            "id": "1",
+            "email": "john.doe@example.com",
+            "phoneNum": "1234567890",
+            "firstName": "John",
+            "lastName": "Doe",
+            "address": "123 Main St, Springfield",
+            "weight": 70,
+            "height": 175,
+            "password": "password123",
+            "enabled": true,
+            "photo": "./images/user.png",
+            "role": "USER"
+        },
+        {
+            "id": "2",
+            "email": "jane.smith@example.com",
+            "phoneNum": "0987654321",
+            "firstName": "Jane",
+            "lastName": "Smith",
+            "address": "456 Elm St, Metropolis",
+            "weight": 60,
+            "height": 165,
+            "password": "securepass456",
+            "enabled": true,
+            "photo": "./images/user.png",
+            "role": "ADMIN"
+        },
+        {
+            "id": "3",
+            "email": "michael.jones@example.com",
+            "phoneNum": "1122334455",
+            "firstName": "Michael",
+            "lastName": "Jones",
+            "address": "789 Oak St, Gotham",
+            "weight": 80,
+            "height": 180,
+            "password": "mypassword789",
+            "enabled": false,
+            "photo": "./images/user.png",
+            "role": "USER"
+        },
+        {
+            "id": "4",
+            "email": "emily.davis@example.com",
+            "phoneNum": "6677889900",
+            "firstName": "Emily",
+            "lastName": "Davis",
+            "address": "321 Pine St, Star City",
+            "weight": 55,
+            "height": 160,
+            "password": "emilypass123",
+            "enabled": true,
+            "photo": "./images/user.png",
+            "role": "USER"
+        },
+        {
+            "id": "5",
+            "email": "william.brown@example.com",
+            "phoneNum": "4455667788",
+            "firstName": "William",
+            "lastName": "Brown",
+            "address": "654 Cedar St, Central City",
+            "weight": 90,
+            "height": 185,
+            "password": "williampass456",
+            "enabled": true,
+            "photo": "./images/user.png",
+            "role": "ADMIN"
+        }
     ]
 }

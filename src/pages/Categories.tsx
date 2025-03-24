@@ -49,7 +49,7 @@ const Categories = () => {
         if (categoryToDelete) {
             const updatedCategories = categories.filter(c => c.id !== categoryToDelete.id);
             setCategories(updatedCategories);
-            toast.success('Category deleted successfully');
+            toast.success('Category deleted successfully', { autoClose: 1000 });
             setCategoryToDelete(null);
         }
     };
@@ -61,7 +61,7 @@ const Categories = () => {
             stock: 0
         };
         setCategories([...categories, newCategory]);
-        toast.success('Category added successfully');
+        toast.success('Category added successfully', { autoClose: 1000 });
     };
 
     const handleUpdateCategory = (categoryData: any) => {
@@ -75,7 +75,7 @@ const Categories = () => {
             return c;
         });
         setCategories(updatedCategories);
-        toast.success('Category updated successfully');
+        toast.success('Category updated successfully', { autoClose: 1000 });
     };
 
     return (

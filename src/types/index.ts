@@ -55,3 +55,18 @@ export interface Login {
   username: string;
   password: string;
 };
+
+export interface User {
+  id: string;
+  email: string;
+  phoneNum: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  weight: number;
+  height: number;
+  password: string;
+  enabled: boolean;
+  photo: string;
+  role: 'USER' | 'ADMIN'; // Enum for roles
+}
