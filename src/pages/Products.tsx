@@ -24,7 +24,7 @@ const Products = () => {
     getProducts().then((data) => {
       setProducts(data);
     });
-  }, []);
+  });
 
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 

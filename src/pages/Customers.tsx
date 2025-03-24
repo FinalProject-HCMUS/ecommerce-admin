@@ -6,6 +6,7 @@ import MotionPageWrapper from "../components/common/MotionPage";
 import Pagination from "../components/common/Pagination";
 import CustomerTable from "../components/customer/CustomerTable";
 import { Plus } from "lucide-react";
+import DeleteConfirmationModal from "../components/common/DeleteConfirm";
 
 const ITEMS_PER_PAGE = 10;
 const Customers = () => {
@@ -19,7 +20,7 @@ const Customers = () => {
         getUsers().then((data) => {
             setCustomers(data);
         });
-    });
+    }, []);
     const totalPages = Math.ceil(customers.length / ITEMS_PER_PAGE);
     const getCurrentPageCustomers = () => {
         const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -69,6 +70,12 @@ const Customers = () => {
                         onPageChange={setCurrentPage}
                     />
                 </div>
+                <DeleteConfirmationModal
+                    isOpen={!!customerToDelete}
+                    onClose={() => setCustomerToDelete(null)}
+                    onConfirm={confirmDelete}
+                    itemName={customerToDelete?.id || ''}
+                />
             </div>
         </MotionPageWrapper>
     )

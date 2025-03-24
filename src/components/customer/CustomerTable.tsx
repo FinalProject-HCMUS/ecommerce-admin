@@ -26,14 +26,6 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onEdit, onDele
                     {customers.map((customer) => (
                         <tr key={customer.id}>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                {/* <div className="flex items-center">
-                                    <div className="h-10 w-10 flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-lg object-cover" src={product.main_image_url} alt={product.name} />
-                                    </div>
-                                    <div className="ml-4">
-                                        <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                                    </div>
-                                </div> */}
                                 <div className="text-sm text-gray-900">{customer.id}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
