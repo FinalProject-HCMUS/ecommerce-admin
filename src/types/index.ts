@@ -99,6 +99,7 @@ export interface Order {
   product_cost: number;
   sub_total: number;
   total: number;
+  address: string;
   customer: User;
 }
 
@@ -108,6 +109,6 @@ export interface OrderDetail {
   quantity: number;
   unit_price: number;
   total: number;
-  products: Product[];
+  product: Product;
   order_id: string;
 }

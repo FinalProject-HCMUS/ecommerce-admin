@@ -7,7 +7,7 @@ interface EditOrderModalProps {
     isOpen: boolean;
     onClose: () => void;
     order: Order;
-    orderDetails: OrderDetail | undefined;
+    orderDetails: OrderDetail[]; // Updated to match the new structure
     onSubmit: (updatedOrder: Order) => void;
 }
 
@@ -70,8 +70,8 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Address</label>
                                 <textarea
-                                    name="customer.address"
-                                    value={formData.customer.address}
+                                    name="address"
+                                    value={formData.address}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     rows={3}
@@ -111,31 +111,8 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                     <option value="CANCELLED">Cancelled</option>
                                 </select>
                             </div>
-                        </div>
-
-                        {/* Order Details */}
-                        <div>
-                            <h3 className="text-lg font-semibold mb-4">Order Details</h3>
-                            <div className="space-y-4">
-                                {orderDetails?.products.map((product) => (
-                                    <div key={product.id} className="flex items-center space-x-4">
-                                        <img
-                                            src={product.main_image_url || './images/sample.png'}
-                                            alt={product.name}
-                                            className="w-20 h-20 object-cover rounded-lg"
-                                        />
-                                        <div className="flex-1">
-                                            <h4 className="text-sm font-medium">{product.name}</h4>
-                                            <p className="text-sm text-gray-500">Size: Medium</p>
-                                            <p className="text-sm text-gray-500">Color: Red</p>
-                                            <div className="text-sm font-medium">${product.price}</div>
-                                        </div>
-                                        <div className="text-sm text-gray-500">x2</div>
-                                    </div>
-                                ))}
-                            </div>
                             {/* Order Summary */}
-                            <div className="col-span-2 mt-10">
+                            <div className="col-span-2">
                                 <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
                                 <div className="space-y-2">
                                     <div className="flex justify-between">
@@ -151,6 +128,28 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                         <span className="text-lg font-semibold">${formData.total.toFixed(2)}</span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Order Details */}
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4">Order Details</h3>
+                            <div className="space-y-4">
+                                {orderDetails.map((detail) => (
+                                    <div key={detail.id} className="flex items-center space-x-4">
+                                        <img
+                                            src={detail.product.main_image_url || './images/sample.png'}
+                                            alt={detail.product.name}
+                                            className="w-20 h-20 object-cover rounded-lg"
+                                        />
+                                        <div className="flex-1">
+                                            <h4 className="text-sm font-medium">{detail.product.name}</h4>
+                                            <p className="text-sm text-gray-500">Category: {detail.product.category}</p>
+                                            <p className="text-sm text-gray-500">Price: ${detail.product.price.toFixed(2)}</p>
+                                        </div>
+                                        <div className="text-sm text-gray-500">x{detail.quantity}</div>
+                                    </div>
+                                ))}
                             </div>
 
                         </div>

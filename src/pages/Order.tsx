@@ -2,25 +2,33 @@
 import { useState, useEffect } from 'react';
 import OrderTable from '../components/order/OrderTable';
 import Pagination from '../components/common/Pagination';
-import { Order, OrderDetail } from '../types';
+import { Order, OrderDetail, Product } from '../types';
 import MotionPageWrapper from '../components/common/MotionPage';
 import { getOrders, getOrderDetails } from '../apis/orderApi';
 import EditOrderModal from '../components/order/EditOrderModal';
 import { toast } from 'react-toastify';
+import AddOrderModal from '../components/order/AddOrderModal';
+import { getProducts } from '../apis/productApi';
 
 const ITEMS_PER_PAGE = 10;
 
 const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [orderDetails, setOrderDetails] = useState<OrderDetail | undefined>();
+    const [products, setProducts] = useState<Product[]>([]);
+    const [orderDetails, setOrderDetails] = useState<OrderDetail[] | undefined>();
     const [currentPage, setCurrentPage] = useState(1);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
     useEffect(() => {
-        // Fetch orders
         getOrders().then((data) => {
             setOrders(data);
+        });
+    }, []);
+    useEffect(() => {
+        getProducts().then((data) => {
+            setProducts(data);
         });
     }, []);
 
@@ -41,7 +49,11 @@ const Orders = () => {
             setIsEditModalOpen(true);
         }
     };
-
+    const handleAddOrder = (newOrder: Order) => {
+        setOrders((prevOrders) => [newOrder, ...prevOrders]); // Add the new order to the beginning of the orders list
+        setIsAddModalOpen(false); // Close the AddOrderModal
+        toast.success('Order added successfully', { autoClose: 1000 }); // Show a success toast notification
+    };
     const handleUpdateOrder = (updatedOrder: Order) => {
         setOrders((prevOrders) =>
             prevOrders.map((order) => (order.id === updatedOrder.id ? updatedOrder : order))
@@ -56,7 +68,7 @@ const Orders = () => {
                 <div className="mb-8 flex justify-between items-center">
                     <h1 className="text-2xl font-semibold text-gray-900">Orders</h1>
                     <button
-                        onClick={() => alert('Add Order functionality not implemented yet')}
+                        onClick={() => setIsAddModalOpen(true)}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                     >
                         Add New Order
@@ -78,10 +90,17 @@ const Orders = () => {
                     isOpen={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)}
                     order={selectedOrder}
-                    orderDetails={orderDetails}
+                    orderDetails={orderDetails || []}
                     onSubmit={handleUpdateOrder}
                 />
             )}
+            {isAddModalOpen && (
+                <AddOrderModal
+                    isOpen={isAddModalOpen}
+                    onClose={() => setIsAddModalOpen(false)}
+                    onSubmit={handleAddOrder}
+                    products={products}
+                />)}
         </MotionPageWrapper>
     );
 };
