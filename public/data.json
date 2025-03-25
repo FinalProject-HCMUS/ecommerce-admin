@@ -518,5 +518,147 @@
             "photo": "./images/user.png",
             "role": "ADMIN"
         }
+    ],
+    "orders": [
+        {
+            "id": "1",
+            "first_name": "John",
+            "last_name": "Doe",
+            "phone_number": "1234567890",
+            "status": "NEW",
+            "delivery_date": "2025-03-30",
+            "delivery_days": 5,
+            "order_time": "2025-03-25T10:00:00Z",
+            "payment_method": "COD",
+            "shipping_cost": 10.0,
+            "product_cost": 50.0,
+            "sub_total": 50.0,
+            "total": 60.0,
+            "customer": {
+                "id": "1",
+                "email": "john.doe@example.com",
+                "phoneNum": "1234567890",
+                "firstName": "John",
+                "lastName": "Doe",
+                "address": "123 Main St, Springfield",
+                "weight": 70,
+                "height": 175,
+                "password": "password123",
+                "enabled": true,
+                "photo": "./images/user.png",
+                "role": "USER"
+            }
+        },
+        {
+            "id": "2",
+            "first_name": "Jane",
+            "last_name": "Smith",
+            "phone_number": "0987654321",
+            "status": "PROCESSING",
+            "delivery_date": "2025-03-28",
+            "delivery_days": 3,
+            "order_time": "2025-03-25T12:00:00Z",
+            "payment_method": "VN_PAY",
+            "shipping_cost": 15.0,
+            "product_cost": 200.0,
+            "sub_total": 215.0,
+            "total": 215.0,
+            "customer": {
+                "id": "2",
+                "email": "jane.smith@example.com",
+                "phoneNum": "0987654321",
+                "firstName": "Jane",
+                "lastName": "Smith",
+                "address": "456 Elm St, Metropolis",
+                "weight": 60,
+                "height": 165,
+                "password": "securepass456",
+                "enabled": true,
+                "photo": "./images/user.png",
+                "role": "ADMIN"
+            }
+        }
+    ],
+    "orderDetails": [
+        {
+            "id": "1",
+            "product_cost": 50.0,
+            "quantity": 2,
+            "unit_price": 25.0,
+            "total": 50.0,
+            "products": [
+                {
+                    "id": "1",
+                    "name": "Product 1",
+                    "category": "Category 1",
+                    "description": "Description for Product 1",
+                    "cost": 20.0,
+                    "total": 100,
+                    "price": 25.0,
+                    "discount_percent": 0,
+                    "enable": true,
+                    "in_stock": true,
+                    "main_image_url": "./images/sample.png",
+                    "average_rating": 4.5,
+                    "review_count": 10,
+                    "created_time": "2025-03-01T00:00:00Z",
+                    "update_time": "2025-03-10T00:00:00Z",
+                    "images": [
+                        "./images/sample.png"
+                    ]
+                },
+                {
+                    "id": "2",
+                    "name": "Product 2",
+                    "category": "Category 1",
+                    "description": "Description for Product 1",
+                    "cost": 20.0,
+                    "total": 100,
+                    "price": 25.0,
+                    "discount_percent": 0,
+                    "enable": true,
+                    "in_stock": true,
+                    "main_image_url": "./images/sample.png",
+                    "average_rating": 4.5,
+                    "review_count": 10,
+                    "created_time": "2025-03-01T00:00:00Z",
+                    "update_time": "2025-03-10T00:00:00Z",
+                    "images": [
+                        "./images/sample.png"
+                    ]
+                }
+            ],
+            "order_id": "1"
+        },
+        {
+            "id": "2",
+            "product_cost": 100.0,
+            "quantity": 1,
+            "unit_price": 100.0,
+            "total": 100.0,
+            "products": [
+                {
+                    "id": "2",
+                    "name": "Product 2",
+                    "category": "Category 2",
+                    "description": "Description for Product 2",
+                    "cost": 50.0,
+                    "total": 50,
+                    "price": 100.0,
+                    "discount_percent": 10,
+                    "enable": true,
+                    "in_stock": true,
+                    "main_image_url": "./images/sample2.png",
+                    "average_rating": 4.0,
+                    "review_count": 5,
+                    "created_time": "2025-03-05T00:00:00Z",
+                    "update_time": "2025-03-15T00:00:00Z",
+                    "images": [
+                        "./images/sample2.png"
+                    ]
+                }
+            ],
+            "order_id": "2"
+        }
     ]
 }

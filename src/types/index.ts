@@ -70,3 +70,44 @@ export interface User {
   photo: string;
   role: 'USER' | 'ADMIN'; // Enum for roles
 }
+
+export type Status =
+  | 'NEW'
+  | 'CANCELLED'
+  | 'PROCESSING'
+  | 'PACKAGED'
+  | 'PICKED'
+  | 'SHIPPING'
+  | 'DELIVERED'
+  | 'REFUNDED';
+
+
+export type PaymentMethod = 'COD' | 'VN_PAY' | 'MOMO';
+
+
+export interface Order {
+  id: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  status: Status;
+  delivery_date: string;
+  delivery_days: number;
+  order_time: string;
+  payment_method: PaymentMethod;
+  shipping_cost: number;
+  product_cost: number;
+  sub_total: number;
+  total: number;
+  customer: User;
+}
+
+export interface OrderDetail {
+  id: string;
+  product_cost: number;
+  quantity: number;
+  unit_price: number;
+  total: number;
+  products: Product[];
+  order_id: string;
+}
