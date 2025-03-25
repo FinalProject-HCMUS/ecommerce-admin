@@ -9,6 +9,7 @@ import EditOrderModal from '../components/order/EditOrderModal';
 import { toast } from 'react-toastify';
 import AddOrderModal from '../components/order/AddOrderModal';
 import { getProducts } from '../apis/productApi';
+import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -19,7 +20,8 @@ const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<Order | undefined>();
+    const [orderToDelete, setOrderToDelete] = useState<Order | undefined>();
 
     useEffect(() => {
         getOrders().then((data) => {
@@ -49,6 +51,10 @@ const Orders = () => {
             setIsEditModalOpen(true);
         }
     };
+    const handleDeleteOrder = (id: string) => {
+        const order = orders.find((order) => order.id === id);
+        setOrderToDelete(order);
+    };
     const handleAddOrder = (newOrder: Order) => {
         setOrders((prevOrders) => [newOrder, ...prevOrders]); // Add the new order to the beginning of the orders list
         setIsAddModalOpen(false); // Close the AddOrderModal
@@ -61,7 +67,14 @@ const Orders = () => {
         setIsEditModalOpen(false);
         toast.success('Order updated successfully', { autoClose: 1000 });
     };
-
+    const confirmDelete = () => {
+        if (orderToDelete) {
+            const updatedOrder = orders.filter(p => p.id !== orderToDelete.id);
+            setOrders(updatedOrder);
+            toast.success('Order deleted successfully', { autoClose: 1000 });
+            setOrderToDelete(undefined);
+        }
+    };
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
@@ -76,7 +89,7 @@ const Orders = () => {
                 </div>
 
                 <div className="bg-white rounded-lg shadow">
-                    <OrderTable orders={getCurrentPageOrders()} onEdit={handleEditOrder} />
+                    <OrderTable orders={getCurrentPageOrders()} onEdit={handleEditOrder} onDelete={handleDeleteOrder} />
                     <Pagination
                         currentPage={currentPage}
                         totalPages={totalPages}
@@ -85,22 +98,25 @@ const Orders = () => {
                 </div>
             </div>
 
-            {isEditModalOpen && selectedOrder && (
-                <EditOrderModal
-                    isOpen={isEditModalOpen}
-                    onClose={() => setIsEditModalOpen(false)}
-                    order={selectedOrder}
-                    orderDetails={orderDetails || []}
-                    onSubmit={handleUpdateOrder}
-                />
-            )}
-            {isAddModalOpen && (
-                <AddOrderModal
-                    isOpen={isAddModalOpen}
-                    onClose={() => setIsAddModalOpen(false)}
-                    onSubmit={handleAddOrder}
-                    products={products}
-                />)}
+            {selectedOrder && <EditOrderModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                order={selectedOrder}
+                orderDetails={orderDetails || []}
+                onSubmit={handleUpdateOrder}
+            />}
+            <AddOrderModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onSubmit={handleAddOrder}
+                products={products}
+            />
+            <DeleteConfirmationModal
+                isOpen={!!orderToDelete}
+                onClose={() => setOrderToDelete(undefined)}
+                onConfirm={confirmDelete}
+                itemName={selectedOrder?.id || ''}
+            />
         </MotionPageWrapper>
     );
 };

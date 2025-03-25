@@ -1,14 +1,15 @@
 import React from 'react';
-import { Pencil } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { Order } from '../../types';
-import { format } from 'date-fns'; // Import date-fns for formatting dates
+import { format } from 'date-fns';
 
 interface OrderTableProps {
     orders: Order[];
     onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
 }
 
-const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit }) => {
+const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => {
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -52,6 +53,12 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit }) => {
                                     className="text-blue-600 hover:text-blue-900 mr-4"
                                 >
                                     <Pencil size={16} />
+                                </button>
+                                <button
+                                    onClick={() => onDelete(order.id)}
+                                    className="text-red-600 hover:text-red-900"
+                                >
+                                    <Trash2 size={16} />
                                 </button>
                             </td>
                         </tr>
