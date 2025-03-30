@@ -312,62 +312,62 @@
     "categories": [
         {
             "id": "1",
-            "name": "Category 1",
+            "name": "T-Shirts",
             "stock": 100
         },
         {
             "id": "2",
-            "name": "Category 2",
+            "name": "Jeans",
             "stock": 50
         },
         {
             "id": "3",
-            "name": "Category 3",
+            "name": "Jackets & Coats",
             "stock": 75
         },
         {
             "id": "4",
-            "name": "Category 4",
+            "name": "Dresses",
             "stock": 200
         },
         {
             "id": "5",
-            "name": "Category 5",
+            "name": "Sweaters & Hoodies",
             "stock": 150
         },
         {
             "id": "6",
-            "name": "Category 6",
+            "name": "Sportswear",
             "stock": 120
         },
         {
             "id": "7",
-            "name": "Category 7",
+            "name": "Shoes & Sneakers",
             "stock": 300
         },
         {
             "id": "8",
-            "name": "Category 8",
+            "name": "Accessories",
             "stock": 90
         },
         {
             "id": "9",
-            "name": "Category 9",
+            "name": "Formal Wear",
             "stock": 60
         },
         {
             "id": "10",
-            "name": "Category 10",
+            "name": "Underwear & Socks",
             "stock": 110
         },
         {
             "id": "11",
-            "name": "Category 11",
+            "name": "Hats & Caps",
             "stock": 130
         },
         {
             "id": "12",
-            "name": "Category 12",
+            "name": "Swimwear",
             "stock": 80
         }
     ],

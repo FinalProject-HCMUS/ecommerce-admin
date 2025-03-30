@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Package, List, LogOut, Users, Boxes, MessageCircleMore } from 'lucide-react';
+import { Package, List, LogOut, Users, Boxes, MessageCircleMore, NotebookPen, BarChart3Icon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -53,7 +53,20 @@ const Sidebar = () => {
           <MessageCircleMore size={20} />
           <span>Messages</span>
         </NavLink>
-
+        <NavLink to="/blogs" className={({ isActive }) =>
+          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+          }`
+        }>
+          <NotebookPen size={20} />
+          <span>Blogs</span>
+        </NavLink>
+        <NavLink to="/statistics" className={({ isActive }) =>
+          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+          }`
+        }>
+          <BarChart3Icon size={20} />
+          <span>Statistics</span>
+        </NavLink>
       </nav>
 
       <div className="p-4 border-t border-gray-200">

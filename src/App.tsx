@@ -9,6 +9,8 @@ import { ToastContainer } from 'react-toastify';
 import Customers from './pages/Customers';
 import Order from './pages/Order';
 import Message from './pages/Message';
+import Blogs from './pages/Blogs';
+import Statistics from './pages/Statistics';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
             <Route path="/customers" element={<PrivateRoute element={Customers} />} />
             <Route path="/orders" element={<PrivateRoute element={Order} />} />
             <Route path="/messages" element={<PrivateRoute element={Message} />} />
+            <Route path="/blogs" element={<PrivateRoute element={Blogs} />} />
+            <Route path="/statistics" element={<PrivateRoute element={Statistics} />} />
             <Route path="/" element={<Navigate to="/customers" />} />
           </Route>
         </Routes>
