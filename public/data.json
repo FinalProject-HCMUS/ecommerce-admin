@@ -638,5 +638,87 @@
             },
             "order_id": "2"
         }
+    ],
+    "messages": [
+        {
+            "id": "1",
+            "content": "Xin chào, tôi cần hỗ trợ về đơn hàng của mình.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:00:00Z"
+        },
+        {
+            "id": "2",
+            "content": "Chào bạn, tôi có thể giúp gì cho bạn?",
+            "role_chat": "ADMIN",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:01:00Z"
+        },
+        {
+            "id": "3",
+            "content": "Tôi muốn kiểm tra trạng thái đơn hàng của mình.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:02:00Z"
+        },
+        {
+            "id": "4",
+            "content": "Đơn hàng của bạn đang được xử lý và sẽ giao trong 3 ngày tới.",
+            "role_chat": "ADMIN",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:03:00Z"
+        },
+        {
+            "id": "5",
+            "content": "Cảm ơn bạn đã hỗ trợ!",
+            "role_chat": "CUSTOMER",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:04:00Z"
+        },
+        {
+            "id": "6",
+            "content": "Xin chào, tôi cần hỗ trợ về sản phẩm.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:00:00Z"
+        },
+        {
+            "id": "7",
+            "content": "Chào bạn, bạn cần hỗ trợ về sản phẩm nào?",
+            "role_chat": "ADMIN",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:01:00Z"
+        },
+        {
+            "id": "8",
+            "content": "Tôi muốn biết thêm thông tin về sản phẩm Product 1.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:02:00Z"
+        },
+        {
+            "id": "9",
+            "content": "Sản phẩm Product 1 hiện đang có giá 75.0 USD và còn hàng.",
+            "role_chat": "ADMIN",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:03:00Z"
+        },
+        {
+            "id": "10",
+            "content": "Cảm ơn bạn, tôi sẽ đặt hàng ngay.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:04:00Z"
+        }
     ]
 }
