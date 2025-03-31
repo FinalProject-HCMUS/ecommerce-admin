@@ -720,5 +720,55 @@
             "admin_id": "5",
             "created_At": "2025-03-29T11:04:00Z"
         }
+    ],
+    "blogs": [
+        {
+            "id": "1",
+            "title": "The Ultimate Guide to Winter Fashion",
+            "content": "Discover the latest trends in winter fashion and how to stay warm while looking stylish.",
+            "image": "./images/blog1.png",
+            "created_At": "2025-01-01T10:00:00Z",
+            "updated_At": "2025-01-05T12:00:00Z"
+        },
+        {
+            "id": "2",
+            "title": "Top 10 Office Wear Ideas",
+            "content": "Explore our curated list of office wear ideas to keep you looking professional and comfortable.",
+            "image": "./images/blog2.png",
+            "created_At": "2025-02-01T09:00:00Z",
+            "updated_At": "2025-02-03T15:00:00Z"
+        },
+        {
+            "id": "3",
+            "title": "How to Style Casual Outfits",
+            "content": "Learn how to style casual outfits for everyday wear with our expert tips.",
+            "image": "./images/blog3.png",
+            "created_At": "2025-03-01T08:00:00Z",
+            "updated_At": "2025-03-02T14:00:00Z"
+        },
+        {
+            "id": "4",
+            "title": "The Best Sportswear for Active Lifestyles",
+            "content": "Find out which sportswear brands and products are perfect for your active lifestyle.",
+            "image": "./images/blog4.png",
+            "created_At": "2025-04-01T11:00:00Z",
+            "updated_At": "2025-04-05T16:00:00Z"
+        },
+        {
+            "id": "5",
+            "title": "Accessories That Elevate Your Look",
+            "content": "Discover how the right accessories can transform your outfit and make a statement.",
+            "image": "./images/blog5.png",
+            "created_At": "2025-05-01T13:00:00Z",
+            "updated_At": "2025-05-03T18:00:00Z"
+        },
+        {
+            "id": "6",
+            "title": "How to Style Casual Outfits",
+            "content": "Learn how to style casual outfits for everyday wear with our expert tips.",
+            "image": "./images/blog3.png",
+            "created_At": "2025-03-01T08:00:00Z",
+            "updated_At": "2025-03-02T14:00:00Z"
+        }
     ]
 }

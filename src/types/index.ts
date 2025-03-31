@@ -121,3 +121,12 @@ export interface Message {
   admin_id: string;
   created_At: string;
 }
+
+export interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  created_At: string;
+  updated_At: string;
+}
