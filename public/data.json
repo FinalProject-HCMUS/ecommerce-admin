@@ -769,6 +769,14 @@
             "image": "./images/blog3.png",
             "created_At": "2025-03-01T08:00:00Z",
             "updated_At": "2025-03-02T14:00:00Z"
+        },
+        {
+            "id": "7",
+            "title": "The Best Sportswear for Active Lifestyles",
+            "content": "<p><strong>🔥 TRANSFORM YOUR BODY JOIN [GYM NAME] TODAY! 🔥</strong></p><p>🏋️‍♂️ Get stronger, fitter, and healthier with our top-tier facilities and expert trainers!</p><p>✅ 24/7 Access</p><p> ✅ State-of-the-art Equipment</p><p> ✅ Personalized Training Programs</p><p> ✅ Group Fitness Classes (Yoga, HIIT, Zumba &amp; More!)</p><p> ✅ Affordable Membership Plans</p><p>💥 LIMITED-TIME OFFER: <strong>Get 50% OFF</strong> your first month when you sign up this week!</p><p>📍 Location: [Your Gym Address]</p><p> 📞 Call us at: [Your Contact Number]</p><p> 🌐 Visit us: [Your Website]</p><p>🚀 <strong>Your fitness journey starts NOW!</strong></p><p>#FitnessGoals #GymLife #TrainHard #GetFit</p>",
+            "image": "./images/blog4.png",
+            "created_At": "2025-04-01T11:00:00Z",
+            "updated_At": "2025-04-05T16:00:00Z"
         }
     ]
 }
