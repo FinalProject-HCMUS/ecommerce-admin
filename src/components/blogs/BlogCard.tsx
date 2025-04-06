@@ -1,6 +1,7 @@
 import React from 'react';
 import { Blog } from '../../types';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface BlogCardProps {
     blog: Blog;
@@ -11,7 +12,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
         hidden: { opacity: 0, scale: 0.9 },
         visible: { opacity: 1, scale: 1, transition: { duration: 0.8 } },
     };
-
+    const navigate = useNavigate();
     return (
         <motion.div
             variants={cardVariants}
@@ -25,8 +26,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
             <img
                 src={blog.image}
                 alt={blog.title}
-                className="w-full rounded-lg h-64 object-cover"
+                className="w-full rounded-lg h-64 object-cover cursor-pointer"
+                onClick={() => navigate(`/blogs/edit/${blog.id}`)}
             />
+
 
             {/* Blog Content */}
             <div className="p-4">

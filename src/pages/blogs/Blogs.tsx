@@ -19,14 +19,20 @@ const Blogs: React.FC = () => {
         getBlogs().then((data) => {
             setBlogs(data || []);
         });
+
     }, []);
-
-    const totalPages = Math.ceil(blogs.length / ITEMS_PER_PAGE);
-
+    useEffect(() => {
+        setCurrentPage(1); // Reset to first page when search term changes
+    }, [searchTerm]);
     const filteredBlogs = blogs.filter((blog) =>
         blog.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+    const totalPages = Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE);
+    const getCurrentPageBlogs = () => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        return filteredBlogs.slice(start, end);
+    };
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -86,7 +92,7 @@ const Blogs: React.FC = () => {
                         initial="hidden"
                         animate="visible"
                     >
-                        {filteredBlogs.map((blog) => (
+                        {getCurrentPageBlogs().map((blog) => (
                             <motion.div key={blog.id} variants={itemVariants}>
                                 <BlogCard blog={blog} />
                             </motion.div>

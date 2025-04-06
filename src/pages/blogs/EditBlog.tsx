@@ -1,44 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill's CSS
+import 'react-quill/dist/quill.snow.css';
 import MotionPageWrapper from '../../components/common/MotionPage';
-import { useNavigate } from 'react-router-dom';
-import UploadImageModal from '../../components/blogs/UploadImageModal'; // Import the modal component
+import { useNavigate, useParams } from 'react-router-dom';
+import UploadImageModal from '../../components/blogs/UploadImageModal';
 import { toast } from 'react-toastify';
 import { Blog } from '../../types';
+import { getBlogById } from '../../apis/blogApi';
 
-const AddBlog: React.FC = () => {
+const EditBlog: React.FC = () => {
+    const { id } = useParams<{ id: string }>(); // Get blog ID from URL params
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [image, setImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    // Fetch all blogs
+    useEffect(() => {
+        getBlogById(id || '').then((blog) => {
+            if (blog) {
+                setTitle(blog.title);
+                setContent(blog.content);
+                setImage(blog.image);
+            }
+        });
+    }, []);
 
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) {
-            toast.error('Please fill in all fields!', { position: "top-right", autoClose: 1000 });
+            toast.error('Please fill in all fields!', { position: 'top-right', autoClose: 1000 });
             return;
         }
         setIsModalOpen(true);
     };
-    const handleSubmit = (image: File | null) => {
-        if (image) {
-            const newBlog: Blog = {
-                id: Math.random().toString(36).substr(2, 9),
-                title,
-                content,
-                image: URL.createObjectURL(image),
-                created_At: new Date().toISOString(),
-                updated_At: new Date().toISOString(),
-            };
-            //call API to save the blog
-            toast.success('Blog created successfully!', { position: "top-right", autoClose: 1000 });
-            setIsModalOpen(false);
-            navigate('/blogs');
-        } else {
-            toast.error('Please upload an image!', { position: "top-right", autoClose: 1000 });
-        }
-    }
+
+    const handleSubmit = (newImage: File | null) => {
+        const updatedBlog: Blog = {
+            id: id || '',
+            title,
+            content,
+            image: newImage ? URL.createObjectURL(newImage) : image || '',
+            updated_At: new Date().toISOString(),
+        };
+
+        // Call API to update the blog
+        toast.success('Blog updated successfully!', { position: 'top-right', autoClose: 1000 });
+        setIsModalOpen(false);
+        navigate('/blogs');
+    };
+
     const modules = {
         toolbar: [
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -74,7 +85,7 @@ const AddBlog: React.FC = () => {
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-6">Write New Blog</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 mb-6">Edit Blog</h1>
                 <div className="bg-white rounded-lg shadow p-6">
                     {/* Title Input */}
                     <div className="mb-4">
@@ -94,11 +105,10 @@ const AddBlog: React.FC = () => {
                             onChange={setContent}
                             modules={modules}
                             formats={formats}
-                            placeholder="Write your blog content here..."
-                            className='h-96'
+                            placeholder="Edit your blog content here..."
+                            className="h-96"
                         />
                     </div>
-
                     {/* Action Buttons */}
                     <div className="flex justify-end space-x-4">
                         <button
@@ -122,11 +132,11 @@ const AddBlog: React.FC = () => {
                 <UploadImageModal
                     onClose={() => setIsModalOpen(false)}
                     onSubmit={handleSubmit}
-                    imageUrl={null}
+                    imageUrl={image}
                 />
             )}
         </MotionPageWrapper>
     );
 };
 
-export default AddBlog;
+export default EditBlog;
