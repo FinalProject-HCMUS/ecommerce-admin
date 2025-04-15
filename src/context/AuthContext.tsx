@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { username, password } = credentials;
         if (username === 'admin' && password === '123') {
             setIsAuthenticated(true);
-            navigate('/customers');
+            navigate('/products');
         } else {
             toast.error('Invalid username or password', { autoClose: 1000, position: 'top-center' });
         }
