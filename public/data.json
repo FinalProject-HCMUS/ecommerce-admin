@@ -312,62 +312,62 @@
     "categories": [
         {
             "id": "1",
-            "name": "Category 1",
+            "name": "T-Shirts",
             "stock": 100
         },
         {
             "id": "2",
-            "name": "Category 2",
+            "name": "Jeans",
             "stock": 50
         },
         {
             "id": "3",
-            "name": "Category 3",
+            "name": "Jackets & Coats",
             "stock": 75
         },
         {
             "id": "4",
-            "name": "Category 4",
+            "name": "Dresses",
             "stock": 200
         },
         {
             "id": "5",
-            "name": "Category 5",
+            "name": "Sweaters & Hoodies",
             "stock": 150
         },
         {
             "id": "6",
-            "name": "Category 6",
+            "name": "Sportswear",
             "stock": 120
         },
         {
             "id": "7",
-            "name": "Category 7",
+            "name": "Shoes & Sneakers",
             "stock": 300
         },
         {
             "id": "8",
-            "name": "Category 8",
+            "name": "Accessories",
             "stock": 90
         },
         {
             "id": "9",
-            "name": "Category 9",
+            "name": "Formal Wear",
             "stock": 60
         },
         {
             "id": "10",
-            "name": "Category 10",
+            "name": "Underwear & Socks",
             "stock": 110
         },
         {
             "id": "11",
-            "name": "Category 11",
+            "name": "Hats & Caps",
             "stock": 130
         },
         {
             "id": "12",
-            "name": "Category 12",
+            "name": "Swimwear",
             "stock": 80
         }
     ],
@@ -637,6 +637,146 @@
                 ]
             },
             "order_id": "2"
+        }
+    ],
+    "messages": [
+        {
+            "id": "1",
+            "content": "Xin chào, tôi cần hỗ trợ về đơn hàng của mình.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:00:00Z"
+        },
+        {
+            "id": "2",
+            "content": "Chào bạn, tôi có thể giúp gì cho bạn?",
+            "role_chat": "ADMIN",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:01:00Z"
+        },
+        {
+            "id": "3",
+            "content": "Tôi muốn kiểm tra trạng thái đơn hàng của mình.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:02:00Z"
+        },
+        {
+            "id": "4",
+            "content": "Đơn hàng của bạn đang được xử lý và sẽ giao trong 3 ngày tới.",
+            "role_chat": "ADMIN",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:03:00Z"
+        },
+        {
+            "id": "5",
+            "content": "Cảm ơn bạn đã hỗ trợ!",
+            "role_chat": "CUSTOMER",
+            "customer_id": "1",
+            "admin_id": "2",
+            "created_At": "2025-03-29T10:04:00Z"
+        },
+        {
+            "id": "6",
+            "content": "Xin chào, tôi cần hỗ trợ về sản phẩm.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:00:00Z"
+        },
+        {
+            "id": "7",
+            "content": "Chào bạn, bạn cần hỗ trợ về sản phẩm nào?",
+            "role_chat": "ADMIN",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:01:00Z"
+        },
+        {
+            "id": "8",
+            "content": "Tôi muốn biết thêm thông tin về sản phẩm Product 1.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:02:00Z"
+        },
+        {
+            "id": "9",
+            "content": "Sản phẩm Product 1 hiện đang có giá 75.0 USD và còn hàng.",
+            "role_chat": "ADMIN",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:03:00Z"
+        },
+        {
+            "id": "10",
+            "content": "Cảm ơn bạn, tôi sẽ đặt hàng ngay.",
+            "role_chat": "CUSTOMER",
+            "customer_id": "3",
+            "admin_id": "5",
+            "created_At": "2025-03-29T11:04:00Z"
+        }
+    ],
+    "blogs": [
+        {
+            "id": "1",
+            "title": "The Ultimate Guide to Winter Fashion",
+            "content": "Discover the latest trends in winter fashion and how to stay warm while looking stylish.",
+            "image": "./images/blog1.png",
+            "created_At": "2025-01-01T10:00:00Z",
+            "updated_At": "2025-01-05T12:00:00Z"
+        },
+        {
+            "id": "2",
+            "title": "Top 10 Office Wear Ideas",
+            "content": "Explore our curated list of office wear ideas to keep you looking professional and comfortable.",
+            "image": "./images/blog2.png",
+            "created_At": "2025-02-01T09:00:00Z",
+            "updated_At": "2025-02-03T15:00:00Z"
+        },
+        {
+            "id": "3",
+            "title": "How to Style Casual Outfits",
+            "content": "Learn how to style casual outfits for everyday wear with our expert tips.",
+            "image": "./images/blog3.png",
+            "created_At": "2025-03-01T08:00:00Z",
+            "updated_At": "2025-03-02T14:00:00Z"
+        },
+        {
+            "id": "4",
+            "title": "The Best Sportswear for Active Lifestyles",
+            "content": "Find out which sportswear brands and products are perfect for your active lifestyle.",
+            "image": "./images/blog4.png",
+            "created_At": "2025-04-01T11:00:00Z",
+            "updated_At": "2025-04-05T16:00:00Z"
+        },
+        {
+            "id": "5",
+            "title": "Accessories That Elevate Your Look",
+            "content": "Discover how the right accessories can transform your outfit and make a statement.",
+            "image": "./images/blog5.png",
+            "created_At": "2025-05-01T13:00:00Z",
+            "updated_At": "2025-05-03T18:00:00Z"
+        },
+        {
+            "id": "6",
+            "title": "How to Style Casual Outfits",
+            "content": "Learn how to style casual outfits for everyday wear with our expert tips.",
+            "image": "./images/blog3.png",
+            "created_At": "2025-03-01T08:00:00Z",
+            "updated_At": "2025-03-02T14:00:00Z"
+        },
+        {
+            "id": "7",
+            "title": "The Best Sportswear for Active Lifestyles",
+            "content": "<p><strong>🔥 TRANSFORM YOUR BODY JOIN [GYM NAME] TODAY! 🔥</strong></p><p>🏋️‍♂️ Get stronger, fitter, and healthier with our top-tier facilities and expert trainers!</p><p>✅ 24/7 Access</p><p> ✅ State-of-the-art Equipment</p><p> ✅ Personalized Training Programs</p><p> ✅ Group Fitness Classes (Yoga, HIIT, Zumba &amp; More!)</p><p> ✅ Affordable Membership Plans</p><p>💥 LIMITED-TIME OFFER: <strong>Get 50% OFF</strong> your first month when you sign up this week!</p><p>📍 Location: [Your Gym Address]</p><p> 📞 Call us at: [Your Contact Number]</p><p> 🌐 Visit us: [Your Website]</p><p>🚀 <strong>Your fitness journey starts NOW!</strong></p><p>#FitnessGoals #GymLife #TrainHard #GetFit</p>",
+            "image": "./images/blog4.png",
+            "created_At": "2025-04-01T11:00:00Z",
+            "updated_At": "2025-04-05T16:00:00Z"
         }
     ]
 }

@@ -112,3 +112,21 @@ export interface OrderDetail {
   product: Product;
   order_id: string;
 }
+
+export interface Message {
+  id: string;
+  content: string;
+  role_chat: 'CUSTOMER' | 'ADMIN';
+  customer_id: string;
+  admin_id: string;
+  created_At: string;
+}
+
+export interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  created_At: string;
+  updated_At: string;
+}

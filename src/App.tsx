@@ -8,6 +8,11 @@ import { PrivateRoute } from './router/private-route';
 import { ToastContainer } from 'react-toastify';
 import Customers from './pages/Customers';
 import Order from './pages/Order';
+import Message from './pages/Message';
+import Blogs from './pages/blogs/Blogs';
+import Statistics from './pages/Statistics';
+import AddBlog from './pages/blogs/AddBlog';
+import EditBlog from './pages/blogs/EditBlog';
 
 function App() {
   return (
@@ -20,6 +25,11 @@ function App() {
             <Route path="/categories" element={<PrivateRoute element={Categories} />} />
             <Route path="/customers" element={<PrivateRoute element={Customers} />} />
             <Route path="/orders" element={<PrivateRoute element={Order} />} />
+            <Route path="/messages" element={<PrivateRoute element={Message} />} />
+            <Route path="/blogs" element={<PrivateRoute element={Blogs} />} />
+            <Route path="/blogs/add" element={<PrivateRoute element={AddBlog} />} />
+            <Route path="/blogs/edit/:id" element={<PrivateRoute element={EditBlog} />} />
+            <Route path="/statistics" element={<PrivateRoute element={Statistics} />} />
             <Route path="/" element={<Navigate to="/customers" />} />
           </Route>
         </Routes>
