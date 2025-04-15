@@ -129,6 +129,7 @@ const EditBlog: React.FC = () => {
 
             {/* Upload Image Modal */}
             {isModalOpen && (
+
                 <UploadImageModal
                     onClose={() => setIsModalOpen(false)}
                     onSubmit={handleSubmit}
