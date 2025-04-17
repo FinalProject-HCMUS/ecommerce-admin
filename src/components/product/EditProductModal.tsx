@@ -21,10 +21,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
     cost: 0,
     total: 0,
     enable: false,
-    in_stock: true,
-    discount_percent: 0,
+    inStock: true,
+    discountPercent: 0,
     images: [] as string[],
-    main_image_url: ''
+    mainImageUrl: ''
   });
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
@@ -35,11 +35,11 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
         category: product.category,
         price: product.price,
         cost: product.cost,
-        discount_percent: product.discount_percent,
+        discountPercent: product.discountPercent,
         total: product.total,
         enable: product.enable,
-        in_stock: product.in_stock,
-        main_image_url: product.main_image_url,
+        inStock: product.inStock,
+        mainImageUrl: product.mainImageUrl,
         images: product.images
       });
     }
@@ -78,7 +78,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
       return {
         ...prev,
         images: updatedImages,
-        main_image_url: prev.main_image_url || updatedImages[0]
+        mainImageUrl: prev.mainImageUrl || updatedImages[0]
       };
     });
   };
@@ -89,13 +89,13 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
       return {
         ...prev,
         images: updatedImages,
-        main_image_url: prev.main_image_url === prev.images[index] ? (updatedImages[0] || '') : prev.main_image_url
+        mainImageUrl: prev.mainImageUrl === prev.images[index] ? (updatedImages[0] || '') : prev.mainImageUrl
       };
     });
   };
 
   const handleSetThumbnail = (image: string) => {
-    setFormData(prev => ({ ...prev, main_image_url: image }));
+    setFormData(prev => ({ ...prev, mainImageUrl: image }));
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -111,7 +111,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
       return {
         ...prev,
         images: updatedImages,
-        main_image_url: prev.main_image_url || updatedImages[0]
+        mainImageUrl: prev.mainImageUrl || updatedImages[0]
       };
     });
   };
@@ -239,8 +239,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     </label>
                     <input
                       type="number"
-                      name="discount_percent"
-                      value={formData.discount_percent}
+                      name="discountPercent"
+                      value={formData.discountPercent}
                       onChange={handleChange}
                       min="0"
                       max="100"
@@ -270,8 +270,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     </label>
                     <input
                       type="checkbox"
-                      name="in_stock"
-                      checked={formData.in_stock}
+                      name="inStock"
+                      checked={formData.inStock}
                       onChange={handleChange}
                       className="w-5 h-5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -279,14 +279,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                 </div>
               </div>
               <div className="space-y-6">
-                {formData.main_image_url && (
+                {formData.mainImageUrl && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Thumbnail Image
                     </label>
                     <div className="relative">
                       <img
-                        src={formData.main_image_url}
+                        src={formData.mainImageUrl}
                         alt="Thumbnail"
                         className="w-full h-50 object-cover rounded-lg"
                       />
@@ -333,7 +333,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                           <img
                             src={image}
                             alt={`Product ${index + 1}`}
-                            className={`w-full h-20 object-cover rounded-lg ${formData.main_image_url === image ? 'border-4 border-blue-500' : ''}`}
+                            className={`w-full h-20 object-cover rounded-lg ${formData.mainImageUrl === image ? 'border-4 border-blue-500' : ''}`}
                             onClick={() => handleSetThumbnail(image)}
                           />
                           <button

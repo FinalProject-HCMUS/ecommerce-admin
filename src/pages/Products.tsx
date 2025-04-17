@@ -36,9 +36,13 @@ const Products = () => {
 
   const handleEdit = (id: string) => {
     const product = products.find(p => p.id === id);
-    setSelectedProduct(product);
-    setIsEditModalOpen(true);
+    if (product) {
+      product.images = "./images/sample.png,./images/sample1.png,./images/sample2.png".split(",");
+      setSelectedProduct(product);
+      setIsEditModalOpen(true);
+    }
   };
+
 
   const handleDelete = (id: string) => {
     const product = products.find(p => p.id == id);
@@ -61,17 +65,17 @@ const Products = () => {
       category: productData.category,
       price: productData.price,
       total: productData.total,
-      in_stock: productData.in_stock,
-      main_image_url: productData.main_image_url,
+      inStock: productData.inStock,
+      mainImageUrl: productData.mainImageUrl,
       images: productData.images,
       cost: productData.cost,
       description: productData.description,
       enable: productData.enable,
-      discount_percent: productData.discount_percent || 0,
-      average_rating: productData.average_rating || 0,
-      review_count: productData.review_count || 0,
-      created_time: new Date().toISOString(),
-      update_time: new Date().toISOString(),
+      discountPercent: productData.discountPercent || 0,
+      averageRating: productData.averageRating || 0,
+      reviewCount: productData.reviewCount || 0,
+      createdAt: new Date().toISOString(),
+      updateAt: new Date().toISOString(),
     };
     setProducts([...products, newProduct]);
     toast.success('Product added successfully', { autoClose: 1000 });
@@ -85,15 +89,15 @@ const Products = () => {
           category: productData.category,
           price: productData.price,
           total: productData.total,
-          in_stock: productData.in_stock,
-          main_image_url: productData.main_image_url,
+          inStock: productData.inStock,
+          mainImageUrl: productData.mainImageUrl,
           images: productData.images,
           cost: productData.cost,
           description: productData.description,
           enable: productData.enable,
-          discount_percent: productData.discount_percent || 0,
-          average_rating: productData.average_rating || 0,
-          review_count: productData.review_count || 0,
+          discountPercent: productData.discountPercent || 0,
+          averageRating: productData.averageRating || 0,
+          reviewCount: productData.reviewCount || 0,
           update_time: new Date().toISOString(),
         };
       }

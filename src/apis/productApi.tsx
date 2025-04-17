@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { Product, Color, Size, ProductColorSize, ProductImage } from '../types';
 
-const API_URL = './data.json'; // Update this path to the correct location of your data.json file
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getProducts = async (): Promise<Product[]> => {
-  const response = await axios.get<{ products: Product[] }>(API_URL);
-  return response.data.products;
+  const response = await axios.get(`${API_URL}/products`);
+  return response.data.data;
 };
 
 export const getColors = async (): Promise<Color[]> => {
