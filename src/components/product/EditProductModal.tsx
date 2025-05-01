@@ -1,18 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { X, Upload } from 'lucide-react';
-import { Category, Product } from '../../types';
 import { getCategories } from '../../apis/categoryApi';
 import MotionModalWrapper from '../common/MotionModal';
+import { Product } from '../../types/product/Product';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { ProductImage } from '../../types/product/ProductImage';
+import { toast } from 'react-toastify';
+import { Category } from '../../types/category/category';
 
 interface EditProductModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (product: any) => void;
+  onSubmit: (product: any, productImages: ProductImage[]) => void;
   product?: Product;
+  productImages?: ProductImage[];
 }
-
-const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, onSubmit, product }) => {
+const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
+const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, onSubmit, product, productImages }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -21,39 +27,55 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
     cost: 0,
     total: 0,
     enable: false,
-    in_stock: true,
-    discount_percent: 0,
-    images: [] as string[],
-    main_image_url: ''
+    inStock: true,
+    discountPercent: 0,
+    mainImageUrl: ''
   });
+  const [images, setImages] = useState<ProductImage[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+
   useEffect(() => {
     if (product) {
       setFormData({
         name: product.name,
         description: product.description || '',
-        category: product.category,
+        category: product.categoryName,
         price: product.price,
         cost: product.cost,
         discount_percent: product.discount_percent,
         total: product.total,
         enable: product.enable,
-        in_stock: product.in_stock,
-        main_image_url: product.main_image_url,
-        images: product.images
+        inStock: product.inStock,
+        mainImageUrl: product.mainImageUrl
       });
     }
   }, [product]);
+
   useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(data);
-    });
-  }, []);
+    if (productImages) {
+      setImages(productImages);
+    }
+  }, [productImages]);
+
+  const fetchCategories = async (page: number) => {
+    try {
+      const response = await getCategories(page - 1, ITEMS_PER_PAGE);
+      setCategories(response.content || []);
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to fetch categories');
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories(1);
+  });
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ ...formData, id: product?.id }); // Use type assertion to ensure id is treated as string
+    onSubmit({ ...formData, id: product?.id }, images);
     onClose();
   };
 
@@ -68,30 +90,19 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    if (files.length + formData.images.length > 3) {
-      alert('You can only upload up to 3 images.');
-      return;
-    }
     const newImages = files.map(file => URL.createObjectURL(file));
-    setFormData(prev => {
-      const updatedImages = [...prev.images, ...newImages];
-      return {
-        ...prev,
-        images: updatedImages,
-        main_image_url: prev.main_image_url || updatedImages[0]
-      };
-    });
+    const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: '', url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
+    setImages(updatedImages);
   };
 
   const handleRemoveImage = (index: number) => {
-    setFormData(prev => {
-      const updatedImages = prev.images.filter((_, i) => i !== index);
-      return {
-        ...prev,
-        images: updatedImages,
-        main_image_url: prev.main_image_url === prev.images[index] ? (updatedImages[0] || '') : prev.main_image_url
-      };
-    });
+    const mainUrl = images[index].url;
+    const updatedImages = images.map((image, i) => i === index ? { ...image, url: "" } : image);
+    setImages(updatedImages);
+    if (mainUrl === formData.mainImageUrl) {
+      const nextThumbnail = updatedImages.find(image => image.url)?.url || '';
+      setFormData(prev => ({ ...prev, mainImageUrl: nextThumbnail }));
+    }
   };
 
   const handleSetThumbnail = (image: string) => {
@@ -101,19 +112,9 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
-    if (files.length + formData.images.length > 3) {
-      alert('You can only upload up to 3 images.');
-      return;
-    }
     const newImages = files.map(file => URL.createObjectURL(file));
-    setFormData(prev => {
-      const updatedImages = [...prev.images, ...newImages];
-      return {
-        ...prev,
-        images: updatedImages,
-        main_image_url: prev.main_image_url || updatedImages[0]
-      };
-    });
+    const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: '', url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
+    setImages(updatedImages);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -123,7 +124,9 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
   const handleClick = () => {
     document.getElementById('image-upload')?.click();
   };
-
+  const handleChangeDescription = (value: string) => {
+    setFormData(prev => ({ ...prev, description: value }));
+  }
   return (
     <MotionModalWrapper>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -158,16 +161,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Description
                   </label>
-                  <textarea
-                    name="description"
+                  <ReactQuill
                     value={formData.description}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onChange={handleChangeDescription}
+                    className="h-40"
                   />
                 </div>
 
-                <div>
+                <div className='pt-14'>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Category
                   </label>
@@ -175,15 +176,20 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                     required
                   >
                     <option value={formData.category}>{formData.category}</option>
                     {categories.map(category => (
-                      category.name != formData.category && <option key={category.id} value={category.name}>{category.name}</option>
+                      category.name !== formData.category && (
+                        <option key={category.id} value={category.name}>
+                          {category.name}
+                        </option>
+                      )
                     ))}
                   </select>
                 </div>
+
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -324,31 +330,34 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                 </div>
 
               </div>
-              <div className="mt-10">
-                <div className="space-y-2">
-                  {formData.images.length > 0 && (
-                    <div className="grid grid-cols-1 gap-2">
-                      {formData.images.map((image, index) => (
-                        <div key={index} className="relative">
-                          <img
-                            src={image}
-                            alt={`Product ${index + 1}`}
-                            className={`w-full h-20 object-cover rounded-lg ${formData.main_image_url === image ? 'border-4 border-blue-500' : ''}`}
-                            onClick={() => handleSetThumbnail(image)}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveImage(index)}
-                            className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md"
-                          >
-                            <X size={16} />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              <div className="mt-10 space-y-2">
+                {images.length > 0 && (
+                  <div
+                    className="flex flex-col gap-2 overflow-y-auto"
+                    style={{ maxHeight: '440px' }}
+                  >
+                    {images.map((productImage, index) => (
+                      productImage.url && productImage.url !== "" &&
+                      <div key={index} className="relative">
+                        <img
+                          src={productImage.url}
+                          alt={`Product ${index + 1}`}
+                          className={`w-full h-20 object-contain rounded-lg ${formData.mainImageUrl === productImage.url ? 'border-4 border-blue-500' : 'border-2 border-gray-300'}`}
+                          onClick={() => handleSetThumbnail(productImage.url)}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(index)}
+                          className="absolute top-0 right-0 bg-red-600 rounded-full shadow-md"
+                        >
+                          <X color="white" size={20} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
+
             </div>
 
             <div className="mt-6 flex justify-end space-x-3">
@@ -361,6 +370,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
               </button>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Update
