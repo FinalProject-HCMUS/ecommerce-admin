@@ -5,11 +5,11 @@ import Pagination from '../components/common/Pagination';
 import CategoryTable from '../components/categories/CategoryTable';
 import AddCategoryModal from '../components/categories/AddCategoryModal';
 import EditCategoryModal from '../components/categories/EditCategoryModal';
-import { Category } from '../types';
 import { getCategories } from '../apis/categoryApi';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import MotionPageWrapper from '../components/common/MotionPage';
+import { Category } from '../types/category/category';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -22,17 +22,19 @@ const Categories = () => {
     const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
     const totalPages = Math.ceil(categories.length / ITEMS_PER_PAGE);
 
-    useEffect(() => {
-        getCategories().then((data) => {
-            setCategories(data);
-        });
-    }, []);
-
-    const getCurrentPageCategories = () => {
-        const start = (currentPage - 1) * ITEMS_PER_PAGE;
-        const end = start + ITEMS_PER_PAGE;
-        return categories.slice(start, end);
+    const fetchCategories = async (page: number) => {
+        try {
+            const response = await getCategories(page - 1, ITEMS_PER_PAGE);
+            setCategories(response.content || []);
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to fetch categories');
+        }
     };
+
+    useEffect(() => {
+        fetchCategories(currentPage);
+    }, [currentPage]);
 
     const handleEdit = (id: string) => {
         const category = categories.find(c => c.id === id);
@@ -60,8 +62,8 @@ const Categories = () => {
             name: categoryData.name,
             stock: 0
         };
-        setCategories([...categories, newCategory]);
-        toast.success('Category added successfully', { autoClose: 1000 });
+        // setCategories([...categories, newCategory]);
+        // toast.success('Category added successfully', { autoClose: 1000 });
     };
 
     const handleUpdateCategory = (categoryData: any) => {
@@ -94,7 +96,7 @@ const Categories = () => {
 
                 <div className="bg-white rounded-lg shadow">
                     <CategoryTable
-                        categories={getCurrentPageCategories()}
+                        categories={categories}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />
