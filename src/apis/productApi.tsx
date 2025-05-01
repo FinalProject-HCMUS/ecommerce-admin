@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { CustomResponse } from '../types/common/CustomResponse';
-import { ProductResponse } from '../types/product/ProductResponse';
 import { Product } from '../types/product/Product';
 import { ProductImage } from '../types/product/ProductImage';
+import { ProductResponse } from '../types/product/ProductResponse';
 
-const API_URL = './data.json'; // Update this path to the correct location of your data.json file
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getProducts = async (page: number, perpage: number): Promise<ProductResponse> => {
   const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`,
