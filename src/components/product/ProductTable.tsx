@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-import { Product } from '../../types';
+import { } from '../../types';
+import { Product } from '../../types/product/Product';
 
 interface ProductTableProps {
   products: Product[];
@@ -28,8 +29,8 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
             <tr key={product.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
-                  <div className="h-10 w-10 flex-shrink-0">
-                    <img className="h-10 w-10 rounded-lg object-cover" src={product.mainImageUrl} alt={product.name} />
+                  <div className="h-16 w-16 flex-shrink-0">
+                    <img className="h-full w-full rounded-lg object-contain" src={product.mainImageUrl} alt={product.name} />
                   </div>
                   <div className="ml-4">
                     <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -37,7 +38,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{product.category}Clothes</div>
+                <div className="text-sm text-gray-900">{product.categoryName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">${product.price}</div>

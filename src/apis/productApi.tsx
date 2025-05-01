@@ -1,34 +1,43 @@
 import axios from 'axios';
-import { Product, Color, Size, ProductColorSize, ProductImage } from '../types';
+import { CustomResponse } from '../types/common/CustomResponse';
+import { ProductResponse } from '../types/product/ProductResponse';
+import { Product } from '../types/product/Product';
+import { ProductImage } from '../types/product/ProductImage';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getProducts = async (): Promise<Product[]> => {
-  const response = await axios.get(`${API_URL}/products`);
+export const getProducts = async (page: number, perpage: number): Promise<ProductResponse> => {
+  const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`,
+    {
+      params: {
+        page, perpage
+      },
+    }
+  );
+  if (!response.data.isSuccess || !response.data.data) {
+    throw new Error("Failed to fetch products");
+  }
   return response.data.data;
 };
 
-export const getColors = async (): Promise<Color[]> => {
-  const response = await axios.get<{ colors: Color[] }>(API_URL);
-  return response.data.colors;
-};
-
-export const getSizes = async (): Promise<Size[]> => {
-  const response = await axios.get<{ sizes: Size[] }>(API_URL);
-  return response.data.sizes;
-};
-
-export const getProductColorSizes = async (): Promise<ProductColorSize[]> => {
-  const response = await axios.get<{ productColorSizes: ProductColorSize[] }>(API_URL);
-  return response.data.productColorSizes;
-};
-
-export const getProductImages = async (): Promise<ProductImage[]> => {
-  const response = await axios.get<{ productImages: ProductImage[] }>(API_URL);
-  return response.data.productImages;
-};
-
-export const getProductImagesByProductId = async (productId: string): Promise<ProductImage[]> => {
-  const response = await axios.get<{ productImages: ProductImage[] }>(API_URL);
-  return response.data.productImages.filter(image => image.product_id === productId);
+export const getProductById = async (id: string): Promise<Product> => {
+  const response = await axios.get<CustomResponse<Product>>(`${API_URL}/products/${id}`);
+  if (!response.data.isSuccess || !response.data.data) {
+    throw new Error("Failed to fetch product by ID");
+  }
+  return response.data.data;
+}
+export const updateProduct = async (id: string, productData: Product): Promise<Product> => {
+  const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
+  if (!response.data.isSuccess || !response.data.data) {
+    throw new Error("Failed to update product");
+  }
+  return response.data.data;
+}
+export const getProductImages = async (id: string): Promise<ProductImage[]> => {
+  const response = await axios.get<CustomResponse<ProductImage[]>>(`${API_URL}/product-images/product/${id}`);
+  if (!response.data.isSuccess || !response.data.data) {
+    throw new Error("Failed to fetch product images");
+  }
+  return response.data.data;
 };
