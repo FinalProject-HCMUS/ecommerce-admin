@@ -5,7 +5,7 @@ import Pagination from '../components/common/Pagination';
 import AddProductModal from '../components/product/AddProductModal';
 import EditProductModal from '../components/product/EditProductModal';
 import { Plus } from 'lucide-react';
-import { getProductById, getProductImages, getProducts, updateProduct, updateProductImages } from '../apis/productApi';
+import { addProduct, getProductById, getProductImages, getProducts, updateProduct, updateProductImages } from '../apis/productApi';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import { toast } from 'react-toastify';
 import MotionPageWrapper from '../components/common/MotionPage';
@@ -63,15 +63,20 @@ const Products = () => {
     }
   };
 
-  const handleAddProduct = (productData: any) => {
-    const newProduct: Product = {
-      ...productData,
-      id: (products.length + 1).toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setProducts([...products, newProduct]);
-    toast.success('Product added successfully', { autoClose: 1000 });
+  const handleAddProduct = async (productData: any, images: ProductImage[]) => {
+    delete productData.category;
+    const response = await addProduct(productData);
+    if (response.isSuccess) {
+      const productId = response.data!.id;
+      const productImages = images.map((image) => ({ ...image, productId }));
+      const responseImages = await updateProductImages(productImages);
+      if (responseImages.isSuccess) {
+        toast.success('Product added successfully', { autoClose: 1000 });
+        fetchProducts(currentPage);
+        return;
+      }
+    }
+    toast.error('Failed to add product', { autoClose: 1000 });
   };
 
   const handleUpdateProduct = async (productData: any, images: ProductImage[]) => {
@@ -82,8 +87,10 @@ const Products = () => {
     const responseImages = await updateProductImages(images);
     if (response.isSuccess && responseImages.isSuccess) {
       toast.success('Product updated successfully', { autoClose: 1000 });
+      fetchProducts(currentPage);
+      return;
     }
-    fetchProducts(currentPage)
+    toast.error('Failed to update product', { autoClose: 1000 });
   };
 
   return (

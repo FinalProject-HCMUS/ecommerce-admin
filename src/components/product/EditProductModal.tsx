@@ -92,6 +92,12 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+    if (formData.mainImageUrl === '') {
+      setFormData((prev) => ({
+        ...prev,
+        mainImageUrl: URL.createObjectURL(files[0]),
+      }));
+    }
     const newImages = files.map(file => URL.createObjectURL(file));
     const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: images[0].productId, url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
     setImages(updatedImages);
@@ -114,6 +120,12 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
+    if (formData.mainImageUrl === '') {
+      setFormData((prev) => ({
+        ...prev,
+        mainImageUrl: URL.createObjectURL(files[0]),
+      }));
+    }
     const newImages = files.map(file => URL.createObjectURL(file));
     const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: '', url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
     setImages(updatedImages);

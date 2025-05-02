@@ -28,6 +28,14 @@ export const getProductById = async (id: string): Promise<Product> => {
   return response.data.data;
 }
 
+export const addProduct = async (productData: Product): Promise<CustomResponse<Product>> => {
+  const response = await axios.post<CustomResponse<Product>>(`${API_URL}/products`, productData);
+  if (!response.data.isSuccess || !response.data.data) {
+    throw new Error("Failed to add product");
+  }
+  return response.data;
+}
+
 export const updateProduct = async (id: string, productData: Product): Promise<CustomResponse<Product>> => {
   const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
   if (!response.data.isSuccess || !response.data.data) {
