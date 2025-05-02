@@ -8,7 +8,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ProductImage } from '../../types/product/ProductImage';
 import { toast } from 'react-toastify';
-import { Category } from '../../types/category/category';
+import { Category } from '../../types';
 
 interface EditProductModalProps {
   isOpen: boolean;
@@ -23,6 +23,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
     name: '',
     description: '',
     category: '',
+    categoryId: '',
     price: 0,
     cost: 0,
     total: 0,
@@ -40,6 +41,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
         name: product.name,
         description: product.description || '',
         category: product.categoryName,
+        categoryId: product.categoryId,
         price: product.price,
         cost: product.cost,
         discountPercent: product.discountPercent,
@@ -175,7 +177,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                   <select
                     name="category"
                     value={formData.category}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      const selectedCategory = categories.find(category => category.name === e.target.value);
+                      setFormData(prev => ({
+                        ...prev,
+                        category: selectedCategory!.name,
+                        categoryId: selectedCategory!.id
+                      }));
+                    }}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                     required
                   >

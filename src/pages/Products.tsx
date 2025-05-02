@@ -76,11 +76,15 @@ const Products = () => {
 
   const handleUpdateProduct = async (productData: any, images: ProductImage[]) => {
     const idProduct = productData.id;
-    productData.remove('id');
+    delete productData.id;
+    delete productData.category;
     const response = await updateProduct(idProduct, productData);
-    console.log(response);
-    //update product images
-    toast.success('Product updated successfully', { autoClose: 1000 });
+    //update images
+    console.log(images);
+    if (response.isSuccess) {
+      toast.success('Product updated successfully', { autoClose: 1000 });
+    }
+    fetchProducts(currentPage)
   };
 
   return (

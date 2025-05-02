@@ -27,12 +27,12 @@ export const getProductById = async (id: string): Promise<Product> => {
   }
   return response.data.data;
 }
-export const updateProduct = async (id: string, productData: Product): Promise<Product> => {
+export const updateProduct = async (id: string, productData: Product): Promise<CustomResponse<Product>> => {
   const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
   if (!response.data.isSuccess || !response.data.data) {
     throw new Error("Failed to update product");
   }
-  return response.data.data;
+  return response.data;
 }
 export const getProductImages = async (id: string): Promise<ProductImage[]> => {
   const response = await axios.get<CustomResponse<ProductImage[]>>(`${API_URL}/product-images/product/${id}`);
