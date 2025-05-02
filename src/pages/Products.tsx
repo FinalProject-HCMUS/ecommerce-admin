@@ -5,7 +5,7 @@ import Pagination from '../components/common/Pagination';
 import AddProductModal from '../components/product/AddProductModal';
 import EditProductModal from '../components/product/EditProductModal';
 import { Plus } from 'lucide-react';
-import { getProductById, getProductImages, getProducts, updateProduct } from '../apis/productApi';
+import { getProductById, getProductImages, getProducts, updateProduct, updateProductImages } from '../apis/productApi';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import { toast } from 'react-toastify';
 import MotionPageWrapper from '../components/common/MotionPage';
@@ -26,7 +26,7 @@ const Products = () => {
 
   const fetchProducts = async (page: number) => {
     try {
-      const response = await getProducts(page - 1, ITEMS_PER_PAGE); // API is 0-indexed
+      const response = await getProducts(page - 1, ITEMS_PER_PAGE);
       setProducts(response.content || []);
       setTotalPages(response.totalPages || 0);
     } catch (error) {
@@ -79,9 +79,8 @@ const Products = () => {
     delete productData.id;
     delete productData.category;
     const response = await updateProduct(idProduct, productData);
-    //update images
-    console.log(images);
-    if (response.isSuccess) {
+    const responseImages = await updateProductImages(images);
+    if (response.isSuccess && responseImages.isSuccess) {
       toast.success('Product updated successfully', { autoClose: 1000 });
     }
     fetchProducts(currentPage)

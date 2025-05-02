@@ -27,6 +27,7 @@ export const getProductById = async (id: string): Promise<Product> => {
   }
   return response.data.data;
 }
+
 export const updateProduct = async (id: string, productData: Product): Promise<CustomResponse<Product>> => {
   const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
   if (!response.data.isSuccess || !response.data.data) {
@@ -34,6 +35,7 @@ export const updateProduct = async (id: string, productData: Product): Promise<C
   }
   return response.data;
 }
+
 export const getProductImages = async (id: string): Promise<ProductImage[]> => {
   const response = await axios.get<CustomResponse<ProductImage[]>>(`${API_URL}/product-images/product/${id}`);
   if (!response.data.isSuccess || !response.data.data) {
@@ -41,3 +43,13 @@ export const getProductImages = async (id: string): Promise<ProductImage[]> => {
   }
   return response.data.data;
 };
+
+export const updateProductImages = async (images: ProductImage[]): Promise<CustomResponse<ProductImage>> => {
+  const response = await axios.put<CustomResponse<ProductImage>>(`${API_URL}/product-images/update-list`, images);
+  console.log(images);
+
+  if (!response.data.isSuccess) {
+    throw new Error("Failed to update product images");
+  }
+  return response.data;
+}
