@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Pageable } from "../common/Pageable";
-import { Category } from "./category";
+import { Category } from "./Category";
+
 
 export interface CategoryResponse {
     content: Category[];

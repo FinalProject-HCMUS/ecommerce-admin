@@ -5,7 +5,7 @@ import Pagination from '../components/common/Pagination';
 import AddProductModal from '../components/product/AddProductModal';
 import EditProductModal from '../components/product/EditProductModal';
 import { Plus } from 'lucide-react';
-import { getProductById, getProductImages, getProducts, updateProduct } from '../apis/productApi';
+import { addProduct, deleteProduct, getProductById, getProductImages, getProducts, updateProduct, updateProductImages } from '../apis/productApi';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import { toast } from 'react-toastify';
 import MotionPageWrapper from '../components/common/MotionPage';
@@ -25,13 +25,14 @@ const Products = () => {
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
 
   const fetchProducts = async (page: number) => {
-    try {
-      const response = await getProducts(page - 1, ITEMS_PER_PAGE); // API is 0-indexed
-      setProducts(response.content || []);
-      setTotalPages(response.totalPages || 0);
-    } catch (error) {
-      console.log(error);
-      toast.error('Failed to fetch products');
+    const response = await getProducts(page - 1, ITEMS_PER_PAGE);
+    if (!response.isSuccess) {
+      toast.error(response.message, { autoClose: 1000 });
+      return;
+    }
+    if (response.data) {
+      setProducts(response.data.content || []);
+      setTotalPages(response.data.totalPages || 0);
     }
   };
 
@@ -42,9 +43,13 @@ const Products = () => {
   const handleEdit = async (id: string) => {
     const product = await getProductById(id);
     const productImagesResponse = await getProductImages(id);
-    if (product) {
-      setSelectedProduct(product);
-      setProductImages(productImagesResponse);
+    if (!product.isSuccess || !productImagesResponse.isSuccess) {
+      toast.error('Failed to fetch product details', { autoClose: 1000 });
+      return;
+    }
+    if (product.data && productImagesResponse.data) {
+      setSelectedProduct(product.data);
+      setProductImages(productImagesResponse.data);
       setIsEditModalOpen(true);
     }
   };
@@ -54,33 +59,46 @@ const Products = () => {
     setProductToDelete(product!);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (productToDelete) {
-      const updatedProducts = products.filter(p => p.id !== productToDelete.id);
-      setProducts(updatedProducts);
+      const response = await deleteProduct(productToDelete.id);
+      if (!response.isSuccess) {
+        toast.error(response.message, { autoClose: 1000 });
+        return;
+      }
       toast.success('Product deleted successfully', { autoClose: 1000 });
       setProductToDelete(null);
     }
   };
 
-  const handleAddProduct = (productData: any) => {
-    const newProduct: Product = {
-      ...productData,
-      id: (products.length + 1).toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setProducts([...products, newProduct]);
-    toast.success('Product added successfully', { autoClose: 1000 });
+  const handleAddProduct = async (productData: any, images: ProductImage[]) => {
+    delete productData.category;
+    const response = await addProduct(productData);
+    if (response.isSuccess) {
+      const productId = response.data!.id;
+      const productImages = images.map((image) => ({ ...image, productId }));
+      const responseImages = await updateProductImages(productImages);
+      if (responseImages.isSuccess) {
+        toast.success('Product added successfully', { autoClose: 1000 });
+        fetchProducts(currentPage);
+        return;
+      }
+    }
+    toast.error('Failed to add product', { autoClose: 1000 });
   };
 
   const handleUpdateProduct = async (productData: any, images: ProductImage[]) => {
     const idProduct = productData.id;
-    productData.remove('id');
+    delete productData.id;
+    delete productData.category;
     const response = await updateProduct(idProduct, productData);
-    console.log(response);
-    //update product images
-    toast.success('Product updated successfully', { autoClose: 1000 });
+    const responseImages = await updateProductImages(images);
+    if (response.isSuccess && responseImages.isSuccess) {
+      toast.success('Product updated successfully', { autoClose: 1000 });
+      fetchProducts(currentPage);
+      return;
+    }
+    toast.error('Failed to update product', { autoClose: 1000 });
   };
 
   return (

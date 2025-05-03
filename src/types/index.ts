@@ -12,14 +12,14 @@ export interface Product {
   cost: number;
   total: number;
   price: number;
-  discount_percent: number;
+  discountPercent: number;
   enable: boolean;
-  in_stock: boolean;
-  main_image_url: string;
-  average_rating: number;
-  review_count: number;
-  created_time: string;
-  update_time: string;
+  inStock: boolean;
+  mainImageUrl: string;
+  averageRating: number;
+  reviewCount: number;
+  createdAt: string;
+  updateAt: string;
   images: string[];
 }
 

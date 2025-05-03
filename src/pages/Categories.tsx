@@ -5,11 +5,13 @@ import Pagination from '../components/common/Pagination';
 import CategoryTable from '../components/categories/CategoryTable';
 import AddCategoryModal from '../components/categories/AddCategoryModal';
 import EditCategoryModal from '../components/categories/EditCategoryModal';
-import { getCategories } from '../apis/categoryApi';
+import { addCategory, deleteCategory, getCategories, updateCategory } from '../apis/categoryApi';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import MotionPageWrapper from '../components/common/MotionPage';
-import { Category } from '../types/category/category';
+import { Category } from '../types/category/Category';
+import { CategoryRequest } from '../types/category/CategoryRequest';
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -20,15 +22,17 @@ const Categories = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<any | undefined>();
     const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
-    const totalPages = Math.ceil(categories.length / ITEMS_PER_PAGE);
+    const [totalPages, setTotalPages] = useState(0);
 
     const fetchCategories = async (page: number) => {
-        try {
-            const response = await getCategories(page - 1, ITEMS_PER_PAGE);
-            setCategories(response.content || []);
-        } catch (error) {
-            console.log(error);
-            toast.error('Failed to fetch categories');
+        const response = await getCategories(page - 1, ITEMS_PER_PAGE);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        if (response.data?.content) {
+            setCategories(response.data.content);
+            setTotalPages(response.data.totalPages || 0);
         }
     };
 
@@ -47,36 +51,38 @@ const Categories = () => {
         setCategoryToDelete(category!);
     };
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (categoryToDelete) {
-            const updatedCategories = categories.filter(c => c.id !== categoryToDelete.id);
-            setCategories(updatedCategories);
+            const response = await deleteCategory(categoryToDelete.id);
+            if (!response.isSuccess) {
+                toast.error(response.message, { autoClose: 1000 });
+                return;
+            }
             toast.success('Category deleted successfully', { autoClose: 1000 });
             setCategoryToDelete(null);
+            fetchCategories(currentPage);
         }
     };
 
-    const handleAddCategory = (categoryData: any) => {
-        const newCategory = {
-            id: (categories.length + 1).toString(),
-            name: categoryData.name,
-            stock: 0
-        };
-        // setCategories([...categories, newCategory]);
-        // toast.success('Category added successfully', { autoClose: 1000 });
+    const handleAddCategory = async (categoryData: CategoryRequest) => {
+        const response = await addCategory(categoryData);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        toast.success('Category added successfully', { autoClose: 1000 });
+        fetchCategories(currentPage);
     };
 
-    const handleUpdateCategory = (categoryData: any) => {
-        const updatedCategories = categories.map(c => {
-            if (c.id === categoryData.id) {
-                return {
-                    ...c,
-                    name: categoryData.name
-                };
-            }
-            return c;
-        });
-        setCategories(updatedCategories);
+    const handleUpdateCategory = async (categoryData: any) => {
+        const idCategory = selectedCategory.id;
+        delete categoryData.id;
+        const response = await updateCategory(idCategory, categoryData);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        fetchCategories(currentPage);
         toast.success('Category updated successfully', { autoClose: 1000 });
     };
 

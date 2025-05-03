@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import MotionModalWrapper from '../common/MotionModal';
+import { CategoryRequest } from '../../types/category/CategoryRequest';
 
 interface AddCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (category: { name: string }) => void;
+  onSubmit: (category: CategoryRequest) => void;
 }
 
 const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [name, setName] = useState('');
-
+  const [category, setCategory] = useState<CategoryRequest>({
+    name: '',
+    description: ''
+  });
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ name });
-    setName('');
+    onSubmit(category);
     onClose();
   };
 
@@ -41,13 +43,26 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ isOpen, onClose, on
               </label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={category.name}
+                placeholder="Category name"
+                onChange={(e) => setCategory({ ...category, name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
             </div>
-
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <textarea
+                rows={4}
+                placeholder="Description"
+                value={category.description}
+                onChange={(e) => setCategory({ ...category, description: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                required
+              />
+            </div>
             <div className="mt-6 flex justify-end space-x-3">
               <button
                 type="button"

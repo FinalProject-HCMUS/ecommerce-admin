@@ -1,43 +1,82 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { CustomResponse } from '../types/common/CustomResponse';
 import { ProductResponse } from '../types/product/ProductResponse';
 import { Product } from '../types/product/Product';
 import { ProductImage } from '../types/product/ProductImage';
 
-const API_URL = './data.json'; // Update this path to the correct location of your data.json file
+const API_URL = import.meta.env.VITE_API_URL;
 
-export const getProducts = async (page: number, perpage: number): Promise<ProductResponse> => {
-  const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`,
-    {
+export const getProducts = async (page: number, perpage: number): Promise<CustomResponse<ProductResponse>> => {
+  try {
+    const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`, {
       params: {
         page, perpage
       },
-    }
-  );
-  if (!response.data.isSuccess || !response.data.data) {
-    throw new Error("Failed to fetch products");
+    });
+    return response.data
   }
-  return response.data.data;
+  catch (error: any) {
+    return error.response.data;
+  }
 };
 
-export const getProductById = async (id: string): Promise<Product> => {
-  const response = await axios.get<CustomResponse<Product>>(`${API_URL}/products/${id}`);
-  if (!response.data.isSuccess || !response.data.data) {
-    throw new Error("Failed to fetch product by ID");
+export const getProductById = async (id: string): Promise<CustomResponse<Product>> => {
+  try {
+    const response = await axios.get<CustomResponse<Product>>(`${API_URL}/products/${id}`);
+    return response.data;
   }
-  return response.data.data;
+  catch (error: any) {
+    return error.response.data;
+  }
 }
-export const updateProduct = async (id: string, productData: Product): Promise<Product> => {
-  const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
-  if (!response.data.isSuccess || !response.data.data) {
-    throw new Error("Failed to update product");
+
+export const addProduct = async (productData: Product): Promise<CustomResponse<Product>> => {
+  try {
+    const response = await axios.post<CustomResponse<Product>>(`${API_URL}/products`, productData);
+    return response.data;
   }
-  return response.data.data;
+  catch (error: any) {
+    return error.response.data;
+  }
 }
-export const getProductImages = async (id: string): Promise<ProductImage[]> => {
-  const response = await axios.get<CustomResponse<ProductImage[]>>(`${API_URL}/product-images/product/${id}`);
-  if (!response.data.isSuccess || !response.data.data) {
-    throw new Error("Failed to fetch product images");
+
+export const updateProduct = async (id: string, productData: Product): Promise<CustomResponse<Product>> => {
+  try {
+    const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
+    return response.data;
   }
-  return response.data.data;
+  catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const getProductImages = async (id: string): Promise<CustomResponse<ProductImage[]>> => {
+  try {
+    const response = await axios.get<CustomResponse<ProductImage[]>>(`${API_URL}/product-images/product/${id}`);
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
 };
+
+export const updateProductImages = async (images: ProductImage[]): Promise<CustomResponse<ProductImage>> => {
+  try {
+    const response = await axios.put<CustomResponse<ProductImage>>(`${API_URL}/product-images/update-list`, images);
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const deleteProduct = async (id: string): Promise<CustomResponse<Product>> => {
+  try {
+    const response = await axios.delete<CustomResponse<Product>>(`${API_URL}/products/${id}`);
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}

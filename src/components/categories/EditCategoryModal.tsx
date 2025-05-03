@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import MotionModalWrapper from '../common/MotionModal';
+import { Category } from '../../types/category/Category';
 
 interface EditCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (category: { id: string; name: string; stock: number }) => void;
-  category: { id: string; name: string; stock: number } | undefined;
+  onSubmit: (category: Category) => void;
+  category: Category
 }
 
 const EditCategoryModal: React.FC<EditCategoryModalProps> = ({ isOpen, onClose, onSubmit, category }) => {
   const [name, setName] = useState('');
-  const [stock, setStock] = useState(0);
+  const [description, setDiscription] = useState('');
 
   useEffect(() => {
     if (category) {
       setName(category.name);
-      setStock(category.stock);
+      setDiscription(category.description);
     }
   }, [category]);
 
@@ -24,8 +25,10 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({ isOpen, onClose, 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    category.name = name;
+    category.description = description;
     if (category) {
-      onSubmit({ id: category.id, name, stock });
+      onSubmit(category);
       onClose();
     }
   };
@@ -62,6 +65,7 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({ isOpen, onClose, 
               </label>
               <input
                 type="text"
+                placeholder="Name category"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -70,13 +74,15 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({ isOpen, onClose, 
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Number of products
+                Description
               </label>
-              <input
-                type="number"
-                value={stock}
-                readOnly
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+              <textarea
+                rows={4}
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDiscription(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                required
               />
             </div>
 

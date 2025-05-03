@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Upload } from 'lucide-react';
 import { getCategories } from '../../apis/categoryApi';
 import MotionModalWrapper from '../common/MotionModal';
@@ -8,7 +8,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ProductImage } from '../../types/product/ProductImage';
 import { toast } from 'react-toastify';
-import { Category } from '../../types/category/category';
+import { Category } from '../../types/category/Category';
+
 
 interface EditProductModalProps {
   isOpen: boolean;
@@ -17,12 +18,12 @@ interface EditProductModalProps {
   product?: Product;
   productImages?: ProductImage[];
 }
-const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, onSubmit, product, productImages }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
+    categoryId: '',
     price: 0,
     cost: 0,
     total: 0,
@@ -33,16 +34,21 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
   });
   const [images, setImages] = useState<ProductImage[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-
+  const [page, setPage] = useState(1);
+  const [isFetching, setIsFetching] = useState(false);
+  const pageRef = useRef(page);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const fetchingRef = useRef(isFetching);
   useEffect(() => {
     if (product) {
       setFormData({
         name: product.name,
         description: product.description || '',
         category: product.categoryName,
+        categoryId: product.categoryId,
         price: product.price,
         cost: product.cost,
-        discount_percent: product.discount_percent,
+        discountPercent: product.discountPercent,
         total: product.total,
         enable: product.enable,
         inStock: product.inStock,
@@ -57,19 +63,52 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
     }
   }, [productImages]);
 
-  const fetchCategories = async (page: number) => {
-    try {
-      const response = await getCategories(page - 1, ITEMS_PER_PAGE);
-      setCategories(response.content || []);
-    } catch (error) {
-      console.log(error);
-      toast.error('Failed to fetch categories');
+  //infinite scroll categories
+  useEffect(() => {
+    pageRef.current = page;
+    fetchingRef.current = isFetching;
+  }, [page, isFetching]);
+
+  const fetchCategories = async (pageNumber: number) => {
+    setIsFetching(true);
+    const response = await getCategories(pageNumber - 1, 5);
+    setIsFetching(false);
+
+    if (!response.isSuccess) {
+      toast.error(response.message, { autoClose: 1000 });
+      return;
+    }
+    if (response.data) {
+      if (pageNumber === 1) {
+        setCategories(response.data?.content);
+      } else {
+        setCategories((prev) => [...prev, ...response.data?.content || []]);
+      }
+      setPage(pageNumber);
     }
   };
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+  useEffect(() => {
+    const element = dropdownRef.current;
+    if (!element) return;
+    const handleScroll = () => {
+      if (
+        dropdownRef.current &&
+        dropdownRef.current.scrollTop + dropdownRef.current.clientHeight >= dropdownRef.current.scrollHeight - 10 &&
+        !fetchingRef.current
+      ) {
+        fetchCategories(pageRef.current + 1);
+      }
+    };
+    element.addEventListener('scroll', handleScroll);
+    return () => element.removeEventListener('scroll', handleScroll);
+  }, [page, isFetching]);
 
   useEffect(() => {
-    fetchCategories(1);
-  });
+    if (showDropdown && categories.length === 0) {
+      fetchCategories(1);
+    }
+  }, [showDropdown]);
 
   if (!isOpen) return null;
 
@@ -90,8 +129,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+    if (formData.mainImageUrl === '') {
+      setFormData((prev) => ({
+        ...prev,
+        mainImageUrl: URL.createObjectURL(files[0]),
+      }));
+    }
     const newImages = files.map(file => URL.createObjectURL(file));
-    const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: '', url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
+    const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: images[0].productId, url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
     setImages(updatedImages);
   };
 
@@ -106,12 +151,18 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
   };
 
   const handleSetThumbnail = (image: string) => {
-    setFormData(prev => ({ ...prev, main_image_url: image }));
+    setFormData(prev => ({ ...prev, mainImageUrl: image }));
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
+    if (formData.mainImageUrl === '') {
+      setFormData((prev) => ({
+        ...prev,
+        mainImageUrl: URL.createObjectURL(files[0]),
+      }));
+    }
     const newImages = files.map(file => URL.createObjectURL(file));
     const updatedImages = [...images, ...newImages.map(url => ({ id: '', productId: '', url, createdAt: '', updatedAt: '', createdBy: '', updatedBy: '' }))];
     setImages(updatedImages);
@@ -127,6 +178,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
   const handleChangeDescription = (value: string) => {
     setFormData(prev => ({ ...prev, description: value }));
   }
+  const handleCategorySelect = (category: Category) => {
+    setFormData((prev) => ({
+      ...prev,
+      category: category.name,
+      categoryId: category.id,
+    }));
+    setShowDropdown(false);
+  };
   return (
     <MotionModalWrapper>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -168,26 +227,35 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                   />
                 </div>
 
-                <div className='pt-14'>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Category
-                  </label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    required
-                  >
-                    <option value={formData.category}>{formData.category}</option>
-                    {categories.map(category => (
-                      category.name !== formData.category && (
-                        <option key={category.id} value={category.name}>
-                          {category.name}
-                        </option>
-                      )
-                    ))}
-                  </select>
+                <div className="pt-14 relative w-full">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <div className="relative">
+                    <button
+                      type='button'
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-left"
+                      onClick={() => setShowDropdown((prev) => !prev)}
+                    >
+                      {formData.category || "Select category"}
+                    </button>
+                    {showDropdown && (
+                      <ul
+                        ref={dropdownRef}
+                        className="absolute z-10 w-full max-h-40 overflow-y-auto mt-1 bg-white border border-gray-300 rounded-lg shadow"
+                      >
+                        {categories.map((category) => (
+                          <li
+                            key={category.id}
+                            className="px-3 py-2 hover:bg-blue-100 cursor-pointer"
+                            onClick={() => handleCategorySelect(category)}
+                          >
+                            {category.name}
+                          </li>
+                        ))}
+                        {isFetching && <li className="px-3 py-2 text-sm text-gray-500">Loading...</li>}
+                      </ul>
+
+                    )}
+                  </div>
                 </div>
 
 
@@ -245,8 +313,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     </label>
                     <input
                       type="number"
-                      name="discount_percent"
-                      value={formData.discount_percent}
+                      name="discountPercent"
+                      value={formData.discountPercent}
                       onChange={handleChange}
                       min="0"
                       max="100"
@@ -276,8 +344,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     </label>
                     <input
                       type="checkbox"
-                      name="in_stock"
-                      checked={formData.in_stock}
+                      name="inStock"
+                      checked={formData.inStock}
                       onChange={handleChange}
                       className="w-5 h-5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -285,14 +353,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                 </div>
               </div>
               <div className="space-y-6">
-                {formData.main_image_url && (
+                {formData.mainImageUrl && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Thumbnail Image
                     </label>
                     <div className="relative">
                       <img
-                        src={formData.main_image_url}
+                        src={formData.mainImageUrl}
                         alt="Thumbnail"
                         className="w-full h-50 object-cover rounded-lg"
                       />
