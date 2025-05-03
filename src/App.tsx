@@ -6,6 +6,8 @@ import { AuthProvider } from './context/AuthContext';
 import AdminLayout from './components/layout/AdminLayout';
 import { PrivateRoute } from './router/private-route';
 import { ToastContainer } from 'react-toastify';
+import Customers from './pages/Customers';
+import Orders from './pages/Order';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route path="/products" element={<PrivateRoute element={Products} />} />
             <Route path="/categories" element={<PrivateRoute element={Categories} />} />
+            <Route path="/customers" element={<PrivateRoute element={Customers} />} />
+            <Route path="/orders" element={<PrivateRoute element={Orders} />} />
             <Route path="/" element={<Navigate to="/products" />} />
           </Route>
         </Routes>
