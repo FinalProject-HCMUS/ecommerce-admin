@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Upload } from 'lucide-react';
-import { Category } from '../../types';
 import { getCategories } from '../../apis/categoryApi';
 import MotionModalWrapper from '../common/MotionModal';
 import { ProductImage } from '../../types/product/ProductImage';
 import { toast } from 'react-toastify';
+import { Category } from '../../types/category/Category';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -29,22 +29,62 @@ const initialFormData = {
 
 const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState(initialFormData);
+  const [page, setPage] = useState(1);
+  const [isFetching, setIsFetching] = useState(false);
   const [images, setImages] = useState<ProductImage[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const pageRef = useRef(page);
+  const fetchingRef = useRef(isFetching);
 
-  const fetchCategories = async (page: number) => {
-    try {
-      const response = await getCategories(page - 1, 10);
-      setCategories(response.content || []);
-    } catch (error) {
-      console.log(error);
-      toast.error('Failed to fetch categories');
+  //infinite scroll categories
+  useEffect(() => {
+    pageRef.current = page;
+    fetchingRef.current = isFetching;
+  }, [page, isFetching]);
+
+  const fetchCategories = async (pageNumber: number) => {
+    setIsFetching(true);
+    const response = await getCategories(pageNumber - 1, 5);
+    setIsFetching(false);
+
+    if (!response.isSuccess) {
+      toast.error(response.message, { autoClose: 1000 });
+      return;
+    }
+    if (response.data) {
+      if (pageNumber === 1) {
+        setCategories(response.data?.content);
+      } else {
+        setCategories((prev) => [...prev, ...response.data?.content || []]);
+      }
+      setPage(pageNumber);
     }
   };
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+  useEffect(() => {
+    const element = dropdownRef.current;
+    if (!element) return;
+
+    const handleScroll = () => {
+      if (
+        dropdownRef.current &&
+        dropdownRef.current.scrollTop + dropdownRef.current.clientHeight >= dropdownRef.current.scrollHeight - 10 &&
+        !fetchingRef.current
+      ) {
+        fetchCategories(pageRef.current + 1);
+      }
+    };
+
+    element.addEventListener('scroll', handleScroll);
+    return () => element.removeEventListener('scroll', handleScroll);
+  }, [page, isFetching]);
 
   useEffect(() => {
-    fetchCategories(1);
-  });
+    if (showDropdown && categories.length === 0) {
+      fetchCategories(1);
+    }
+  }, [showDropdown]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -119,6 +159,15 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onSu
   const handleClick = () => {
     document.getElementById('image-upload')?.click();
   };
+  const handleCategorySelect = (category: Category) => {
+    setFormData((prev) => ({
+      ...prev,
+      category: category.name,
+      categoryId: category.id,
+    }));
+    setShowDropdown(false);
+  };
+
   return (
     <MotionModalWrapper>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -156,30 +205,37 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onSu
                   />
                 </div>
 
-                <div>
+                <div className="relative w-full">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={(e) => {
-                      const selectedCategory = categories.find((category) => category.name === e.target.value);
-                      setFormData((prev) => ({
-                        ...prev,
-                        category: selectedCategory?.name || '',
-                        categoryId: selectedCategory?.id || '',
-                      }));
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
-                  >
-                    <option value="">Select category</option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.name}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <button
+                      type='button'
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-left"
+                      onClick={() => setShowDropdown((prev) => !prev)}
+                    >
+                      {formData.category || "Select category"}
+                    </button>
+                    {showDropdown && (
+                      <ul
+                        ref={dropdownRef}
+                        className="absolute z-10 w-full max-h-40 overflow-y-auto mt-1 bg-white border border-gray-300 rounded-lg shadow"
+                      >
+                        {categories.map((category) => (
+                          <li
+                            key={category.id}
+                            className="px-3 py-2 hover:bg-blue-100 cursor-pointer"
+                            onClick={() => handleCategorySelect(category)}
+                          >
+                            {category.name}
+                          </li>
+                        ))}
+                        {isFetching && <li className="px-3 py-2 text-sm text-gray-500">Loading...</li>}
+                      </ul>
+
+                    )}
+                  </div>
                 </div>
+
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { CustomResponse } from "../types/common/CustomResponse";
 import { CategoryResponse } from "../types/category/CategoryResponse";

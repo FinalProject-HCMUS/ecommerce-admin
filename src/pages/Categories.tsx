@@ -25,19 +25,14 @@ const Categories = () => {
     const [totalPages, setTotalPages] = useState(0);
 
     const fetchCategories = async (page: number) => {
-        try {
-            const response = await getCategories(page - 1, ITEMS_PER_PAGE);
-            if (!response.isSuccess) {
-                toast.error(response.message, { autoClose: 1000 });
-                return;
-            }
-            if (response.data?.content) {
-                setCategories(response.data.content);
-                setTotalPages(response.data.totalPages || 0);
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error('Failed to fetch categories');
+        const response = await getCategories(page - 1, ITEMS_PER_PAGE);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        if (response.data?.content) {
+            setCategories(response.data.content);
+            setTotalPages(response.data.totalPages || 0);
         }
     };
 
