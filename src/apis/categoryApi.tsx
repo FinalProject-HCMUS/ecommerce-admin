@@ -4,7 +4,6 @@ import { CustomResponse } from "../types/common/CustomResponse";
 import { CategoryResponse } from "../types/category/CategoryResponse";
 import { CategoryRequest } from "../types/category/CategoryRequest";
 import { Category } from "../types/category/Category";
-
 const API_URL = import.meta.env.VITE_API_URL;
 export const getCategories = async (page: number, perpage: number): Promise<CustomResponse<CategoryResponse>> => {
     try {
