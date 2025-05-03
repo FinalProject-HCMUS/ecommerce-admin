@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-import { Category } from '../../types/category/category';
+import { Category } from '../../types/category/Category';
 
 
 interface CategoryTableProps {

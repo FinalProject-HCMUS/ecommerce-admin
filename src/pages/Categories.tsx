@@ -5,11 +5,12 @@ import Pagination from '../components/common/Pagination';
 import CategoryTable from '../components/categories/CategoryTable';
 import AddCategoryModal from '../components/categories/AddCategoryModal';
 import EditCategoryModal from '../components/categories/EditCategoryModal';
-import { getCategories } from '../apis/categoryApi';
+import { getCategories, updateCategory } from '../apis/categoryApi';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import MotionPageWrapper from '../components/common/MotionPage';
-import { Category } from '../types/category/category';
+import { Category } from '../types/category/Category';
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -20,12 +21,13 @@ const Categories = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<any | undefined>();
     const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
-    const totalPages = Math.ceil(categories.length / ITEMS_PER_PAGE);
+    const [totalPages, setTotalPages] = useState(0);
 
     const fetchCategories = async (page: number) => {
         try {
             const response = await getCategories(page - 1, ITEMS_PER_PAGE);
-            setCategories(response.content || []);
+            setCategories(response.content);
+            setTotalPages(response.totalPages || 0);
         } catch (error) {
             console.log(error);
             toast.error('Failed to fetch categories');
@@ -66,17 +68,11 @@ const Categories = () => {
         // toast.success('Category added successfully', { autoClose: 1000 });
     };
 
-    const handleUpdateCategory = (categoryData: any) => {
-        const updatedCategories = categories.map(c => {
-            if (c.id === categoryData.id) {
-                return {
-                    ...c,
-                    name: categoryData.name
-                };
-            }
-            return c;
-        });
-        setCategories(updatedCategories);
+    const handleUpdateCategory = async (categoryData: any) => {
+        const idCategory = selectedCategory.id;
+        delete categoryData.id;
+        const response = await updateCategory(idCategory, categoryData);
+        fetchCategories(currentPage);
         toast.success('Category updated successfully', { autoClose: 1000 });
     };
 
