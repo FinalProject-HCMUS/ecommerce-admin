@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { OrderDetail } from '../../types';
 import MotionModalWrapper from '../common/MotionModal';
 import { X } from 'lucide-react';
 import { Order } from '../../types/order/Order';
+import { OrderDetail } from '../../types/order/OrderDetail';
+import { OrderRequestUpdate } from '../../types/order/OrderRequestUpdate';
 
 interface EditOrderModalProps {
     isOpen: boolean;
     onClose: () => void;
     order: Order;
     orderDetails: OrderDetail[];
-    onSubmit: (updatedOrder: Order) => void;
+    onSubmit: (id: string, updatedOrder: OrderRequestUpdate) => void;
 }
 
 const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order, orderDetails, onSubmit }) => {
@@ -25,7 +26,20 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(formData);
+        const updatedOrder: OrderRequestUpdate = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            deliveryDate: formData.deliveryDate,
+            subTotal: formData.subTotal,
+            customerId: formData.customerId,
+            phoneNumber: formData.phoneNumber,
+            paymentMethod: formData.paymentMethod,
+            status: formData.status,
+            productCost: formData.productCost,
+            shippingCost: formData.shippingCost,
+            total: formData.total,
+        };
+        onSubmit(formData.id, updatedOrder);
         onClose();
     };
 
@@ -50,7 +64,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 <label className="block text-sm font-medium text-gray-700">Full Name</label>
                                 <input
                                     type="text"
-                                    name="first_name"
+                                    name="firstName"
                                     value={formData.firstName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
@@ -60,8 +74,8 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Phone Number</label>
                                 <input
-                                    type="text"
-                                    name="phone_number"
+                                    type="number"
+                                    name="phoneNumber"
                                     value={formData.phoneNumber}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
@@ -82,7 +96,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Payment Method</label>
                                 <select
-                                    name="payment_method"
+                                    name="paymentMethod"
                                     value={formData.paymentMethod}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
@@ -139,13 +153,13 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 {orderDetails.map((detail) => (
                                     <div key={detail.id} className="flex items-center space-x-4">
                                         <img
-                                            src={detail.product.main_image_url || './images/sample.png'}
+                                            src={detail.product.mainImageUrl || './images/sample.png'}
                                             alt={detail.product.name}
-                                            className="w-20 h-20 object-cover rounded-lg"
+                                            className="w-20 h-20 object-contain rounded-lg"
                                         />
                                         <div className="flex-1">
                                             <h4 className="text-sm font-medium">{detail.product.name}</h4>
-                                            <p className="text-sm text-gray-500">Category: {detail.product.category}</p>
+                                            <p className="text-sm text-gray-500">Category: {detail.product.categoryName}</p>
                                             <p className="text-sm text-gray-500">Price: ${detail.product.price.toFixed(2)}</p>
                                         </div>
                                         <div className="text-sm text-gray-500">x{detail.quantity}</div>

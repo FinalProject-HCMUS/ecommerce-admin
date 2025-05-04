@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { OrderDetail, Product } from '../../types';
 import MotionModalWrapper from '../common/MotionModal';
 import ProductSelectionModal from './ProductSelectionModal';
 import { X } from 'lucide-react';
 import { Order } from '../../types/order/Order';
+import { Product } from '../../types/product/Product';
+import { OrderDetail } from '../../types/order/OrderDetail';
 
 interface AddOrderModalProps {
     isOpen: boolean;
@@ -13,16 +14,26 @@ interface AddOrderModalProps {
 }
 
 const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit, products }) => {
-    const [formData, setFormData] = useState<Order>();
+    const [formData, setFormData] = useState<Order>({
+        id: `${Date.now()}`,
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        paymentMethod: 'COD',
+        status: 'NEW',
+        productCost: 0,
+        shippingCost: 0,
+        total: 0,
+    });
     const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        // setFormData((prev) => ({
+        //     ...prev,
+        //     [name]: value,
+        // }));
     };
 
     const handleAddProducts = (selectedProducts: Product[]) => {
@@ -36,12 +47,12 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
             } else {
                 updatedDetails.push({
                     id: `${Date.now()}`,
-                    product_cost: product.price,
+                    productCost: product.price,
                     quantity: 1,
-                    unit_price: product.price,
+                    unitPrice: product.price,
                     total: product.price,
                     product,
-                    order_id: '',
+                    orderId: '',
                 });
             }
         });
@@ -59,7 +70,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
     const handleIncreaseQuantity = (productId: string) => {
         const updatedDetails = orderDetails.map((detail) =>
             detail.product.id === productId
-                ? { ...detail, quantity: detail.quantity + 1, total: detail.total + detail.unit_price }
+                ? { ...detail, quantity: detail.quantity + 1, total: detail.total + detail.unitPrice }
                 : detail
         );
         setOrderDetails(updatedDetails);
@@ -69,7 +80,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
     const handleDecreaseQuantity = (productId: string) => {
         const updatedDetails = orderDetails.map((detail) =>
             detail.product.id === productId && detail.quantity > 1
-                ? { ...detail, quantity: detail.quantity - 1, total: detail.total - detail.unit_price }
+                ? { ...detail, quantity: detail.quantity - 1, total: detail.total - detail.unitPrice }
                 : detail
         );
         setOrderDetails(updatedDetails);
@@ -80,7 +91,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
         if (newQuantity < 1) return; // Prevent quantity less than 1
         const updatedDetails = orderDetails.map((detail) =>
             detail.product.id === productId
-                ? { ...detail, quantity: newQuantity, total: newQuantity * detail.unit_price }
+                ? { ...detail, quantity: newQuantity, total: newQuantity * detail.unitPrice }
                 : detail
         );
         setOrderDetails(updatedDetails);
@@ -89,18 +100,18 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
 
     const updateOrderSummary = (details: OrderDetail[]) => {
         const productCost = details.reduce((sum, detail) => sum + detail.total, 0);
-        const total = productCost + formData.shipping_cost;
-        setFormData((prev) => ({
-            ...prev,
-            product_cost: productCost,
-            sub_total: total,
-            total,
-        }));
+        // const total = productCost + formData?.shippingCost;
+        // setFormData((prev) => ({
+        //     ...prev,
+        //     productCost: productCost,
+        //     subTotal: total,
+        //     total,
+        // }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ ...formData, id: `${Date.now()}` });
+        // onSubmit({ ...formData, id: `${Date.now()}` });
         onClose();
     };
 
@@ -126,7 +137,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                                 <input
                                     type="text"
                                     name="first_name"
-                                    value={formData.first_name}
+                                    value={formData.firstName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
@@ -137,7 +148,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                                 <input
                                     type="text"
                                     name="phone_number"
-                                    value={formData.phone_number}
+                                    value={formData.phoneNumber}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required

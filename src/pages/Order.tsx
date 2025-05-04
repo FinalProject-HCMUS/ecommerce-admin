@@ -2,21 +2,23 @@
 import { useState, useEffect } from 'react';
 import OrderTable from '../components/order/OrderTable';
 import Pagination from '../components/common/Pagination';
-import { OrderDetail, Product } from '../types';
 import MotionPageWrapper from '../components/common/MotionPage';
-import { getOrders } from '../apis/orderApi';
+import { getOrderDetail, getOrders, updateOrder } from '../apis/orderApi';
 import EditOrderModal from '../components/order/EditOrderModal';
 import { toast } from 'react-toastify';
 import AddOrderModal from '../components/order/AddOrderModal';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import { Order } from '../types/order/Order';
+import { Product } from '../types/product/Product';
+import { OrderDetail } from '../types/order/OrderDetail';
+import { OrderRequestUpdate } from '../types/order/OrderRequestUpdate';
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
 const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
-    const [orderDetails, setOrderDetails] = useState<OrderDetail[] | undefined>();
+    const [orderDetails, setOrderDetails] = useState<OrderDetail[]>();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -26,8 +28,6 @@ const Orders = () => {
 
     const fetchOrders = async (page: number) => {
         const response = await getOrders(page - 1, ITEMS_PER_PAGE);
-        console.log(response);
-
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
@@ -45,10 +45,17 @@ const Orders = () => {
     const handleEditOrder = async (id: string) => {
         const order = orders.find((order) => order.id === id);
         if (order) {
-            setSelectedOrder(order);
-            // const details = await getOrderDetails(id);
-            // setOrderDetails(details);
-            // setIsEditModalOpen(true);
+            const response = await getOrderDetail(id);
+            if (!response.isSuccess) {
+                toast.error(response.message, { autoClose: 1000 });
+                return;
+            }
+            if (response.data) {
+                setOrderDetails(response.data);
+                setSelectedOrder(order);
+                setIsEditModalOpen(true);
+            }
+
         }
     };
     const handleDeleteOrder = (id: string) => {
@@ -60,10 +67,13 @@ const Orders = () => {
         setIsAddModalOpen(false); // Close the AddOrderModal
         toast.success('Order added successfully', { autoClose: 1000 }); // Show a success toast notification
     };
-    const handleUpdateOrder = (updatedOrder: Order) => {
-        setOrders((prevOrders) =>
-            prevOrders.map((order) => (order.id === updatedOrder.id ? updatedOrder : order))
-        );
+    const handleUpdateOrder = async (id: string, updatedOrder: OrderRequestUpdate) => {
+        const response = await updateOrder(id, updatedOrder);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        fetchOrders(currentPage);
         setIsEditModalOpen(false);
         toast.success('Order updated successfully', { autoClose: 1000 });
     };
@@ -100,7 +110,11 @@ const Orders = () => {
 
             {selectedOrder && <EditOrderModal
                 isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
+                onClose={() => {
+                    setIsEditModalOpen(false);
+                    setSelectedOrder(undefined);
+                    setOrderDetails(undefined);
+                }}
                 order={selectedOrder}
                 orderDetails={orderDetails || []}
                 onSubmit={handleUpdateOrder}
