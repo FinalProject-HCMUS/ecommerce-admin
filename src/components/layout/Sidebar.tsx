@@ -1,20 +1,36 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Package, List, LogOut, Users, Boxes, MessageCircleMore, NotebookPen, BarChart3Icon } from 'lucide-react';
+import { useState } from 'react';
+import {
+  Package,
+  List,
+  LogOut,
+  Users,
+  Boxes,
+  MessageCircleMore,
+  NotebookPen,
+  BarChart3Icon,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [isStatisticsOpen, setIsStatisticsOpen] = useState(false); // State for dropdown
+
   return (
     <div className="w-64 bg-white h-screen border-r border-gray-200 flex flex-col">
       <div className="p-4 border-b border-gray-200">
         <h1 className="text-xl font-bold text-blue-600">Admin Dashboard</h1>
       </div>
       <nav className="flex-1 p-4 space-y-1">
-        <NavLink to="/customers" className={({ isActive }) =>
-          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
-          }`
-        }
+        <NavLink
+          to="/customers"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
         >
           <Users size={20} />
           <span>Customers</span>
@@ -39,34 +55,90 @@ const Sidebar = () => {
           <List size={20} />
           <span>Categories</span>
         </NavLink>
-        <NavLink to="/orders" className={({ isActive }) =>
-          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
-          }`
-        }>
+        <NavLink
+          to="/orders"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
+        >
           <Boxes size={20} />
           <span>Orders</span>
         </NavLink>
-        <NavLink to="/messages" className={({ isActive }) =>
-          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
-          }`
-        }>
+        <NavLink
+          to="/messages"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
+        >
           <MessageCircleMore size={20} />
           <span>Messages</span>
         </NavLink>
-        <NavLink to="/blogs" className={({ isActive }) =>
-          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
-          }`
-        }>
+        <NavLink
+          to="/blogs"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
+        >
           <NotebookPen size={20} />
           <span>Blogs</span>
         </NavLink>
-        <NavLink to="/statistics" className={({ isActive }) =>
-          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
-          }`
-        }>
-          <BarChart3Icon size={20} />
-          <span>Statistics</span>
-        </NavLink>
+
+        {/* Dropdown Menu for Statistics */}
+        <div>
+          <button
+            onClick={() => setIsStatisticsOpen(!isStatisticsOpen)}
+            className="flex items-center justify-between w-full px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+          >
+            <div className="flex items-center space-x-2">
+              <BarChart3Icon size={20} />
+              <span>Statistics</span>
+            </div>
+            {isStatisticsOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
+          {isStatisticsOpen && (
+            <div className="ml-6 space-y-1">
+              <NavLink
+                to="/statistics/revenue"
+                className={({ isActive }) =>
+                  `block px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                  }`
+                }
+              >
+                Revenue Analysis
+              </NavLink>
+              <NavLink
+                to="/statistics/categories"
+                className={({ isActive }) =>
+                  `block px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                  }`
+                }
+              >
+                Product Categories
+              </NavLink>
+              <NavLink
+                to="/statistics/orders"
+                className={({ isActive }) =>
+                  `block px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                  }`
+                }
+              >
+                Order Statistics
+              </NavLink>
+              <NavLink
+                to="/statistics/top-products"
+                className={({ isActive }) =>
+                  `block px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                  }`
+                }
+              >
+                Top Products
+              </NavLink>
+            </div>
+          )}
+        </div>
       </nav>
 
       <div className="p-4 border-t border-gray-200">

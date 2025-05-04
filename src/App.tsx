@@ -10,9 +10,13 @@ import Customers from './pages/Customers';
 import Order from './pages/Order';
 import Message from './pages/Message';
 import Blogs from './pages/blogs/Blogs';
-import Statistics from './pages/Statistics';
+import Statistics from './pages/statistics/Statistics';
 import AddBlog from './pages/blogs/AddBlog';
 import EditBlog from './pages/blogs/EditBlog';
+import OrderStatistics from './pages/statistics/OrderStatistics';
+import ProductCategories from './pages/statistics/ProductCategories';
+import RevenueAnalysis from './pages/statistics/RevenueAnalysis';
+import TopProducts from './pages/statistics/TopProducts';
 
 function App() {
   return (
@@ -30,6 +34,10 @@ function App() {
             <Route path="/blogs/add" element={<PrivateRoute element={AddBlog} />} />
             <Route path="/blogs/edit/:id" element={<PrivateRoute element={EditBlog} />} />
             <Route path="/statistics" element={<PrivateRoute element={Statistics} />} />
+            <Route path="/statistics/orders" element={<PrivateRoute element={OrderStatistics} />} />
+            <Route path="/statistics/categories" element={<PrivateRoute element={ProductCategories} />} />
+            <Route path="/statistics/revenue" element={<PrivateRoute element={RevenueAnalysis} />} />
+            <Route path="/statistics/top-products" element={<PrivateRoute element={TopProducts} />} />
             <Route path="/" element={<Navigate to="/customers" />} />
           </Route>
         </Routes>
