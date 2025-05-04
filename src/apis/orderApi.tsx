@@ -1,12 +1,18 @@
 import axios from "axios";
-import { Order, OrderDetail } from "../types";
-const API_URL = "./data.json";
-export const getOrders = async (): Promise<Order[]> => {
-    const response = await axios.get<{ orders: Order[] }>(API_URL);
-    return response.data.orders;
-};
-export const getOrderDetails = async (id: string): Promise<OrderDetail[] | undefined> => {
-    const response = await axios.get<{ orderDetails: OrderDetail[] }>(API_URL);
-    const orderDetail = response.data.orderDetails.find((order) => order.id === id);
-    return orderDetail ? [orderDetail] : undefined;
-}
+import { OrderResponse } from "../types/order/OrderResponse";
+import { CustomResponse } from "../types/common/CustomResponse";
+const API_URL = import.meta.env.VITE_API_URL;
+
+export const getOrders = async (page: number, perpage: number): Promise<CustomResponse<OrderResponse>> => {
+    try {
+        const response = await axios.get<CustomResponse<OrderResponse>>(`${API_URL}/orders`, {
+            params: {
+                page,
+                perpage,
+            },
+        });
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}    

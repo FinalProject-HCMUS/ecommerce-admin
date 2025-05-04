@@ -11,6 +11,7 @@ import { User } from "../types/customer/User";
 import { deleteUser, getUsers, updateUser } from "../apis/userApi";
 import { UserRequest } from "../types/customer/UserRequest";
 import { UserCreateRequest } from "../types/customer/UserCreateRequest";
+import { useTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const Customers = () => {
@@ -21,7 +22,7 @@ const Customers = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState<any | undefined>();
     const [customerToDelete, setCustomerToDelete] = useState<User | null>(null);
-
+    const { t } = useTranslation();
     const fetchCustomers = async (page: number) => {
         const response = await getUsers(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
@@ -76,13 +77,13 @@ const Customers = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">Customers</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">{t('customerSidebar')}</h1>
                     <button
                         onClick={() => setIsAddModalOpen(true)}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
                     >
                         <Plus size={20} />
-                        <span>Add Customer</span>
+                        <span>{t('addCustomer')}</span>
                     </button>
                 </div>
 

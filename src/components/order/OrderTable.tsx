@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-import { Order } from '../../types';
 import { format } from 'date-fns';
+import { Order } from '../../types/order/Order';
 
 interface OrderTableProps {
     orders: Order[];
@@ -15,7 +15,6 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => 
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Buyer</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Time</th>
@@ -28,21 +27,18 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => 
                     {orders.map((order) => (
                         <tr key={order.id}>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{order.id}</div>
+                                <div className="text-sm text-gray-900">{order.firstName} {order.lastName}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{order.first_name} {order.last_name}</div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{order.customer.address}</div>
+                                <div className="text-sm text-gray-900">Waitting</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                    {format(new Date(order.order_time), 'MMMM dd, yyyy, hh:mm a')}
+                                    {format(new Date(order.orderTracks[0].createdAt), 'MMMM dd, yyyy, hh:mm a')}
                                 </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{order.payment_method}</div>
+                                <div className="text-sm text-gray-900">{order.paymentMethod}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{order.status}</div>

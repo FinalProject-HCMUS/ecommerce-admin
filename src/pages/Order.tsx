@@ -2,53 +2,53 @@
 import { useState, useEffect } from 'react';
 import OrderTable from '../components/order/OrderTable';
 import Pagination from '../components/common/Pagination';
-import { Order, OrderDetail, Product } from '../types';
+import { OrderDetail, Product } from '../types';
 import MotionPageWrapper from '../components/common/MotionPage';
-import { getOrders, getOrderDetails } from '../apis/orderApi';
+import { getOrders } from '../apis/orderApi';
 import EditOrderModal from '../components/order/EditOrderModal';
 import { toast } from 'react-toastify';
 import AddOrderModal from '../components/order/AddOrderModal';
-import { getProducts } from '../apis/productApi';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
+import { Order } from '../types/order/Order';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
 const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
     const [orderDetails, setOrderDetails] = useState<OrderDetail[] | undefined>();
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | undefined>();
     const [orderToDelete, setOrderToDelete] = useState<Order | undefined>();
 
-    useEffect(() => {
-        getOrders().then((data) => {
-            setOrders(data);
-        });
-    }, []);
-    useEffect(() => {
-        getProducts().then((data) => {
-            setProducts(data);
-        });
-    }, []);
+    const fetchOrders = async (page: number) => {
+        const response = await getOrders(page - 1, ITEMS_PER_PAGE);
+        console.log(response);
 
-    const totalPages = Math.ceil(orders.length / ITEMS_PER_PAGE);
-
-    const getCurrentPageOrders = () => {
-        const start = (currentPage - 1) * ITEMS_PER_PAGE;
-        const end = start + ITEMS_PER_PAGE;
-        return orders.slice(start, end);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        if (response.data) {
+            setOrders(response.data.content || []);
+            setTotalPages(response.data.totalPages || 0);
+        }
     };
+
+    useEffect(() => {
+        fetchOrders(currentPage);
+    }, [currentPage]);
 
     const handleEditOrder = async (id: string) => {
         const order = orders.find((order) => order.id === id);
         if (order) {
             setSelectedOrder(order);
-            const details = await getOrderDetails(id);
-            setOrderDetails(details);
-            setIsEditModalOpen(true);
+            // const details = await getOrderDetails(id);
+            // setOrderDetails(details);
+            // setIsEditModalOpen(true);
         }
     };
     const handleDeleteOrder = (id: string) => {
@@ -89,7 +89,7 @@ const Orders = () => {
                 </div>
 
                 <div className="bg-white rounded-lg shadow">
-                    <OrderTable orders={getCurrentPageOrders()} onEdit={handleEditOrder} onDelete={handleDeleteOrder} />
+                    <OrderTable orders={orders} onEdit={handleEditOrder} onDelete={handleDeleteOrder} />
                     <Pagination
                         currentPage={currentPage}
                         totalPages={totalPages}

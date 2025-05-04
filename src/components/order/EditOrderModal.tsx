@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Order, OrderDetail } from '../../types';
+import { OrderDetail } from '../../types';
 import MotionModalWrapper from '../common/MotionModal';
 import { X } from 'lucide-react';
+import { Order } from '../../types/order/Order';
 
 interface EditOrderModalProps {
     isOpen: boolean;
     onClose: () => void;
     order: Order;
-    orderDetails: OrderDetail[]; // Updated to match the new structure
+    orderDetails: OrderDetail[];
     onSubmit: (updatedOrder: Order) => void;
 }
 
@@ -50,7 +51,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 <input
                                     type="text"
                                     name="first_name"
-                                    value={formData.first_name}
+                                    value={formData.firstName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
@@ -61,7 +62,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 <input
                                     type="text"
                                     name="phone_number"
-                                    value={formData.phone_number}
+                                    value={formData.phoneNumber}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
@@ -71,7 +72,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 <label className="block text-sm font-medium text-gray-700">Address</label>
                                 <textarea
                                     name="address"
-                                    value={formData.address}
+                                    value="waiting"
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     rows={3}
@@ -82,7 +83,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 <label className="block text-sm font-medium text-gray-700">Payment Method</label>
                                 <select
                                     name="payment_method"
-                                    value={formData.payment_method}
+                                    value={formData.paymentMethod}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
@@ -117,11 +118,11 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({ isOpen, onClose, order,
                                 <div className="space-y-2">
                                     <div className="flex justify-between">
                                         <span className="text-sm text-gray-500">Subtotal</span>
-                                        <span className="text-sm font-medium">${formData.product_cost.toFixed(2)}</span>
+                                        <span className="text-sm font-medium">${formData.productCost.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-sm text-gray-500">Shipping Cost</span>
-                                        <span className="text-sm font-medium">${formData.shipping_cost.toFixed(2)}</span>
+                                        <span className="text-sm font-medium">${formData.shippingCost.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-sm text-gray-500">Total</span>

@@ -2,6 +2,7 @@ import { X } from 'lucide-react';
 import React, { useState } from 'react';
 import MotionModalWrapper from '../common/MotionModal';
 import { UserCreateRequest } from '../../types/customer/UserCreateRequest';
+import { useTranslation } from 'react-i18next';
 
 interface AddCustomerModalProps {
     isOpen: boolean;
@@ -23,7 +24,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
         role: 'USER',
         enabled: true,
     });
-
+    const { t } = useTranslation();
     if (!isOpen) return null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -57,7 +58,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white rounded-lg w-full max-w-4xl mx-4">
                     <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                        <h2 className="text-2xl font-semibold text-gray-800">Add New Customer</h2>
+                        <h2 className="text-2xl font-semibold text-gray-800">{t('addCustomer')}</h2>
                         <button
                             onClick={onClose}
                             className="text-gray-500 hover:text-gray-700"
@@ -77,7 +78,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
                                 htmlFor="photo-upload"
                                 className="text-blue-500 hover:underline cursor-pointer"
                             >
-                                Upload Photo
+                                {t('uploadPhoto')}
                             </label>
                             <input
                                 id="photo-upload"
@@ -91,7 +92,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    First Name
+                                    {t('firstName')}
                                 </label>
                                 <input
                                     type="text"
@@ -105,7 +106,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Last Name
+                                    {t('lastName')}
                                 </label>
                                 <input
                                     type="text"
@@ -133,7 +134,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Password
+                                    {t('password')}
                                 </label>
                                 <input
                                     type="password"
@@ -147,7 +148,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Phone Number
+                                    {t('phoneNumber')}
                                 </label>
                                 <input
                                     type="tel"
@@ -161,7 +162,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Address
+                                    {t('address')}
                                 </label>
                                 <input
                                     type="tel"
@@ -175,7 +176,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Weight
+                                    {t('weight')}
                                 </label>
                                 <input
                                     type="number"
@@ -189,7 +190,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Height
+                                    {t('height')}
                                 </label>
                                 <input
                                     type="number"
@@ -203,7 +204,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Role
+                                    {t('role')}
                                 </label>
                                 <select
                                     name="role"
@@ -218,7 +219,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Status
+                                    {t('status')}
                                 </label>
                                 <select
                                     name="enabled"
@@ -243,13 +244,13 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({ isOpen, onClose, on
                                 onClick={onClose}
                                 className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                             >
-                                Add
+                                {t('add')}
                             </button>
                         </div>
                     </form>

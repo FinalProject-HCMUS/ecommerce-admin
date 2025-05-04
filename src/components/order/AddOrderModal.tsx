@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Order, OrderDetail, Product } from '../../types';
+import { OrderDetail, Product } from '../../types';
 import MotionModalWrapper from '../common/MotionModal';
 import ProductSelectionModal from './ProductSelectionModal';
 import { X } from 'lucide-react';
+import { Order } from '../../types/order/Order';
 
 interface AddOrderModalProps {
     isOpen: boolean;
@@ -12,37 +13,7 @@ interface AddOrderModalProps {
 }
 
 const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit, products }) => {
-    const [formData, setFormData] = useState<Order>({
-        id: '',
-        first_name: '',
-        last_name: '',
-        phone_number: '',
-        status: 'NEW',
-        delivery_date: '',
-        delivery_days: 0,
-        order_time: new Date().toISOString(),
-        payment_method: 'COD',
-        shipping_cost: 15,
-        product_cost: 0,
-        sub_total: 0,
-        total: 0,
-        address: '',
-        customer: {
-            id: '',
-            email: '',
-            phoneNum: '',
-            firstName: '',
-            lastName: '',
-            address: '',
-            weight: 0,
-            height: 0,
-            password: '',
-            enabled: true,
-            photo: '',
-            role: 'USER',
-        },
-    });
-
+    const [formData, setFormData] = useState<Order>();
     const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
