@@ -1,13 +1,24 @@
 import axios from "axios";
 import { Blog } from "../types";
+import { CustomResponse } from "../types/common/CustomResponse";
+import { BlogResponse } from "../types/blog/BlogResponse";
 
-const API_URL = './data.json';
+const API_URL = import.meta.env.VITE_API_URL;
 
-export const getBlogs = async (): Promise<Blog[]> => {
-    const response = await axios.get<{ blogs: Blog[] }>(API_URL);
-    return response.data.blogs;
-};
-
+export const getBlogs = async (page: number, size: number): Promise<CustomResponse<BlogResponse>> => {
+    try {
+        const response = await axios.get<CustomResponse<BlogResponse>>(`${API_URL}/blogs`, {
+            params: {
+                page,
+                size,
+            },
+        });
+        return response.data;
+    }
+    catch (error: any) {
+        return error.response.data;
+    };
+}
 export const getBlogById = async (id: string): Promise<Blog | null> => {
     const blog: Blog = {
         id: '1',
@@ -18,4 +29,4 @@ export const getBlogById = async (id: string): Promise<Blog | null> => {
         updated_At: new Date().toISOString(),
     };
     return blog;
-};
+}

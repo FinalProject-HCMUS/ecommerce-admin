@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import MotionPageWrapper from '../../components/common/MotionPage';
-import { Blog } from '../../types';
 import { getBlogs } from '../../apis/blogApi';
 import Pagination from '../../components/common/Pagination';
 import BlogCard from '../../components/blogs/BlogCard';
 import { Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { Blog } from '../../types/blog/blog';
+import { toast } from 'react-toastify';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -14,25 +15,23 @@ const Blogs: React.FC = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     const navigate = useNavigate();
+    const fetchBlogs = async (page: number) => {
+        const response = await getBlogs(page - 1, ITEMS_PER_PAGE);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        if (response.data) {
+            setBlogs(response.data.content || []);
+            setTotalPages(response.data.totalPages || 0);
+        }
+    }
     useEffect(() => {
-        getBlogs().then((data) => {
-            setBlogs(data || []);
-        });
+        fetchBlogs(currentPage);
+    }, [currentPage]);
 
-    }, []);
-    useEffect(() => {
-        setCurrentPage(1); // Reset to first page when search term changes
-    }, [searchTerm]);
-    const filteredBlogs = blogs.filter((blog) =>
-        blog.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const totalPages = Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE);
-    const getCurrentPageBlogs = () => {
-        const start = (currentPage - 1) * ITEMS_PER_PAGE;
-        const end = start + ITEMS_PER_PAGE;
-        return filteredBlogs.slice(start, end);
-    };
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -92,7 +91,7 @@ const Blogs: React.FC = () => {
                         initial="hidden"
                         animate="visible"
                     >
-                        {getCurrentPageBlogs().map((blog) => (
+                        {blogs.map((blog) => (
                             <motion.div key={blog.id} variants={itemVariants}>
                                 <BlogCard blog={blog} />
                             </motion.div>

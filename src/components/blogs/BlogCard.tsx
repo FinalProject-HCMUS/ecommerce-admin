@@ -1,7 +1,7 @@
 import React from 'react';
-import { Blog } from '../../types';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { Blog } from '../../types/blog/blog';
 
 interface BlogCardProps {
     blog: Blog;
@@ -26,7 +26,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
             <img
                 src={blog.image}
                 alt={blog.title}
-                className="w-full rounded-lg h-64 object-cover cursor-pointer"
+                className="w-full rounded-lg h-64 object-contain cursor-pointer"
                 onClick={() => navigate(`/blogs/edit/${blog.id}`)}
             />
 
@@ -35,7 +35,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
             <div className="p-4">
                 {/* Blog Date */}
                 <p className="text-sm text-gray-500">
-                    {new Date(blog.created_At).toLocaleDateString('en-US', {
+                    {new Date(blog.createdAt).toLocaleDateString('en-US', {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
