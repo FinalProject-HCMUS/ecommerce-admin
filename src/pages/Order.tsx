@@ -3,21 +3,20 @@ import { useState, useEffect } from 'react';
 import OrderTable from '../components/order/OrderTable';
 import Pagination from '../components/common/Pagination';
 import MotionPageWrapper from '../components/common/MotionPage';
-import { getOrderDetail, getOrders, updateOrder } from '../apis/orderApi';
+import { deleteOrder, getOrderDetail, getOrders, updateOrder } from '../apis/orderApi';
 import EditOrderModal from '../components/order/EditOrderModal';
 import { toast } from 'react-toastify';
 import AddOrderModal from '../components/order/AddOrderModal';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import { Order } from '../types/order/Order';
-import { Product } from '../types/product/Product';
 import { OrderDetail } from '../types/order/OrderDetail';
 import { OrderRequestUpdate } from '../types/order/OrderRequestUpdate';
+import { OrderDetailRequest } from '../types/order/OrderDetailRequest';
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
 const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [products, setProducts] = useState<Product[]>([]);
     const [orderDetails, setOrderDetails] = useState<OrderDetail[]>();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -62,8 +61,12 @@ const Orders = () => {
         const order = orders.find((order) => order.id === id);
         setOrderToDelete(order);
     };
-    const handleAddOrder = (newOrder: Order) => {
-        setOrders((prevOrders) => [newOrder, ...prevOrders]); // Add the new order to the beginning of the orders list
+    const handleAddOrder = (newOrder: OrderRequestUpdate, orderDetails: OrderDetailRequest[]) => {
+
+        console.log(orderDetails);
+
+        //add new order
+        //get order id and add order details
         setIsAddModalOpen(false); // Close the AddOrderModal
         toast.success('Order added successfully', { autoClose: 1000 }); // Show a success toast notification
     };
@@ -77,10 +80,14 @@ const Orders = () => {
         setIsEditModalOpen(false);
         toast.success('Order updated successfully', { autoClose: 1000 });
     };
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (orderToDelete) {
-            const updatedOrder = orders.filter(p => p.id !== orderToDelete.id);
-            setOrders(updatedOrder);
+            const response = await deleteOrder(orderToDelete.id);
+            if (!response.isSuccess) {
+                toast.error(response.message, { autoClose: 1000 });
+                return;
+            }
+            fetchOrders(currentPage);
             toast.success('Order deleted successfully', { autoClose: 1000 });
             setOrderToDelete(undefined);
         }
@@ -123,7 +130,6 @@ const Orders = () => {
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}
                 onSubmit={handleAddOrder}
-                products={products}
             />
             <DeleteConfirmationModal
                 isOpen={!!orderToDelete}

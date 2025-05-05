@@ -11,3 +11,16 @@ export interface OrderRequestUpdate {
     total: number;
     customerId: string;
 }
+export const defaultOrderRequestUpdate: OrderRequestUpdate = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    status: "",
+    deliveryDate: "",
+    paymentMethod: "",
+    shippingCost: 0,
+    productCost: 0,
+    subTotal: 0,
+    total: 0,
+    customerId: "",
+};

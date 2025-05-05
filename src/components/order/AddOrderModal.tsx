@@ -1,44 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MotionModalWrapper from '../common/MotionModal';
 import ProductSelectionModal from './ProductSelectionModal';
 import { X } from 'lucide-react';
-import { Order } from '../../types/order/Order';
 import { Product } from '../../types/product/Product';
-import { OrderDetail } from '../../types/order/OrderDetail';
+import { defaultOrderRequestUpdate, OrderRequestUpdate } from '../../types/order/OrderRequestUpdate';
+import { OrderDetailRequest } from '../../types/order/OrderDetailRequest';
 
 interface AddOrderModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (newOrder: Order) => void;
-    products: Product[];
+    onSubmit: (newOrder: OrderRequestUpdate, orderDetails: OrderDetailRequest[]) => void;
 }
 
-const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit, products }) => {
-    const [formData, setFormData] = useState<Order>({
-        id: `${Date.now()}`,
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        paymentMethod: 'COD',
-        status: 'NEW',
-        productCost: 0,
-        shippingCost: 0,
-        total: 0,
-    });
-    const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
+const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit }) => {
+    const [formData, setFormData] = useState<OrderRequestUpdate>(defaultOrderRequestUpdate);
+    const [orderDetails, setOrderDetails] = useState<OrderDetailRequest[]>([]);
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
+    useEffect(() => {
+        if (isOpen) {
+            setFormData(defaultOrderRequestUpdate);
+            setOrderDetails([]);
+        }
+    }, [isOpen]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        // setFormData((prev) => ({
-        //     ...prev,
-        //     [name]: value,
-        // }));
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
     const handleAddProducts = (selectedProducts: Product[]) => {
         const updatedDetails = [...orderDetails];
-
         selectedProducts.forEach((product) => {
             const existingDetail = updatedDetails.find((detail) => detail.product.id === product.id);
             if (existingDetail) {
@@ -46,7 +40,6 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                 existingDetail.total += product.price;
             } else {
                 updatedDetails.push({
-                    id: `${Date.now()}`,
                     productCost: product.price,
                     quantity: 1,
                     unitPrice: product.price,
@@ -56,7 +49,6 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                 });
             }
         });
-
         setOrderDetails(updatedDetails);
         updateOrderSummary(updatedDetails);
     };
@@ -98,20 +90,20 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
         updateOrderSummary(updatedDetails);
     };
 
-    const updateOrderSummary = (details: OrderDetail[]) => {
+    const updateOrderSummary = (details: OrderDetailRequest[]) => {
         const productCost = details.reduce((sum, detail) => sum + detail.total, 0);
-        // const total = productCost + formData?.shippingCost;
-        // setFormData((prev) => ({
-        //     ...prev,
-        //     productCost: productCost,
-        //     subTotal: total,
-        //     total,
-        // }));
+        const total = productCost + formData?.shippingCost;
+        setFormData((prev) => ({
+            ...prev,
+            productCost: productCost,
+            subTotal: total,
+            total,
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // onSubmit({ ...formData, id: `${Date.now()}` });
+        onSubmit(formData, orderDetails);
         onClose();
     };
 
@@ -136,7 +128,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                                 <label className="block text-sm font-medium text-gray-700">Full Name</label>
                                 <input
                                     type="text"
-                                    name="first_name"
+                                    name="firstName"
                                     value={formData.firstName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
@@ -147,7 +139,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                                 <label className="block text-sm font-medium text-gray-700">Phone Number</label>
                                 <input
                                     type="text"
-                                    name="phone_number"
+                                    name="phoneNumber"
                                     value={formData.phoneNumber}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
@@ -158,7 +150,7 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                                 <label className="block text-sm font-medium text-gray-700">Address</label>
                                 <textarea
                                     name="address"
-                                    value={formData.address}
+                                    value='waiting'
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     rows={3}
@@ -168,8 +160,8 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Payment Method</label>
                                 <select
-                                    name="payment_method"
-                                    value={formData.payment_method}
+                                    name="paymentMethod"
+                                    value={formData.paymentMethod}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
@@ -204,11 +196,11 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                                 <div className="space-y-2">
                                     <div className="flex justify-between">
                                         <span className="text-sm text-gray-500">Subtotal</span>
-                                        <span className="text-sm font-medium">${formData.product_cost.toFixed(2)}</span>
+                                        <span className="text-sm font-medium">${formData.productCost.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-sm text-gray-500">Shipping Cost</span>
-                                        <span className="text-sm font-medium">${formData.shipping_cost.toFixed(2)}</span>
+                                        <span className="text-sm font-medium">${formData.shippingCost.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-sm text-gray-500">Total</span>
@@ -223,18 +215,18 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                             <h3 className="text-lg font-semibold mb-4">Order Details</h3>
                             <div className="space-y-4">
                                 {orderDetails.map((detail) => (
-                                    <div key={detail.id} className="flex items-center space-x-4">
+                                    <div key={detail.product.id} className="flex items-center space-x-4">
                                         <img
-                                            src={detail.product.main_image_url || './images/sample.png'}
+                                            src={detail.product.mainImageUrl || './images/sample.png'}
                                             alt={detail.product.name}
-                                            className="w-16 h-16 object-cover rounded-lg"
+                                            className="w-16 h-16 object-contain rounded-lg"
                                         />
                                         <div className="flex-1">
                                             <h4 className="text-sm font-medium">{detail.product.name}</h4>
                                             <p className="text-sm text-gray-500">Size: Large</p>
                                             <p className="text-sm text-gray-500">Color: White</p>
                                         </div>
-                                        <div className="text-sm font-medium">${detail.unit_price.toFixed(2)}</div>
+                                        <div className="text-sm font-medium">${detail.unitPrice.toFixed(2)}</div>
                                         <div className="flex items-center space-x-2">
                                             <button
                                                 type="button"
@@ -303,7 +295,6 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                 <ProductSelectionModal
                     isOpen={isProductModalOpen}
                     onClose={() => setIsProductModalOpen(false)}
-                    products={products}
                     onSelect={handleAddProducts}
                 />
             )}

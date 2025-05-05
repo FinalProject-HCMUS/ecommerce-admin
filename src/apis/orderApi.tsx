@@ -37,3 +37,12 @@ export const updateOrder = async (id: string, order: OrderRequestUpdate): Promis
         return error.response.data;
     }
 }
+
+export const deleteOrder = async (id: string): Promise<CustomResponse<Order>> => {
+    try {
+        const response = await axios.delete<CustomResponse<Order>>(`${API_URL}/orders/${id}`);
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
