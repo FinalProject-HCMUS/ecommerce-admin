@@ -47,3 +47,12 @@ export const addNewBlog = async (blog: BlogRequest): Promise<CustomResponse<Blog
         return error.response.data;
     };
 }
+export const deleteBlog = async (id: string): Promise<CustomResponse<Blog>> => {
+    try {
+        const response = await axios.delete<CustomResponse<Blog>>(`${API_URL}/blogs/${id}`);
+        return response.data;
+    }
+    catch (error: any) {
+        return error.response.data;
+    };
+}

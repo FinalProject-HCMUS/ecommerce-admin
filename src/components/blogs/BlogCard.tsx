@@ -2,17 +2,24 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Blog } from '../../types/blog/blog';
+import { X } from 'lucide-react';
 
 interface BlogCardProps {
     blog: Blog;
+    onDelete: (blog: Blog) => void;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
+const BlogCard: React.FC<BlogCardProps> = ({ blog, onDelete }) => {
     const cardVariants = {
         hidden: { opacity: 0, scale: 0.9 },
         visible: { opacity: 1, scale: 1, transition: { duration: 0.8 } },
     };
     const navigate = useNavigate();
+
+    const handleDelete = async () => {
+        onDelete(blog);
+    };
+
     return (
         <motion.div
             variants={cardVariants}
@@ -20,8 +27,17 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
             animate="visible"
             transition={{ duration: 0.8 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"
+            className="relative bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"
         >
+            {/* Delete Icon */}
+            <button
+                onClick={handleDelete}
+                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors cursor-pointer"
+                aria-label="Delete Blog"
+            >
+                <X size={16} />
+            </button>
+
             {/* Blog Image */}
             <img
                 src={blog.image}
@@ -29,7 +45,6 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
                 className="w-full rounded-lg h-64 object-contain cursor-pointer"
                 onClick={() => navigate(`/blogs/edit/${blog.id}`)}
             />
-
 
             {/* Blog Content */}
             <div className="p-4">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MotionPageWrapper from '../../components/common/MotionPage';
-import { getBlogs } from '../../apis/blogApi';
+import { deleteBlog, getBlogs } from '../../apis/blogApi';
 import Pagination from '../../components/common/Pagination';
 import BlogCard from '../../components/blogs/BlogCard';
 import { Plus } from 'lucide-react';
@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Blog } from '../../types/blog/blog';
 import { toast } from 'react-toastify';
+import DeleteConfirmationModal from '../../components/common/DeleteConfirm';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -16,6 +17,7 @@ const Blogs: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [blogToDelete, setBlogToDelete] = React.useState<Blog | null>(null);
     const navigate = useNavigate();
     const fetchBlogs = async (page: number) => {
         const response = await getBlogs(page - 1, ITEMS_PER_PAGE);
@@ -40,6 +42,22 @@ const Blogs: React.FC = () => {
                 staggerChildren: 0.1,
             },
         },
+    };
+    const handleDelete = (blog: Blog) => {
+        setBlogToDelete(blog);
+    }
+    const confirmDelete = async () => {
+        if (blogToDelete) {
+            try {
+                await deleteBlog(blogToDelete.id);
+                toast.success('Blog deleted successfully!', { autoClose: 1000 });
+                fetchBlogs(currentPage);
+            } catch (error) {
+                console.error('Failed to delete blog:', error);
+                toast.error('Failed to delete blog. Please try again.');
+            }
+            setBlogToDelete(null);
+        }
     };
 
     const itemVariants = {
@@ -93,10 +111,16 @@ const Blogs: React.FC = () => {
                     >
                         {blogs.map((blog) => (
                             <motion.div key={blog.id} variants={itemVariants}>
-                                <BlogCard blog={blog} />
+                                <BlogCard blog={blog} onDelete={handleDelete} />
                             </motion.div>
                         ))}
                     </motion.div>
+                    <DeleteConfirmationModal
+                        isOpen={!!blogToDelete}
+                        onClose={() => setBlogToDelete(null)}
+                        onConfirm={confirmDelete}
+                        itemName={blogToDelete?.id || ''}
+                    />
                     {/* Pagination */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
