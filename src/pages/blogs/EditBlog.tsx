@@ -5,25 +5,33 @@ import MotionPageWrapper from '../../components/common/MotionPage';
 import { useNavigate, useParams } from 'react-router-dom';
 import UploadImageModal from '../../components/blogs/UploadImageModal';
 import { toast } from 'react-toastify';
-import { Blog } from '../../types';
-import { getBlogById } from '../../apis/blogApi';
+import { getBlogById, updateBlog } from '../../apis/blogApi';
+import { BlogRequest } from '../../types/blog/BlogRequest';
+import { Blog } from '../../types/blog/blog';
 
 const EditBlog: React.FC = () => {
-    const { id } = useParams<{ id: string }>(); // Get blog ID from URL params
+    const { id } = useParams<{ id: string }>();
+    const [blog, setBlog] = useState<Blog>();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
-    // Fetch all blogs
+    const getBlog = async () => {
+        const response = await getBlogById(id || '');
+        if (!response.isSuccess) {
+            toast.error(response.message, { position: 'top-right', autoClose: 1000 });
+            return;
+        }
+        if (response.data) {
+            setTitle(response.data.title);
+            setContent(response.data.content);
+            setImage(response.data.image);
+            setBlog(response.data);
+        }
+    }
     useEffect(() => {
-        getBlogById(id || '').then((blog) => {
-            if (blog) {
-                setTitle(blog.title);
-                setContent(blog.content);
-                setImage(blog.image);
-            }
-        });
+        getBlog();
     }, []);
 
     const handleNextStep = (e: React.FormEvent) => {
@@ -35,16 +43,18 @@ const EditBlog: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleSubmit = (newImage: File | null) => {
-        const updatedBlog: Blog = {
-            id: id || '',
+    const handleSubmit = async (newImage: File | null) => {
+        const updatedBlog: BlogRequest = {
             title,
             content,
             image: newImage ? URL.createObjectURL(newImage) : image || '',
-            updated_At: new Date().toISOString(),
+            userId: blog?.userId || '',
         };
-
-        // Call API to update the blog
+        const response = await updateBlog(id || '', updatedBlog);
+        if (!response.isSuccess) {
+            toast.error(response.message, { position: 'top-right', autoClose: 1000 });
+            return;
+        }
         toast.success('Blog updated successfully!', { position: 'top-right', autoClose: 1000 });
         setIsModalOpen(false);
         navigate('/blogs');

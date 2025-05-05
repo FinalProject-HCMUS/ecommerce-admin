@@ -5,7 +5,9 @@ import MotionPageWrapper from '../../components/common/MotionPage';
 import { useNavigate } from 'react-router-dom';
 import UploadImageModal from '../../components/blogs/UploadImageModal'; // Import the modal component
 import { toast } from 'react-toastify';
-import { Blog } from '../../types';
+import { BlogRequest } from '../../types/blog/BlogRequest';
+import { addNewBlog } from '../../apis/blogApi';
+
 
 const AddBlog: React.FC = () => {
     const [title, setTitle] = useState('');
@@ -21,17 +23,19 @@ const AddBlog: React.FC = () => {
         }
         setIsModalOpen(true);
     };
-    const handleSubmit = (image: File | null) => {
+    const handleSubmit = async (image: File | null) => {
         if (image) {
-            const newBlog: Blog = {
-                id: Math.random().toString(36).substr(2, 9),
+            const newBlog: BlogRequest = {
                 title,
                 content,
                 image: URL.createObjectURL(image),
-                created_At: new Date().toISOString(),
-                updated_At: new Date().toISOString(),
+                userId: '2cb387ac-98e0-42db-ae71-cf5c4a606c47', // Replace with actual user ID
             };
-            //call API to save the blog
+            const response = await addNewBlog(newBlog); // Replace with actual API call
+            if (!response.isSuccess) {
+                toast.error(response.message, { position: "top-right", autoClose: 1000 });
+                return;
+            }
             toast.success('Blog created successfully!', { position: "top-right", autoClose: 1000 });
             setIsModalOpen(false);
             navigate('/blogs');
