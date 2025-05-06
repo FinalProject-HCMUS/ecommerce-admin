@@ -1,4 +1,4 @@
-export interface BlogRequestUpdate {
+export interface BlogRequest {
     title: string;
     content: string;
     image: string;
