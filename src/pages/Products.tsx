@@ -11,6 +11,9 @@ import { toast } from 'react-toastify';
 import MotionPageWrapper from '../components/common/MotionPage';
 import { Product } from '../types/product/Product';
 import { ProductImage } from '../types/product/ProductImage';
+import { Size } from '../types/product/Size';
+import { Color } from '../types/product/Color';
+import { ProductColorSize } from '../types/product/ProductColorSize';
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
@@ -71,13 +74,18 @@ const Products = () => {
     }
   };
 
-  const handleAddProduct = async (productData: any, images: ProductImage[]) => {
+  const handleAddProduct = async (productData: any, images: ProductImage[], sizes: Size[], colors: Color[], productColorSizes: ProductColorSize[]) => {
     delete productData.category;
+    console.log(productColorSizes);
     const response = await addProduct(productData);
     if (response.isSuccess) {
       const productId = response.data!.id;
       const productImages = images.map((image) => ({ ...image, productId }));
       const responseImages = await updateProductImages(productImages);
+      //add sizes and colors to product
+
+
+      //add product id an color id to product color size
       if (responseImages.isSuccess) {
         toast.success('Product added successfully', { autoClose: 1000 });
         fetchProducts(currentPage);
