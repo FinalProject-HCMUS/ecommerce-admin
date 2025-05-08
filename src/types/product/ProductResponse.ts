@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pageable } from "../common/Pageable";
 import { Product } from "./Product";
 
