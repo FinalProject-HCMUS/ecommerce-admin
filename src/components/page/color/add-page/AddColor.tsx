@@ -28,8 +28,10 @@ const AddColor: React.FC = () => {
         }
         toast.success("Color added successfully", {
             autoClose: 1000,
+            onClose: () => {
+                navigate("/colors");
+            }
         });
-        navigate("/colors");
     };
 
     return (

@@ -28,6 +28,10 @@ const Colors = () => {
     useEffect(() => {
         fetchColors(currentPage);
     }, [currentPage])
+    const refresh = () => {
+        fetchColors(1);
+        setCurrentPage(1);
+    }
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
@@ -44,6 +48,7 @@ const Colors = () => {
 
                 <div className="bg-white rounded-lg shadow">
                     <ColorTable
+                        refresh={refresh}
                         colorsProp={colors}
                     />
                     <Pagination

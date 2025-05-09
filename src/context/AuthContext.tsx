@@ -22,9 +22,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
         localStorage.setItem('accessToken', response.data!.accessToken);
         localStorage.setItem('refreshToken', response.data!.refreshToken);
-        toast.success('Login successful', { autoClose: 1000, position: 'top-center' });
         setIsAuthenticated(true);
-        navigate('/products');
+        toast.success('Login successful', {
+            autoClose: 1000,
+            position: 'top-right',
+            onClose: () => {
+                navigate('/products');
+            }
+        });
     };
 
     const logout = (navigate: ReturnType<typeof useNavigate>) => {

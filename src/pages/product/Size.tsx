@@ -28,6 +28,10 @@ const Sizes = () => {
     useEffect(() => {
         fetchsizes(currentPage);
     }, [currentPage])
+    const refresh = () => {
+        fetchsizes(1);
+        setCurrentPage(1);
+    }
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
@@ -44,7 +48,8 @@ const Sizes = () => {
 
                 <div className="bg-white rounded-lg shadow">
                     <SizeTable
-                        sizes={sizes}
+                        refresh={refresh}
+                        sizesProp={sizes}
                     />
                     <Pagination
                         currentPage={currentPage}

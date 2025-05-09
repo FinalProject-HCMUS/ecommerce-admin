@@ -9,10 +9,11 @@ import { toast } from 'react-toastify';
 
 
 interface ColorTableProps {
+    refresh: () => void;
     colorsProp: Color[];
 }
 
-const ColorTable: React.FC<ColorTableProps> = ({ colorsProp }) => {
+const ColorTable: React.FC<ColorTableProps> = ({ colorsProp, refresh }) => {
     const naviate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [colors, setColors] = useState<Color[]>(colorsProp);
@@ -33,9 +34,9 @@ const ColorTable: React.FC<ColorTableProps> = ({ colorsProp }) => {
         toast.success("Color deleted successfully", {
             autoClose: 1000,
         });
+        refresh();
         setIsDeleteConfirmOpen(false);
         setColors(colors.filter((color) => color.id !== selectedColorId));
-        naviate('/colors')
     };
 
     return (

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MotionPageWrapper from "../../../common/MotionPage";
-import { getSizeById } from "../../../../apis/sizeApi";
+import { getSizeById, updateSize } from "../../../../apis/sizeApi";
 import { Size } from "../../../../types/size/Size";
 import { toast } from "react-toastify";
+import { SizeRequest } from "../../../../types/size/SizeRequest";
 
 const EditSize: React.FC = () => {
     const navigate = useNavigate();
@@ -42,11 +43,11 @@ const EditSize: React.FC = () => {
         }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const { name, minHeight, maxHeight, minWeight, maxWeight } = formData;
 
         if (!name || minHeight <= 0 || maxHeight <= 0 || minWeight <= 0 || maxWeight <= 0) {
-            toast.error("Please fill in all fields with valid values.", { autoClose: 1000 });
+            toast.error("Please fill in all fields.", { autoClose: 1000 });
             return;
         }
         if (minHeight > maxHeight) {
@@ -57,11 +58,24 @@ const EditSize: React.FC = () => {
             toast.error("Minimum weight cannot be greater than maximum weight.", { autoClose: 1000 });
             return;
         }
-
-        // Submit the updated size data to the server
-        console.log("Updated size:", formData);
-        toast.success("Size updated successfully!", { autoClose: 1000 });
-        navigate("/sizes");
+        const updatedSize: SizeRequest = {
+            name,
+            minHeight: Number(minHeight),
+            maxHeight: Number(maxHeight),
+            minWeight: Number(minWeight),
+            maxWeight: Number(maxWeight),
+        };
+        const response = await updateSize(id!, updatedSize);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000 });
+            return;
+        }
+        toast.success("Size updated successfully!", {
+            autoClose: 1000
+            , onClose: () => {
+                navigate("/sizes");
+            }
+        });
     };
 
     return (

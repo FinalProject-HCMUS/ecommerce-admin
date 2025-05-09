@@ -22,7 +22,14 @@ export const getSizes = async (page: number, perpage: number): Promise<CustomRes
 }
 export const updateSize = async (SizeId: string, SizeData: SizeRequest): Promise<CustomResponse<Size>> => {
     try {
-        const response = await axios.put<CustomResponse<Size>>(`${API_URL}/sizes/${SizeId}`, SizeData);
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.put<CustomResponse<Size>>(`${API_URL}/sizes/${SizeId}`, SizeData, {
+            headers
+                : {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+        });
         return response.data;
     }
     catch (error: any) {
@@ -31,7 +38,13 @@ export const updateSize = async (SizeId: string, SizeData: SizeRequest): Promise
 }
 export const addSize = async (SizeData: SizeRequest): Promise<CustomResponse<Size>> => {
     try {
-        const response = await axios.post<CustomResponse<Size>>(`${API_URL}/sizes`, SizeData);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post<CustomResponse<Size>>(`${API_URL}/sizes`, SizeData, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            }
+        },
+        );
         return response.data;
     } catch (error: any) {
         return error.response.data;

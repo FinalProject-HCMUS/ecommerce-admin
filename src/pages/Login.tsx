@@ -5,8 +5,8 @@ import { Login as LoginInterface } from '../types/auth/Login';
 import MotionPageWrapper from '../components/common/MotionPage';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('admin@gmail.com');
+    const [password, setPassword] = useState('12345678');
     const { login } = useAuth();
     const navigate = useNavigate();
 

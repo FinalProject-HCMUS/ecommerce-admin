@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MotionPageWrapper from "../../../common/MotionPage";
+import { toast } from "react-toastify";
+import { SizeRequest } from "../../../../types/size/SizeRequest";
+import { addSize } from "../../../../apis/sizeApi";
 
 const AddSize: React.FC = () => {
     const navigate = useNavigate();
@@ -10,22 +13,39 @@ const AddSize: React.FC = () => {
     const [minWeight, setMinWeight] = useState<number | "">("");
     const [maxWeight, setMaxWeight] = useState<number | "">("");
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!sizeName || minHeight === "" || maxHeight === "" || minWeight === "" || maxWeight === "") {
-            alert("Please fill in all fields.");
+            toast.error("Please fill in all fields.", { autoClose: 1000, position: "top-right" });
             return;
         }
         if (minHeight > maxHeight) {
-            alert("Minimum height cannot be greater than maximum height.");
+            toast.error("Minimum height cannot be greater than maximum height.", { autoClose: 1000, position: "top-right" });
             return;
         }
         if (minWeight > maxWeight) {
-            alert("Minimum weight cannot be greater than maximum weight.");
+            toast.error("Minimum weight cannot be greater than maximum weight.", { autoClose: 1000, position: "top-right" });
             return;
         }
-        // Submit the size data to the server
-        console.log("Submitting size:", { sizeName, minHeight, maxHeight, minWeight, maxWeight });
-        navigate("/sizes"); // Navigate back to the sizes page
+        const newSize: SizeRequest =
+        {
+            name: sizeName,
+            minHeight: Number(minHeight),
+            maxHeight: Number(maxHeight),
+            minWeight: Number(minWeight),
+            maxWeight: Number(maxWeight)
+        };
+        const response = await addSize(newSize);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        toast.success("Size added successfully", {
+            autoClose: 1000,
+            position: "top-right",
+            onClose: () => {
+                navigate("/sizes");
+            }
+        });
     };
 
     return (

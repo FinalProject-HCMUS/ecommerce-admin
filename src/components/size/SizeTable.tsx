@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Size } from '../../types/size/Size';
 import { useNavigate } from 'react-router-dom';
+import { deleteSize } from '../../apis/sizeApi';
+import { toast } from 'react-toastify';
+import DeleteConfirmationModal from '../common/DeleteConfirm';
 
 
 
 interface SizeTableProps {
-    onDelete?: (id: string) => void;
-    sizes: Size[];
+    refresh: () => void;
+    sizesProp: Size[];
 }
 
-const SizeTable: React.FC<SizeTableProps> = ({ sizes }) => {
+const SizeTable: React.FC<SizeTableProps> = ({ sizesProp, refresh }) => {
     const navigate = useNavigate();
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [sizes, setSizes] = useState<Size[]>(sizesProp);
+    const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
+    useEffect(() => {
+        setSizes(sizesProp);
+    }, [sizesProp]);
+    const handleDeleteClick = (id: string) => {
+        setSelectedSizeId(id);
+        setIsDeleteConfirmOpen(true);
+    };
+    const handleConfirmDelete = async () => {
+        const response = await deleteSize(selectedSizeId!);
+        if (!response.isSuccess) {
+            toast.error(response.message, {
+                autoClose: 1000, position: "top-right"
+            });
+            return;
+        }
+        toast.success("Size deleted successfully", {
+            autoClose: 1000,
+        });
+        refresh();
+        setSizes(sizes.filter((size) => size.id !== selectedSizeId));
+        setIsDeleteConfirmOpen(false);
+    };
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -51,6 +79,7 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes }) => {
                                     <Pencil size={16} />
                                 </button>
                                 <button
+                                    onClick={() => handleDeleteClick(size.id)}
                                     className="text-red-600 hover:text-red-900"
                                 >
                                     <Trash2 size={16} />
@@ -60,6 +89,12 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes }) => {
                     ))}
                 </tbody>
             </table>
+            {isDeleteConfirmOpen && <DeleteConfirmationModal
+                title='Delete Size'
+                isOpen={isDeleteConfirmOpen}
+                onClose={() => { setIsDeleteConfirmOpen(false); }}
+                onConfirm={handleConfirmDelete}
+            />}
         </div>
     );
 };
