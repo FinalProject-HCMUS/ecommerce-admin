@@ -13,6 +13,8 @@ import EditColor from './components/page/color/edit-page/EditColor';
 import AddSize from './components/page/size/add-page/AddSize';
 import Sizes from './pages/product/Size';
 import EditSize from './components/page/size/edit-page/EditSize';
+import AddCategory from './components/page/category/add-page/AddCategory';
+import EditCategory from './components/page/category/edit-page/EditCategory';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
             <Route path="/colors/edit/:id" element={<PrivateRoute element={EditColor} />} />
             <Route path="/sizes/add" element={<PrivateRoute element={AddSize} />} />
             <Route path="/sizes/edit/:id" element={<PrivateRoute element={EditSize} />} />
+            <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
+            <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
           </Route>
         </Routes>
       </AuthProvider>

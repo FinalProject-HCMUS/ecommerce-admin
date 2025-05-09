@@ -18,9 +18,23 @@ export const getCategories = async (page: number, perpage: number): Promise<Cust
         return error.response.data;
     }
 }
+export const getCategoryById = async (categoryId: string): Promise<CustomResponse<Category>> => {
+    try {
+        const response = await axios.get<CustomResponse<Category>>(`${API_URL}/categories/${categoryId}`);
+        return response.data;
+    }
+    catch (error: any) {
+        return error.response.data;
+    }
+}
 export const updateCategory = async (categoryId: string, categoryData: CategoryRequest): Promise<CustomResponse<Category>> => {
     try {
-        const response = await axios.put<CustomResponse<Category>>(`${API_URL}/categories/${categoryId}`, categoryData);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.put<CustomResponse<Category>>(`${API_URL}/categories/${categoryId}`, categoryData, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
         return response.data;
     }
     catch (error: any) {
@@ -29,7 +43,14 @@ export const updateCategory = async (categoryId: string, categoryData: CategoryR
 }
 export const addCategory = async (categoryData: CategoryRequest): Promise<CustomResponse<Category>> => {
     try {
-        const response = await axios.post<CustomResponse<Category>>(`${API_URL}/categories`, categoryData);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post<CustomResponse<Category>>(`${API_URL}/categories`, categoryData,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
         return response.data;
     } catch (error: any) {
         return error.response.data;
@@ -37,7 +58,14 @@ export const addCategory = async (categoryData: CategoryRequest): Promise<Custom
 }
 export const deleteCategory = async (categoryId: string): Promise<CustomResponse<Category>> => {
     try {
-        const response = await axios.delete<CustomResponse<Category>>(`${API_URL}/categories/${categoryId}`);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.delete<CustomResponse<Category>>(`${API_URL}/categories/${categoryId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
         return response.data;
     } catch (error: any) {
         return error.response.data;

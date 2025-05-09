@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Category } from '../../types/category/Category';
+import { useNavigate } from 'react-router-dom';
+import DeleteConfirmationModal from '../common/DeleteConfirm';
+import { toast } from 'react-toastify';
+import { deleteCategory } from '../../apis/categoryApi';
 
 
 interface CategoryTableProps {
     categories: Category[];
-    onEdit: (id: string) => void;
-    onDelete: (id: string) => void;
+    refresh: () => void;
 }
 
-const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onEdit, onDelete }) => {
+const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) => {
+    const navigate = useNavigate();
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+    const handleDeleteClick = (id: string) => {
+        setSelectedCategoryId(id);
+        setIsDeleteConfirmOpen(true); // Open the confirmation dialog
+    };
+
+    const handleConfirmDelete = async () => {
+        const response = await deleteCategory(selectedCategoryId!);
+        if (!response.isSuccess) {
+            alert(response.message);
+            return;
+        }
+        toast.success("Category deleted successfully", {
+            autoClose: 1000,
+        });
+        refresh();
+        setIsDeleteConfirmOpen(false);
+    };
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -31,13 +54,16 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onEdit, onDel
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button
-                                    onClick={() => onEdit(category.id)}
+                                    onClick={() => {
+                                        navigate(`/categories/edit/${category.id}`);
+                                    }
+                                    }
                                     className="text-blue-600 hover:text-blue-900 mr-4"
                                 >
                                     <Pencil size={16} />
                                 </button>
                                 <button
-                                    onClick={() => onDelete(category.id)}
+                                    onClick={() => handleDeleteClick(category.id)}
                                     className="text-red-600 hover:text-red-900"
                                 >
                                     <Trash2 size={16} />
@@ -47,6 +73,12 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onEdit, onDel
                     ))}
                 </tbody>
             </table>
+            <DeleteConfirmationModal
+                title='Delete Category'
+                isOpen={isDeleteConfirmOpen}
+                onClose={() => { setIsDeleteConfirmOpen(false); }}
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 };
