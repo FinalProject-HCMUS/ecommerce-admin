@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import Pagination from '../components/common/Pagination';
-import CategoryTable from '../components/categories/CategoryTable';
-import AddCategoryModal from '../components/categories/AddCategoryModal';
-import EditCategoryModal from '../components/categories/EditCategoryModal';
+import CategoryTable from '../components/category/CategoryTable';
+import AddCategoryModal from '../components/category/AddCategoryModal';
+import EditCategoryModal from '../components/category/EditCategoryModal';
 import { addCategory, deleteCategory, getCategories, updateCategory } from '../apis/categoryApi';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../components/common/DeleteConfirm';

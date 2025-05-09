@@ -1,7 +1,8 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Login } from '../types';
 import { toast } from 'react-toastify';
+import { Login } from '../types/auth/Login';
+import { signin } from '../apis/authApi';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -13,15 +14,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
-    const login = (credentials: Login, navigate: ReturnType<typeof useNavigate>) => {
-        const { username, password } = credentials;
-        if (username === 'admin' && password === '123') {
-            setIsAuthenticated(true);
-            navigate('/products');
-        } else {
-            toast.error('Invalid username or password', { autoClose: 1000, position: 'top-center' });
+    const login = async (credentials: Login, navigate: ReturnType<typeof useNavigate>) => {
+        const response = await signin(credentials);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000, position: 'top-center' });
+            return;
         }
+        localStorage.setItem('accessToken', response.data!.accessToken);
+        localStorage.setItem('refreshToken', response.data!.refreshToken);
+        toast.success('Login successful', { autoClose: 1000, position: 'top-center' });
+        setIsAuthenticated(true);
+        navigate('/products');
     };
 
     const logout = (navigate: ReturnType<typeof useNavigate>) => {

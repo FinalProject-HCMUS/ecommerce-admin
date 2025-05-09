@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Package, List, LogOut } from 'lucide-react';
+import { Package, List, LogOut, Palette, RulerIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -21,6 +21,26 @@ const Sidebar = () => {
         >
           <Package size={20} />
           <span>Products</span>
+        </NavLink>
+        <NavLink
+          to="/colors"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
+        >
+          <Palette size={20} />
+          <span>Colors</span>
+        </NavLink>
+        <NavLink
+          to="/sizes"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
+        >
+          <RulerIcon size={20} />
+          <span>Sizes</span>
         </NavLink>
         <NavLink
           to="/categories"

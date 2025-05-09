@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pageable } from "../color/common/Pageable";
-import { Product } from "./Product";
 
-export interface ProductResponse {
-    content: Product[];
+import { Pageable } from "../color/common/Pageable";
+import { Category } from "./Category";
+
+
+export interface CategoryResponse {
+    content: Category[];
     pageable: Pageable;
     last: boolean;
     totalPages: number;

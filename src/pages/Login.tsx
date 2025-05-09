@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Login as LoginInterface } from '../types';
+import { Login as LoginInterface } from '../types/auth/Login';
 import MotionPageWrapper from '../components/common/MotionPage';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const credentials: LoginInterface = { username, password };
+        const credentials: LoginInterface = { email, password };
         login(credentials, navigate);
     };
 
@@ -24,11 +24,11 @@ const Login = () => {
                 <MotionPageWrapper>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                             <input
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 required
                             />

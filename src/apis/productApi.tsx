@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { CustomResponse } from '../types/common/CustomResponse';
+import { CustomResponse } from '../types/color/common/CustomResponse';
 import { ProductResponse } from '../types/product/ProductResponse';
 import { Product } from '../types/product/Product';
 import { ProductImage } from '../types/product/ProductImage';
@@ -10,6 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const getProducts = async (page: number, perpage: number): Promise<CustomResponse<ProductResponse>> => {
   try {
     const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`, {
+
       params: {
         page, perpage
       },

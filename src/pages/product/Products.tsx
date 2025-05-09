@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
-import ProductTable from '../components/product/ProductTable';
-import Pagination from '../components/common/Pagination';
-import AddProductModal from '../components/product/AddProductModal';
-import EditProductModal from '../components/product/EditProductModal';
+import ProductTable from '../../components/product/ProductTable';
+import Pagination from '../../components/common/Pagination';
+import AddProductModal from '../../components/product/AddProductModal';
+import EditProductModal from '../../components/product/EditProductModal';
 import { Plus } from 'lucide-react';
-import { addProduct, deleteProduct, getProductById, getProductImages, getProducts, updateProduct, updateProductImages } from '../apis/productApi';
-import DeleteConfirmationModal from '../components/common/DeleteConfirm';
+import { addProduct, deleteProduct, getProductById, getProductImages, getProducts, updateProduct, updateProductImages } from '../../apis/productApi';
+import DeleteConfirmationModal from '../../components/common/DeleteConfirm';
 import { toast } from 'react-toastify';
-import MotionPageWrapper from '../components/common/MotionPage';
-import { Product } from '../types/product/Product';
-import { ProductImage } from '../types/product/ProductImage';
-import { Size } from '../types/product/Size';
-import { Color } from '../types/product/Color';
-import { ProductColorSize } from '../types/product/ProductColorSize';
+import MotionPageWrapper from '../../components/common/MotionPage';
+import { Product } from '../../types/product/Product';
+import { ProductImage } from '../../types/product/ProductImage';
+import { Size } from '../../types/size/Size';
+import { Color } from '../../types/color/Color';
+import { ProductColorSize } from '../../types/product/ProductColorSize';
+import { useNavigate } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
@@ -73,27 +74,31 @@ const Products = () => {
       setProductToDelete(null);
     }
   };
+  const navigate = useNavigate(); // Initialize navigate
 
-  const handleAddProduct = async (productData: any, images: ProductImage[], sizes: Size[], colors: Color[], productColorSizes: ProductColorSize[]) => {
-    delete productData.category;
-    console.log(productColorSizes);
-    const response = await addProduct(productData);
-    if (response.isSuccess) {
-      const productId = response.data!.id;
-      const productImages = images.map((image) => ({ ...image, productId }));
-      const responseImages = await updateProductImages(productImages);
-      //add sizes and colors to product
-
-
-      //add product id an color id to product color size
-      if (responseImages.isSuccess) {
-        toast.success('Product added successfully', { autoClose: 1000 });
-        fetchProducts(currentPage);
-        return;
-      }
-    }
-    toast.error('Failed to add product', { autoClose: 1000 });
+  const handleAddProduct = () => {
+    navigate('/products/add/information');
   };
+  // const handleAddProduct = async (productData: any, images: ProductImage[], sizes: Size[], colors: Color[], productColorSizes: ProductColorSize[]) => {
+  //   delete productData.category;
+  //   console.log(productColorSizes);
+  //   const response = await addProduct(productData);
+  //   if (response.isSuccess) {
+  //     const productId = response.data!.id;
+  //     const productImages = images.map((image) => ({ ...image, productId }));
+  //     const responseImages = await updateProductImages(productImages);
+  //     //add sizes and colors to product
+
+
+  //     //add product id an color id to product color size
+  //     if (responseImages.isSuccess) {
+  //       toast.success('Product added successfully', { autoClose: 1000 });
+  //       fetchProducts(currentPage);
+  //       return;
+  //     }
+  //   }
+  //   toast.error('Failed to add product', { autoClose: 1000 });
+  // };
 
   const handleUpdateProduct = async (productData: any, images: ProductImage[]) => {
     const idProduct = productData.id;
@@ -115,7 +120,7 @@ const Products = () => {
         <div className="mb-8 flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-900">Products</h1>
           <button
-            onClick={() => setIsAddModalOpen(true)}
+            onClick={handleAddProduct}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
           >
             <Plus size={20} />
@@ -136,11 +141,11 @@ const Products = () => {
           />
         </div>
 
-        <AddProductModal
+        {/* <AddProductModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           onSubmit={handleAddProduct}
-        />
+        /> */}
 
         <EditProductModal
           isOpen={isEditModalOpen}
@@ -153,7 +158,6 @@ const Products = () => {
           isOpen={!!productToDelete}
           onClose={() => setProductToDelete(null)}
           onConfirm={confirmDelete}
-          itemName={productToDelete?.name || ''}
         />
       </div>
     </MotionPageWrapper>

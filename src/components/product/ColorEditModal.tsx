@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { Color } from '../../types/product/Color';
+import { Color } from '../../types/color/Color';
 
 interface ColorEditModalProps {
     isOpen: boolean;

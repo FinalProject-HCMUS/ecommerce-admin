@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pageable } from "../color/common/Pageable";
-import { Product } from "./Product";
+import { Pageable } from "./common/Pageable";
+import { Color } from "./Color";
 
-export interface ProductResponse {
-    content: Product[];
+export interface ColorResponse {
+    content: Color[];
     pageable: Pageable;
     last: boolean;
     totalPages: number;

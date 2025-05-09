@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Pageable } from "../color/common/Pageable";
+import { Size } from "./Size";
 
-import { Pageable } from "../common/Pageable";
-import { Category } from "./Category";
-
-
-export interface CategoryResponse {
-    content: Category[];
+export interface SizeResponse {
+    content: Size[];
     pageable: Pageable;
     last: boolean;
     totalPages: number;

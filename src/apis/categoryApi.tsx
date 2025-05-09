@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { CustomResponse } from "../types/common/CustomResponse";
+import { CustomResponse } from "../types/color/common/CustomResponse";
 import { CategoryResponse } from "../types/category/CategoryResponse";
 import { CategoryRequest } from "../types/category/CategoryRequest";
 import { Category } from "../types/category/Category";

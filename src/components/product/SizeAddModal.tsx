@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Size } from "../../types/product/Size";
+import { Size } from "../../types/size/Size";
 import { X } from "lucide-react";
 
 interface SizeAddModalProps {
