@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Color } from '../../types/color/Color';
 import { useNavigate } from 'react-router-dom';
@@ -10,21 +10,17 @@ import { toast } from 'react-toastify';
 
 interface ColorTableProps {
     refresh: () => void;
-    colorsProp: Color[];
+    colors: Color[];
 }
 
-const ColorTable: React.FC<ColorTableProps> = ({ colorsProp, refresh }) => {
+const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
     const naviate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-    const [colors, setColors] = useState<Color[]>(colorsProp);
     const [selectedColorId, setSelectedColorId] = useState<string | null>(null);
     const handleDeleteClick = (id: string) => {
         setSelectedColorId(id);
         setIsDeleteConfirmOpen(true); // Open the confirmation dialog
     };
-    useEffect(() => {
-        setColors(colorsProp);
-    }, [colorsProp]);
     const handleConfirmDelete = async () => {
         const response = await deleteColor(selectedColorId!);
         if (!response.isSuccess) {
@@ -36,7 +32,6 @@ const ColorTable: React.FC<ColorTableProps> = ({ colorsProp, refresh }) => {
         });
         refresh();
         setIsDeleteConfirmOpen(false);
-        setColors(colors.filter((color) => color.id !== selectedColorId));
     };
 
     return (
@@ -44,7 +39,7 @@ const ColorTable: React.FC<ColorTableProps> = ({ colorsProp, refresh }) => {
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name Color</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Color</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Color Code</th>
                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
@@ -53,7 +48,11 @@ const ColorTable: React.FC<ColorTableProps> = ({ colorsProp, refresh }) => {
                     {colors.map((color) => (
                         <tr key={color.id}>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{color.name}</div>
+                                <div className="flex">
+                                    <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: color.code }}></div>
+                                    <div className="mx-3 text-sm text-gray-900">{color.name}</div>
+
+                                </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{color.code}</div>

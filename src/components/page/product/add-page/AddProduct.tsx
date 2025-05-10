@@ -25,20 +25,19 @@ const initialFormData = {
 const AddProduct: React.FC = () => {
     const [formData, setFormData] = useState(initialFormData);
     const [images, setImages] = useState<ProductImage[]>([]);
-    const [colors, setColors] = useState<Color[]>([]);
-    const [sizes, setSizes] = useState<Size[]>([]);
+    const [files, setFiles] = useState<File[]>([]);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
 
     const handleSubmit = () => {
         // Submit the product data to the server
-        console.log('Submitting product:', { formData, images, colors, sizes, productColorSizes });
+        console.log('Submitting product:', { formData, images, productColorSizes, files });
     };
 
     return (
         <Routes>
             <Route path="information" element={<AddProductInformation formData={formData} setFormData={setFormData} />} />
-            <Route path="images" element={<AddProductImage images={images} setImages={setImages} formData={formData} setFormData={setFormData} />} />
-            <Route path="variants" element={<AddVariants colors={colors} setColors={setColors} sizes={sizes} setSizes={setSizes} productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
+            <Route path="images" element={<AddProductImage images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
+            <Route path="variants" element={<AddVariants productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
         </Routes>
     );
 };

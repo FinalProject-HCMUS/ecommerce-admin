@@ -49,7 +49,7 @@ const Sizes = () => {
                 <div className="bg-white rounded-lg shadow">
                     <SizeTable
                         refresh={refresh}
-                        sizesProp={sizes}
+                        sizes={sizes}
                     />
                     <Pagination
                         currentPage={currentPage}

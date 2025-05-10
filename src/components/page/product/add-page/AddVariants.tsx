@@ -4,12 +4,11 @@ import { Pencil, Trash } from 'lucide-react';
 import { Color } from '../../../../types/color/Color';
 import { Size } from '../../../../types/size/Size';
 import { ProductColorSize } from '../../../../types/product/ProductColorSize';
+import ColorPickerDialog from '../../../color/ColorPickerDialog';
+import SizePickerDialog from '../../../size/SizePickerDialog';
+import { toast } from 'react-toastify';
 
 interface AddVariantsProps {
-    colors: Color[];
-    setColors: React.Dispatch<React.SetStateAction<Color[]>>;
-    sizes: Size[];
-    setSizes: React.Dispatch<React.SetStateAction<Size[]>>;
     productColorSizes: ProductColorSize[];
     setProductColorSizes: React.Dispatch<React.SetStateAction<ProductColorSize[]>>;
     handleSubmit: () => void;
@@ -22,19 +21,21 @@ const AddVariants: React.FC<AddVariantsProps> = ({
 }) => {
     const navigate = useNavigate();
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
-    const [newVariant, setNewVariant] = useState<ProductColorSize>({
-        colorId: '',
-        sizeId: '',
-        quantity: 0,
-    });
+    const [colorsSelected, setColorsSelected] = useState<Color[]>([{ name: '', code: '', id: '' }]);
+    const [newVariant, setNewVariant] = useState<ProductColorSize>(
+        { productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 }
+    );
+    const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+    const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
 
     const handleAddVariant = () => {
-        if (!newVariant.colorId || !newVariant.sizeId || newVariant.quantity <= 0) {
-            alert('Please fill in all fields.');
+        if (!newVariant.color || !newVariant.size || newVariant.quantity <= 0) {
+            toast.error('Please fill in all fields.', { autoClose: 1000, position: 'top-right' });
             return;
         }
         setProductColorSizes((prev) => [...prev, newVariant]);
-        setNewVariant({ colorId: '', sizeId: '', quantity: 0 });
+        setColorsSelected((prev) => [...prev, newVariant.color!]);
+        setNewVariant({ productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
     };
 
     const handleEditVariant = (index: number) => {
@@ -48,13 +49,22 @@ const AddVariants: React.FC<AddVariantsProps> = ({
             updatedVariants[editingIndex] = newVariant;
             setProductColorSizes(updatedVariants);
             setEditingIndex(null);
-            setNewVariant({ colorId: '', sizeId: '', quantity: 0 });
+            setNewVariant({ productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
         }
     };
 
     const handleDeleteVariant = (index: number) => {
         setProductColorSizes((prev) => prev.filter((_, i) => i !== index));
+        setColorsSelected((prev) => prev.filter((_, i) => i !== index));
     };
+    const handleColorSelect = (color: Color) => {
+        setNewVariant((prev) => ({ ...prev, color: color }));
+        setIsColorModalOpen(false);
+    };
+    const handleSizeSelect = (size: Size) => {
+        setNewVariant((prev) => ({ ...prev, size: size }));
+        setIsSizeModalOpen(false);
+    }
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -64,26 +74,37 @@ const AddVariants: React.FC<AddVariantsProps> = ({
             <div className="bg-white rounded-lg shadow p-6">
                 {/* Add Variant Form */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
+                    {/* Color Picker */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
-                        <input
-                            type="text"
-                            value={newVariant.colorId}
-                            onChange={(e) => setNewVariant((prev) => ({ ...prev, colorId: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter color"
-                        />
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={newVariant.color!.name}
+                                readOnly
+                                onClick={() => setIsColorModalOpen(true)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                placeholder="Pick a color"
+                            />
+                        </div>
                     </div>
+
+                    {/* Size Picker */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
-                        <input
-                            type="text"
-                            value={newVariant.sizeId}
-                            onChange={(e) => setNewVariant((prev) => ({ ...prev, sizeId: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter size"
-                        />
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={newVariant.size!.name}
+                                readOnly
+                                onClick={() => setIsSizeModalOpen(true)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                placeholder="Pick a size"
+                            />
+                        </div>
                     </div>
+
+                    {/* Quantity */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
                         <input
@@ -132,8 +153,12 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                             {productColorSizes.map((variant, index) => (
                                 <tr key={index} className="hover:bg-gray-50">
                                     <td className="px-4 py-2 text-sm text-gray-700 border-b">{index + 1}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">{variant.colorId}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">{variant.sizeId}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">
+                                        <div className="flex items-center">
+                                            <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: variant.color!.code }}></div>
+                                            <span className="ml-3 text-sm text-gray-900">{variant.color!.name}</span>
+                                        </div></td>
+                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">{variant.size!.name}</td>
                                     <td className="px-4 py-2 text-sm text-gray-700 border-b">{variant.quantity}</td>
                                     <td className="px-4 py-2 text-center text-sm text-gray-700 border-b">
                                         <button
@@ -175,7 +200,29 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                     </button>
                 </div>
             </div>
-        </div>
+
+            {/* Color Picker Modal */}
+            {
+                isColorModalOpen && (
+                    <ColorPickerDialog
+                        isOpen={isColorModalOpen}
+                        onClose={() => setIsColorModalOpen(false)}
+                        onPick={handleColorSelect}
+                        colorsSelected={colorsSelected}
+                    />
+                )
+            }
+            {/* Size Picker Modal */}
+            {
+                isSizeModalOpen && (
+                    <SizePickerDialog
+                        isOpen={isSizeModalOpen}
+                        onClose={() => setIsSizeModalOpen(false)}
+                        onPick={handleSizeSelect}
+                    />
+                )
+            }
+        </div >
     );
 };
 

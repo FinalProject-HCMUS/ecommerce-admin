@@ -5,17 +5,20 @@ import { X, Upload } from 'lucide-react';
 import MotionPageWrapper from '../../../common/MotionPage';
 
 interface AddProductImageProps {
+    files: File[];
+    setFiles: React.Dispatch<React.SetStateAction<File[]>>;
     images: ProductImage[];
     setImages: React.Dispatch<React.SetStateAction<ProductImage[]>>;
     formData: any;
     setFormData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, formData, setFormData }) => {
+const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, formData, setFormData, setFiles }) => {
     const navigate = useNavigate();
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
+        setFiles((prev) => [...prev, ...files]);
         const newImages = files.map((file) => URL.createObjectURL(file));
         setImages((prev) => [...prev, ...newImages.map((url) => ({ id: '', productId: '', url }))]);
         if (!formData.mainImageUrl && newImages.length > 0) {
@@ -26,6 +29,7 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, fo
     const handleRemoveImage = (index: number) => {
         const mainUrl = images[index].url;
         const updatedImages = images.filter((_, i) => i !== index);
+        setFiles((prev) => prev.filter((_, i) => i !== index));
         setImages(updatedImages);
         if (mainUrl === formData.mainImageUrl) {
             const nextThumbnail = updatedImages.length > 0 ? updatedImages[0].url : '';

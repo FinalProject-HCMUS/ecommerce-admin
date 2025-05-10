@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Size } from '../../types/size/Size';
 import { useNavigate } from 'react-router-dom';
@@ -10,17 +10,14 @@ import DeleteConfirmationModal from '../common/DeleteConfirm';
 
 interface SizeTableProps {
     refresh: () => void;
-    sizesProp: Size[];
+    sizes: Size[];
 }
 
-const SizeTable: React.FC<SizeTableProps> = ({ sizesProp, refresh }) => {
+const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
     const navigate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-    const [sizes, setSizes] = useState<Size[]>(sizesProp);
     const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
-    useEffect(() => {
-        setSizes(sizesProp);
-    }, [sizesProp]);
+
     const handleDeleteClick = (id: string) => {
         setSelectedSizeId(id);
         setIsDeleteConfirmOpen(true);
@@ -37,7 +34,6 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizesProp, refresh }) => {
             autoClose: 1000,
         });
         refresh();
-        setSizes(sizes.filter((size) => size.id !== selectedSizeId));
         setIsDeleteConfirmOpen(false);
     };
     return (

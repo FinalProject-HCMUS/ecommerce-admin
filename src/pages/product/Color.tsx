@@ -49,7 +49,7 @@ const Colors = () => {
                 <div className="bg-white rounded-lg shadow">
                     <ColorTable
                         refresh={refresh}
-                        colorsProp={colors}
+                        colors={colors}
                     />
                     <Pagination
                         currentPage={currentPage}
