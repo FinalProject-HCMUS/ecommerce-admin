@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-import { } from '../../types';
 import { Product } from '../../types/product/Product';
 import DeleteConfirmationModal from '../common/DeleteConfirm';
 import { useNavigate } from 'react-router-dom';

@@ -24,4 +24,23 @@ export const uploadImages = async (data: File[]): Promise<CustomResponse<string[
         return error.response?.data || { isSuccess: false, message: "Unknown error" };
     }
 };
+export const uploadImage = async (data: File): Promise<CustomResponse<string>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const files = new FormData();
+        files.append("file", data);
+        const response = await axios.post<CustomResponse<string>>(
+            `${API_URL}/images/upload`,
+            files,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response?.data || { isSuccess: false, message: "Unknown error" };
+    }
+};
 
