@@ -83,7 +83,9 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button
-
+                  onClick={() => {
+                    naviate(`/products/edit/${product.id}/information`);
+                  }}
                   className="text-blue-600 hover:text-blue-900 mr-4"
                 >
                   <Pencil size={16} />

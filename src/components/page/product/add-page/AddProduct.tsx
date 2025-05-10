@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import AddProductInformation from './AddProductInformation';
 import AddProductImage from './AddProductImage';
 import AddVariants from './AddVariants';
 import { ProductImage } from '../../../../types/product/ProductImage';
-import { Color } from '../../../../types/color/Color';
-import { Size } from '../../../../types/size/Size';
 import { ProductColorSize } from '../../../../types/product/ProductColorSize';
+
+import { toast } from 'react-toastify';
+import { uploadImages } from '../../../../apis/imageApi';
+import { ProductRequest } from '../../../../types/product/ProductRequest';
+import { addProduct, createProductColorSizes, updateProductImages } from '../../../../apis/productApi';
+import { ProductColorSizeRequest } from '../../../../types/product/ProductColorSizeRequest';
 
 const initialFormData = {
     name: '',
     description: '',
     category: '',
+    categoryName: '',
     categoryId: '',
     price: 0,
     cost: 0,
@@ -19,20 +24,73 @@ const initialFormData = {
     enable: false,
     inStock: true,
     discountPercent: 0,
-    mainImageUrl: '',
+    mainImageUrl: ''
 };
 
 const AddProduct: React.FC = () => {
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState<ProductRequest>(initialFormData);
     const [images, setImages] = useState<ProductImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
-
-    const handleSubmit = () => {
-        // Submit the product data to the server
+    const navigate = useNavigate();
+    const handleSubmit = async () => {
         console.log('Submitting product:', { formData, images, productColorSizes, files });
-    };
 
+        // Upldate images to get url or image
+        const imageResponse = await uploadImages(files);
+        if (!imageResponse.isSuccess) {
+            toast.error(imageResponse.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        // Call method add product to got productID
+        const productResponse = await addProduct(formData);
+        if (!productResponse.isSuccess) {
+            toast.error(productResponse.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        images.forEach((image, index) => {
+            image.url = imageResponse.data![index];
+            image.productId = productResponse.data!.id;
+        });
+        //Call method add product images
+        const productImageResponse = await updateProductImages(images);
+        if (!productImageResponse.isSuccess) {
+            toast.error(productImageResponse.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        if (productColorSizes.length != 0) {
+            const productColorSizeRequest: ProductColorSizeRequest[] = productColorSizes.map((productColorSize) => ({
+                productId: productResponse.data!.id,
+                colorId: productColorSize.color!.id,
+                sizeId: productColorSize.size!.id,
+                quantity: productColorSize.quantity,
+            }));
+            const productColorSizeResponse = await createProductColorSizes(productColorSizeRequest);
+            if (!productColorSizeResponse.isSuccess) {
+                toast.error(productColorSizeResponse.message, {
+                    autoClose: 1000,
+                    position: 'top-right',
+                });
+                return;
+            }
+        }
+        toast.success('Product added successfully', {
+            autoClose: 1000,
+            position: 'top-right',
+            onClose: () => {
+                navigate('/products');
+            }
+        });
+    };
     return (
         <Routes>
             <Route path="information" element={<AddProductInformation formData={formData} setFormData={setFormData} />} />

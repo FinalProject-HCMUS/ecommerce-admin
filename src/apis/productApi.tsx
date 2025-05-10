@@ -4,7 +4,9 @@ import { CustomResponse } from '../types/color/common/CustomResponse';
 import { ProductResponse } from '../types/product/ProductResponse';
 import { Product } from '../types/product/Product';
 import { ProductImage } from '../types/product/ProductImage';
-import { Upload } from 'lucide-react';
+import { ProductRequest } from '../types/product/ProductRequest';
+import { ProductColorSizeRequest } from '../types/product/ProductColorSizeRequest';
+import { ProductColorSize } from '../types/product/ProductColorSize';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,7 +34,7 @@ export const getProductById = async (id: string): Promise<CustomResponse<Product
   }
 }
 
-export const addProduct = async (productData: Product): Promise<CustomResponse<Product>> => {
+export const addProduct = async (productData: ProductRequest): Promise<CustomResponse<Product>> => {
   try {
     const response = await axios.post<CustomResponse<Product>>(`${API_URL}/products`, productData);
     return response.data;
@@ -90,6 +92,30 @@ export const uploadProductImages = async (files: File[]): Promise<CustomResponse
         'Content-Type': 'multipart/form-data',
       },
     });
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const createProductColorSizes = async (productColorSizes: ProductColorSizeRequest[]): Promise<CustomResponse<ProductColorSize>> => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axios.post<CustomResponse<ProductColorSize>>(`${API_URL}/product-color-sizes/batch`, { productColorSizes }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}
+export const getProductColorSizes = async (id: string): Promise<CustomResponse<ProductColorSize[]>> => {
+  try {
+    const response = await axios.get<CustomResponse<ProductColorSize[]>>(`${API_URL}/product-color-sizes/product/${id}`);
     return response.data;
   }
   catch (error: any) {

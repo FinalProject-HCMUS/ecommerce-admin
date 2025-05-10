@@ -9,12 +9,6 @@ export interface Product {
     enable: boolean;
     inStock: boolean;
     mainImageUrl: string;
-    averageRating: number;
-    reviewCount: number;
     categoryId: string;
     categoryName: string;
-    createdAt: string;
-    updatedAt: string;
-    createdBy: string;
-    updatedBy: string;
 }

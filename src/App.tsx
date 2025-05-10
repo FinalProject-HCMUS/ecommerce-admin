@@ -15,6 +15,7 @@ import Sizes from './pages/product/Size';
 import EditSize from './components/page/size/edit-page/EditSize';
 import AddCategory from './components/page/category/add-page/AddCategory';
 import EditCategory from './components/page/category/edit-page/EditCategory';
+import EditProduct from './components/page/product/edit-page/EditProduct';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/sizes/edit/:id" element={<PrivateRoute element={EditSize} />} />
             <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
             <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
+            <Route path="/products/edit/:id/*" element={<PrivateRoute element={EditProduct} />} />
           </Route>
         </Routes>
       </AuthProvider>

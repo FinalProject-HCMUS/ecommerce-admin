@@ -4,7 +4,7 @@ import { X, Upload } from 'lucide-react';
 import MotionPageWrapper from '../../../common/MotionPage';
 import { ProductImage } from '../../../../types/product/ProductImage';
 
-interface AddProductImageProps {
+interface EditProductImageProps {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<File[]>>;
     images: ProductImage[];
@@ -13,7 +13,7 @@ interface AddProductImageProps {
     setFormData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, formData, setFormData, setFiles }) => {
+const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, formData, setFormData, setFiles }) => {
     const navigate = useNavigate();
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +45,7 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, fo
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Product Images</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">Edit Product Images</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6">
                     <div className="space-y-6">
@@ -122,7 +122,7 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, fo
                         </button>
                         <button
                             type="button"
-                            onClick={() => navigate('/products/add/variants')}
+                            onClick={() => navigate(`/products/edit/${formData.id}/variants`)}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
                             Next
@@ -134,4 +134,4 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, fo
     );
 };
 
-export default AddProductImage;
+export default EditProductImage;

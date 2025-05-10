@@ -5,15 +5,14 @@ import ReactQuill from 'react-quill';
 import { Category } from '../../../../types/category/Category';
 import { getCategories } from '../../../../apis/categoryApi';
 import { toast } from 'react-toastify';
-import { ProductRequest } from '../../../../types/product/ProductRequest';
+import { Product } from '../../../../types/product/Product';
 
-
-interface AddProductInformationProps {
-    formData: ProductRequest;
-    setFormData: React.Dispatch<React.SetStateAction<ProductRequest>>;
+interface EditProductInformationProps {
+    formData: Product;
+    setFormData: React.Dispatch<React.SetStateAction<Product>>;
 }
 
-const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData, setFormData }) => {
+const EditProductInformation: React.FC<EditProductInformationProps> = ({ formData, setFormData }) => {
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [isFetching, setIsFetching] = useState(false);
@@ -87,7 +86,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Product Information</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">Edit Product Information</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6">
                     <div className="space-y-6">
@@ -213,7 +212,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                         </button>
                         <button
                             type="button"
-                            onClick={() => navigate('/products/add/images')}
+                            onClick={() => navigate(`/products/edit/${formData.id}/images`)}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
                             Next
@@ -225,4 +224,4 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
     );
 };
 
-export default AddProductInformation;
+export default EditProductInformation;
