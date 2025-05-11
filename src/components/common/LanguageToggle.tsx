@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LanguageToggle: React.FC<{ lang: 'en' | 'vi'; onToggle?: () => void }> = ({ lang, onToggle }) => {
+const LanguageToggle: React.FC<{ lang: string; onToggle?: () => void }> = ({ lang, onToggle }) => {
     return (
         <div
             className="flex items-center bg-gray-100 rounded-full px-2 py-1 w-28 cursor-pointer border border-gray-200"
