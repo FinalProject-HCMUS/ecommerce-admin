@@ -31,12 +31,32 @@ const AddProduct: React.FC = () => {
     const [formData, setFormData] = useState<ProductRequest>(initialFormData);
     const [images, setImages] = useState<ProductImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
+    const [indexThumbnail, setIndexThumbnail] = useState<number>(-1);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
     const navigate = useNavigate();
     const handleSubmit = async () => {
-        console.log('Submitting product:', { formData, images, productColorSizes, files });
-
-        // Upldate images to get url or image
+        if (!formData.name || !formData.description || !formData.categoryId || formData.price <= 0 || formData.cost <= 0) {
+            toast.error('Please fill in all required fields', {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        if (images.length == 0) {
+            toast.error('Please add at least one image', {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        if (indexThumbnail == -1) {
+            toast.error('Please select a thumbnail image', {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        //upload images to cloudinary
         const imageResponse = await uploadImages(files);
         if (!imageResponse.isSuccess) {
             toast.error(imageResponse.message, {
@@ -44,6 +64,10 @@ const AddProduct: React.FC = () => {
                 position: 'top-right',
             });
             return;
+        }
+        //set main image url to form data
+        if (indexThumbnail !== -1) {
+            formData.mainImageUrl = imageResponse.data![indexThumbnail];
         }
         // Call method add product to got productID
         const productResponse = await addProduct(formData);
@@ -94,7 +118,7 @@ const AddProduct: React.FC = () => {
     return (
         <Routes>
             <Route path="information" element={<AddProductInformation formData={formData} setFormData={setFormData} />} />
-            <Route path="images" element={<AddProductImage images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
+            <Route path="images" element={<AddProductImage indexThumbnail={indexThumbnail} setIndexThumbnail={setIndexThumbnail} images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
             <Route path="variants" element={<AddVariants productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
         </Routes>
     );

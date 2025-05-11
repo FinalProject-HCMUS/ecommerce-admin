@@ -10,11 +10,11 @@ import { ProductColorSize } from '../types/product/ProductColorSize';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getProducts = async (page: number, perpage: number): Promise<CustomResponse<ProductResponse>> => {
+export const getProducts = async (page: number, perpage: number, sort: string = "createdAt,asc", category: string = "", keysearch: string = ""): Promise<CustomResponse<ProductResponse>> => {
   try {
     const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`, {
       params: {
-        page, perpage
+        page, perpage, sort, category, keysearch
       },
     });
     return response.data
@@ -36,7 +36,14 @@ export const getProductById = async (id: string): Promise<CustomResponse<Product
 
 export const addProduct = async (productData: ProductRequest): Promise<CustomResponse<Product>> => {
   try {
-    const response = await axios.post<CustomResponse<Product>>(`${API_URL}/products`, productData);
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axios.post<CustomResponse<Product>>(`${API_URL}/products`, productData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response.data;
   }
   catch (error: any) {
@@ -46,7 +53,14 @@ export const addProduct = async (productData: ProductRequest): Promise<CustomRes
 
 export const updateProduct = async (id: string, productData: Product): Promise<CustomResponse<Product>> => {
   try {
-    const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData);
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axios.put<CustomResponse<Product>>(`${API_URL}/products/${id}`, productData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response.data;
   }
   catch (error: any) {
@@ -66,7 +80,14 @@ export const getProductImages = async (id: string): Promise<CustomResponse<Produ
 
 export const updateProductImages = async (images: ProductImage[]): Promise<CustomResponse<ProductImage>> => {
   try {
-    const response = await axios.put<CustomResponse<ProductImage>>(`${API_URL}/product-images/update-list`, images);
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axios.put<CustomResponse<ProductImage>>(`${API_URL}/product-images/update-list`, images,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response.data;
   }
   catch (error: any) {
@@ -76,7 +97,13 @@ export const updateProductImages = async (images: ProductImage[]): Promise<Custo
 
 export const deleteProduct = async (id: string): Promise<CustomResponse<Product>> => {
   try {
-    const response = await axios.delete<CustomResponse<Product>>(`${API_URL}/products/${id}`);
+    const response = await axios.delete<CustomResponse<Product>>(`${API_URL}/products/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response.data;
   }
   catch (error: any) {
@@ -116,6 +143,21 @@ export const createProductColorSizes = async (productColorSizes: ProductColorSiz
 export const getProductColorSizes = async (id: string): Promise<CustomResponse<ProductColorSize[]>> => {
   try {
     const response = await axios.get<CustomResponse<ProductColorSize[]>>(`${API_URL}/product-color-sizes/product/${id}`);
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const deleteProductImage = async (id: string): Promise<CustomResponse<ProductImage>> => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axios.delete<CustomResponse<ProductImage>>(`${API_URL}/product-images/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response.data;
   }
   catch (error: any) {

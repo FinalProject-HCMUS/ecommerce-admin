@@ -3,17 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { X, Upload } from 'lucide-react';
 import MotionPageWrapper from '../../../common/MotionPage';
 import { ProductImage } from '../../../../types/product/ProductImage';
+import { ProductRequest } from '../../../../types/product/ProductRequest';
 
 interface AddProductImageProps {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    indexThumbnail: number;
+    setIndexThumbnail: React.Dispatch<React.SetStateAction<number>>;
     images: ProductImage[];
     setImages: React.Dispatch<React.SetStateAction<ProductImage[]>>;
-    formData: any;
-    setFormData: React.Dispatch<React.SetStateAction<any>>;
+    formData: ProductRequest;
+    setFormData: React.Dispatch<React.SetStateAction<ProductRequest>>;
 }
 
-const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, formData, setFormData, setFiles }) => {
+const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, formData, setFormData, setFiles, setIndexThumbnail }) => {
     const navigate = useNavigate();
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,14 +33,17 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, fo
         const mainUrl = images[index].url;
         const updatedImages = images.filter((_, i) => i !== index);
         setFiles((prev) => prev.filter((_, i) => i !== index));
+        setIndexThumbnail((prev) => prev - 1);
         setImages(updatedImages);
         if (mainUrl === formData.mainImageUrl) {
             const nextThumbnail = updatedImages.length > 0 ? updatedImages[0].url : '';
             setFormData((prev) => ({ ...prev, mainImageUrl: nextThumbnail }));
+            setIndexThumbnail(0);
         }
     };
 
-    const handleSetThumbnail = (image: string) => {
+    const handleSetThumbnail = (image: string, index: number) => {
+        setIndexThumbnail(index);
         setFormData((prev) => ({ ...prev, mainImageUrl: image }));
     };
 
@@ -73,7 +79,7 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, fo
                                             alt={`Product ${index}`}
                                             className={`h-24 w-24 object-cover rounded-lg cursor-pointer ${formData.mainImageUrl === image.url ? 'border-2 border-blue-500' : 'border border-gray-300'
                                                 }`}
-                                            onClick={() => handleSetThumbnail(image.url)}
+                                            onClick={() => handleSetThumbnail(image.url, index)}
                                         />
                                         <button
                                             type="button"

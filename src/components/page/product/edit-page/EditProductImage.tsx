@@ -3,19 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { X, Upload } from 'lucide-react';
 import MotionPageWrapper from '../../../common/MotionPage';
 import { ProductImage } from '../../../../types/product/ProductImage';
+import { Product } from '../../../../types/product/Product';
 
 interface EditProductImageProps {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<File[]>>;
     images: ProductImage[];
+    indexThumbnail: number;
+    setIndexThumbnail: React.Dispatch<React.SetStateAction<number>>;
+    setDeletedProductImages: React.Dispatch<React.SetStateAction<ProductImage[]>>;
     setImages: React.Dispatch<React.SetStateAction<ProductImage[]>>;
-    formData: any;
-    setFormData: React.Dispatch<React.SetStateAction<any>>;
+    formData: Product;
+    setFormData: React.Dispatch<React.SetStateAction<Product>>;
 }
 
-const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, formData, setFormData, setFiles }) => {
+const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, formData, setFormData, setFiles, setIndexThumbnail, setDeletedProductImages }) => {
     const navigate = useNavigate();
-
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         setFiles((prev) => [...prev, ...files]);
@@ -27,17 +30,24 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
     };
 
     const handleRemoveImage = (index: number) => {
+        setDeletedProductImages((prev) => [...prev, images[index]]);
         const mainUrl = images[index].url;
         const updatedImages = images.filter((_, i) => i !== index);
         setFiles((prev) => prev.filter((_, i) => i !== index));
+        setIndexThumbnail((prev) => prev - 1);
         setImages(updatedImages);
         if (mainUrl === formData.mainImageUrl) {
             const nextThumbnail = updatedImages.length > 0 ? updatedImages[0].url : '';
             setFormData((prev) => ({ ...prev, mainImageUrl: nextThumbnail }));
+            setIndexThumbnail(0);
+            if (updatedImages.length === 0) {
+                setIndexThumbnail(-1);
+            }
         }
     };
 
-    const handleSetThumbnail = (image: string) => {
+    const handleSetThumbnail = (image: string, index: number) => {
+        setIndexThumbnail(index);
         setFormData((prev) => ({ ...prev, mainImageUrl: image }));
     };
 
@@ -73,7 +83,7 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
                                             alt={`Product ${index}`}
                                             className={`h-24 w-24 object-cover rounded-lg cursor-pointer ${formData.mainImageUrl === image.url ? 'border-2 border-blue-500' : 'border border-gray-300'
                                                 }`}
-                                            onClick={() => handleSetThumbnail(image.url)}
+                                            onClick={() => handleSetThumbnail(image.url, index)}
                                         />
                                         <button
                                             type="button"

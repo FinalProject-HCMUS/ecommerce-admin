@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { ProductImage } from '../../../../types/product/ProductImage';
 import { toast } from 'react-toastify';
-import { getProductById, getProductImages, getProductColorSizes } from '../../../../apis/productApi';
+import { getProductById, getProductImages, getProductColorSizes, updateProductImages, updateProduct, deleteProductImage } from '../../../../apis/productApi';
 import EditProductInformation from './EditProductInformation';
 import EditProductImage from './EditProductImage';
 import EditVariants from './EditVariants';
 import { Product } from '../../../../types/product/Product';
 import { ProductColorSize } from '../../../../types/product/ProductColorSize';
+import { uploadImages } from '../../../../apis/imageApi';
 
 const EditProduct: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [formData, setFormData] = useState<Product>({} as Product);
     const [images, setImages] = useState<ProductImage[]>([]);
     const [files, setFiles] = useState<File[]>([]);
+    const [deletedProductImages, setDeletedProductImages] = useState<ProductImage[]>([]);
+    const [indexThumbnail, setIndexThumbnail] = useState<number>(-1);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
     const navigate = useNavigate();
 
@@ -22,7 +25,6 @@ const EditProduct: React.FC = () => {
             if (!id) return;
             //get product information
             const response = await getProductById(id);
-
             if (!response.isSuccess || !response.data) {
                 toast.error('Failed to fetch product data', { autoClose: 1000, position: 'top-right' });
                 navigate('/products');
@@ -45,50 +47,92 @@ const EditProduct: React.FC = () => {
             setProductColorSizes(productColorSizesResponse.data || []);
         };
         fetchProduct();
-    }, [id, navigate]);
+    }, [id]);
 
     const handleSubmit = async () => {
-        // if (!formData) return;
-        // // Upload new images if any
-        // let updatedImages = [...images];
-        // if (files.length > 0) {
-        //     const imageResponse = await uploadImages(files);
-        //     if (!imageResponse.isSuccess) {
-        //         toast.error(imageResponse.message, { autoClose: 1000, position: 'top-right' });
-        //         return;
-        //     }
-        //     updatedImages = updatedImages.map((img, idx) => ({
-        //         ...img,
-        //         url: imageResponse.data ? imageResponse.data[idx] : img.url,
-        //         productId: formData.id,
-        //     }));
-        // }
-        // // Update product
-        // const productResponse = await updateProduct(formData);
-        // if (!productResponse.isSuccess) {
-        //     toast.error(productResponse.message, { autoClose: 1000, position: 'top-right' });
-        //     return;
-        // }
-        // // Update images
-        // const productImageResponse = await updateProductImages(updatedImages);
-        // if (!productImageResponse.isSuccess) {
-        //     toast.error(productImageResponse.message, { autoClose: 1000, position: 'top-right' });
-        //     return;
-        // }
-        // // Update variants
-        // if (productColorSizes.length !== 0) {
-        //     const productColorSizeRequest: ProductColorSizeRequest[] = productColorSizes.map((pcs) => ({
-        //         productId: formData.id,
-        //         colorId: pcs.color!.id,
-        //         sizeId: pcs.size!.id,
-        //         quantity: pcs.quantity,
-        //     }));
-        //     const productColorSizeResponse = await createProductColorSizes(productColorSizeRequest);
-        //     if (!productColorSizeResponse.isSuccess) {
-        //         toast.error(productColorSizeResponse.message, { autoClose: 1000, position: 'top-right' });
-        //         return;
-        //     }
-        // }
+        //validation data
+        if (!formData.name || !formData.description || !formData.categoryId || formData.price <= 0 || formData.cost <= 0) {
+            toast.error('Please fill in all required fields', {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        if (images.length == 0) {
+            toast.error('Please add at least one image', {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        if (indexThumbnail == -1) {
+            toast.error('Please select a thumbnail image', {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        //add images if necessary
+        let imageResponse = undefined;
+        if (files.length > 0) {
+            imageResponse = await uploadImages(files);
+            if (!imageResponse.isSuccess) {
+                toast.error(imageResponse.message, {
+                    autoClose: 1000,
+                    position: 'top-right',
+                });
+                return;
+            }
+        }
+        if (imageResponse) {
+            let i = 0;
+            images.forEach(image => {
+                if (image.id === '') {
+                    image.url = imageResponse.data![i++];
+                    image.productId = formData.id;
+                }
+            });
+        }
+        if (indexThumbnail !== -1) {
+            formData.mainImageUrl = images[indexThumbnail].url;
+        }
+        if (indexThumbnail === -1 && images.length == 0) {
+            formData.mainImageUrl = '';
+        }
+        //update prroduct images
+        const productImageResponse = await updateProductImages(images);
+        if (!productImageResponse.isSuccess) {
+            toast.error(productImageResponse.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        //delete product images
+        if (deletedProductImages.length > 0) {
+            deletedProductImages.forEach(async image => {
+                const response = await deleteProductImage(image.id);
+                if (!response.isSuccess) {
+                    toast.error(response.message, {
+                        autoClose: 1000,
+                        position: 'top-right',
+                    });
+                    return;
+                }
+            }
+            );
+        }
+        //update product information
+        const productResponse = await updateProduct(formData.id, formData);
+        if (!productResponse.isSuccess) {
+            toast.error(productResponse.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        //add product color sizes not in database
+        //update product color sizes
         toast.success('Product updated successfully', {
             autoClose: 1000,
             position: 'top-right',
@@ -103,7 +147,7 @@ const EditProduct: React.FC = () => {
     return (
         <Routes>
             <Route path="information" element={<EditProductInformation formData={formData} setFormData={setFormData} />} />
-            <Route path="images" element={<EditProductImage images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
+            <Route path="images" element={<EditProductImage setDeletedProductImages={setDeletedProductImages} indexThumbnail={indexThumbnail} setIndexThumbnail={setIndexThumbnail} images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
             <Route path="variants" element={<EditVariants productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
         </Routes>
     );
