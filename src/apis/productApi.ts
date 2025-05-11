@@ -164,3 +164,17 @@ export const deleteProductImage = async (id: string): Promise<CustomResponse<Pro
     return error.response.data;
   }
 }
+export const updateProductColorSize = async (id: string, productColorSize: ProductColorSizeRequest): Promise<CustomResponse<ProductColorSize>> => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axios.put<CustomResponse<ProductColorSize>>(`${API_URL}/product-color-sizes/${id}`, productColorSize, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}

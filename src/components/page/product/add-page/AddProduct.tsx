@@ -49,7 +49,7 @@ const AddProduct: React.FC = () => {
             });
             return;
         }
-        if (indexThumbnail == -1) {
+        if (formData.mainImageUrl === '') {
             toast.error('Please select a thumbnail image', {
                 autoClose: 1000,
                 position: 'top-right',

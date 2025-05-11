@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 
 interface EditVariantsProps {
     productColorSizes: ProductColorSize[];
+    addedProductColorSizes: ProductColorSize[];
+    setAddedProductColorSizes: React.Dispatch<React.SetStateAction<ProductColorSize[]>>;
     setProductColorSizes: React.Dispatch<React.SetStateAction<ProductColorSize[]>>;
     handleSubmit: () => void;
 }
@@ -18,12 +20,15 @@ const EditVariants: React.FC<EditVariantsProps> = ({
     productColorSizes,
     setProductColorSizes,
     handleSubmit,
+    addedProductColorSizes,
+    setAddedProductColorSizes,
 }) => {
     const navigate = useNavigate();
-    const [editingIndex, setEditingIndex] = useState<number | null>(null);
+    const [editingIndexOld, setEditingIndexOld] = useState<number | null>(null);
+    const [editingInexNew, setEditingIndexNew] = useState<number | null>(null);
     const [colorsSelected, setColorsSelected] = useState<Color[]>(productColorSizes.map(v => v.color!));
     const [newVariant, setNewVariant] = useState<ProductColorSize>(
-        { productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 }
+        { id: '', productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 }
     );
     const [isColorModalOpen, setIsColorModalOpen] = useState(false);
     const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
@@ -33,28 +38,41 @@ const EditVariants: React.FC<EditVariantsProps> = ({
             toast.error('Please fill in all fields.', { autoClose: 1000, position: 'top-right' });
             return;
         }
-        setProductColorSizes((prev) => [...prev, newVariant]);
+        setAddedProductColorSizes((prev) => [...prev, newVariant]);
         setColorsSelected((prev) => [...prev, newVariant.color!]);
-        setNewVariant({ productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
+        setNewVariant({ id: '', productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
     };
 
-    const handleEditVariant = (index: number) => {
-        setEditingIndex(index);
+    const handleEditVariantOld = (index: number) => {
+        setEditingIndexOld(index);
         setNewVariant(productColorSizes[index]);
+    };
+    const handleEditVariantNew = (index: number) => {
+        setEditingIndexNew(index);
+        setNewVariant(addedProductColorSizes[index]);
     };
 
     const handleSaveVariant = () => {
-        if (editingIndex !== null) {
-            const updatedVariants = [...productColorSizes];
-            updatedVariants[editingIndex] = newVariant;
-            setProductColorSizes(updatedVariants);
-            setEditingIndex(null);
-            setNewVariant({ productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
+        if (!newVariant.color || !newVariant.size || newVariant.quantity <= 0) {
+            toast.error('Please fill in all fields.', { autoClose: 1000, position: 'top-right' });
+            return;
         }
+        if (editingIndexOld !== null) {
+            const updatedVariants = [...productColorSizes];
+            updatedVariants[editingIndexOld] = newVariant;
+            setProductColorSizes(updatedVariants);
+            setEditingIndexOld(null);
+        } else if (editingInexNew !== null) {
+            const updatedVariants = [...addedProductColorSizes];
+            updatedVariants[editingInexNew] = newVariant;
+            setAddedProductColorSizes(updatedVariants);
+            setEditingIndexNew(null);
+        }
+        setNewVariant({ id: '', productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
     };
 
     const handleDeleteVariant = (index: number) => {
-        setProductColorSizes((prev) => prev.filter((_, i) => i !== index));
+        setAddedProductColorSizes((prev) => prev.filter((_, i) => i !== index));
         setColorsSelected((prev) => prev.filter((_, i) => i !== index));
     };
     const handleColorSelect = (color: Color) => {
@@ -118,7 +136,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                     </div>
                 </div>
                 <div className="flex justify-end mb-6">
-                    {editingIndex !== null ? (
+                    {editingIndexOld !== null || editingInexNew != null ? (
                         <button
                             type="button"
                             onClick={handleSaveVariant}
@@ -163,7 +181,28 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                                     <td className="px-4 py-2 text-center text-sm text-gray-700 border-b">
                                         <button
                                             type="button"
-                                            onClick={() => handleEditVariant(index)}
+                                            onClick={() => handleEditVariantOld(index)}
+                                            className="text-blue-600 hover:text-blue-800 mr-2"
+                                        >
+                                            <Pencil size={16} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {addedProductColorSizes.map((variant, index) => (
+                                <tr key={index} className="hover:bg-gray-50">
+                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">{index + 1}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">
+                                        <div className="flex items-center">
+                                            <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: variant.color!.code }}></div>
+                                            <span className="ml-3 text-sm text-gray-900">{variant.color!.name}</span>
+                                        </div></td>
+                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">{variant.size!.name}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-700 border-b">{variant.quantity}</td>
+                                    <td className="px-4 py-2 text-center text-sm text-gray-700 border-b">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleEditVariantNew(index)}
                                             className="text-blue-600 hover:text-blue-800 mr-2"
                                         >
                                             <Pencil size={16} />

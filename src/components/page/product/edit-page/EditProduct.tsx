@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { ProductImage } from '../../../../types/product/ProductImage';
 import { toast } from 'react-toastify';
-import { getProductById, getProductImages, getProductColorSizes, updateProductImages, updateProduct, deleteProductImage } from '../../../../apis/productApi';
+import { getProductById, getProductImages, getProductColorSizes, updateProductImages, updateProduct, deleteProductImage, createProductColorSizes, updateProductColorSize } from '../../../../apis/productApi';
 import EditProductInformation from './EditProductInformation';
 import EditProductImage from './EditProductImage';
 import EditVariants from './EditVariants';
 import { Product } from '../../../../types/product/Product';
 import { ProductColorSize } from '../../../../types/product/ProductColorSize';
 import { uploadImages } from '../../../../apis/imageApi';
+import { ProductColorSizeRequest } from '../../../../types/product/ProductColorSizeRequest';
 
 const EditProduct: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -18,6 +19,8 @@ const EditProduct: React.FC = () => {
     const [deletedProductImages, setDeletedProductImages] = useState<ProductImage[]>([]);
     const [indexThumbnail, setIndexThumbnail] = useState<number>(-1);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
+    const [addedProductColorSizes, setAddedProductColorSizes] = useState<ProductColorSize[]>([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -65,7 +68,7 @@ const EditProduct: React.FC = () => {
             });
             return;
         }
-        if (indexThumbnail == -1) {
+        if (formData.mainImageUrl === '') {
             toast.error('Please select a thumbnail image', {
                 autoClose: 1000,
                 position: 'top-right',
@@ -132,7 +135,39 @@ const EditProduct: React.FC = () => {
             return;
         }
         //add product color sizes not in database
+        if (addedProductColorSizes.length != 0) {
+            const productColorSizeRequest: ProductColorSizeRequest[] = addedProductColorSizes.map((productColorSize) => ({
+                productId: productResponse.data!.id,
+                colorId: productColorSize.color!.id,
+                sizeId: productColorSize.size!.id,
+                quantity: productColorSize.quantity,
+            }));
+            const productColorSizeResponse = await createProductColorSizes(productColorSizeRequest);
+            if (!productColorSizeResponse.isSuccess) {
+                toast.error(productColorSizeResponse.message, {
+                    autoClose: 1000,
+                    position: 'top-right',
+                });
+                return;
+            }
+        }
         //update product color sizes
+        productColorSizes.forEach(async productColorSize => {
+            const response = await updateProductColorSize(productColorSize.id, {
+                productId: productResponse.data!.id,
+                colorId: productColorSize.color!.id,
+                sizeId: productColorSize.size!.id,
+                quantity: productColorSize.quantity,
+            });
+            if (!response.isSuccess) {
+                toast.error(response.message, {
+                    autoClose: 1000,
+                    position: 'top-right',
+                });
+                return;
+            }
+        }
+        );
         toast.success('Product updated successfully', {
             autoClose: 1000,
             position: 'top-right',
@@ -148,7 +183,7 @@ const EditProduct: React.FC = () => {
         <Routes>
             <Route path="information" element={<EditProductInformation formData={formData} setFormData={setFormData} />} />
             <Route path="images" element={<EditProductImage setDeletedProductImages={setDeletedProductImages} indexThumbnail={indexThumbnail} setIndexThumbnail={setIndexThumbnail} images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
-            <Route path="variants" element={<EditVariants productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
+            <Route path="variants" element={<EditVariants addedProductColorSizes={addedProductColorSizes} setAddedProductColorSizes={setAddedProductColorSizes} productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
         </Routes>
     );
 };
