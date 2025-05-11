@@ -18,6 +18,15 @@ export const getCategories = async (page: number, perpage: number): Promise<Cust
         return error.response.data;
     }
 }
+export const getAllCategories = async (): Promise<CustomResponse<Category[]>> => {
+    try {
+        const response = await axios.get<CustomResponse<Category[]>>(`${API_URL}/categories/all`);
+        return response.data;
+    }
+    catch (error: any) {
+        return error.response.data;
+    }
+}
 export const getCategoryById = async (categoryId: string): Promise<CustomResponse<Category>> => {
     try {
         const response = await axios.get<CustomResponse<Category>>(`${API_URL}/categories/${categoryId}`);
