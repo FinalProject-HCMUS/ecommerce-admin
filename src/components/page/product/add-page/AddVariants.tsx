@@ -7,6 +7,7 @@ import { ProductColorSize } from '../../../../types/product/ProductColorSize';
 import ColorPickerDialog from '../../../color/ColorPickerDialog';
 import SizePickerDialog from '../../../size/SizePickerDialog';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 interface AddVariantsProps {
     productColorSizes: ProductColorSize[];
@@ -20,10 +21,11 @@ const AddVariants: React.FC<AddVariantsProps> = ({
     handleSubmit,
 }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation('product');
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [colorsSelected, setColorsSelected] = useState<Color[]>([{ name: '', code: '', id: '' }]);
     const [newVariant, setNewVariant] = useState<ProductColorSize>(
-        { productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 }
+        { id: '', productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 }
     );
     const [isColorModalOpen, setIsColorModalOpen] = useState(false);
     const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
@@ -35,7 +37,7 @@ const AddVariants: React.FC<AddVariantsProps> = ({
         }
         setProductColorSizes((prev) => [...prev, newVariant]);
         setColorsSelected((prev) => [...prev, newVariant.color!]);
-        setNewVariant({ productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
+        setNewVariant({ id: '', productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
     };
 
     const handleEditVariant = (index: number) => {
@@ -49,7 +51,7 @@ const AddVariants: React.FC<AddVariantsProps> = ({
             updatedVariants[editingIndex] = newVariant;
             setProductColorSizes(updatedVariants);
             setEditingIndex(null);
-            setNewVariant({ productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
+            setNewVariant({ id: '', productId: '', color: { name: '', code: '', id: '' }, size: { id: '', name: '', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 }, quantity: 0 });
         }
     };
 
@@ -69,14 +71,14 @@ const AddVariants: React.FC<AddVariantsProps> = ({
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="mb-8 flex justify-between items-center">
-                <h1 className="text-3xl font-semibold text-gray-900">Add Variants</h1>
+                <h1 className="text-3xl font-semibold text-gray-900">{t("addVariant")}</h1>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
                 {/* Add Variant Form */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
                     {/* Color Picker */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("color")}</label>
                         <div className="relative">
                             <input
                                 type="text"
@@ -84,14 +86,14 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                                 readOnly
                                 onClick={() => setIsColorModalOpen(true)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                                placeholder="Pick a color"
+                                placeholder={t("pickaSize")}
                             />
                         </div>
                     </div>
 
                     {/* Size Picker */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("size")}</label>
                         <div className="relative">
                             <input
                                 type="text"
@@ -99,14 +101,14 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                                 readOnly
                                 onClick={() => setIsSizeModalOpen(true)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                                placeholder="Pick a size"
+                                placeholder={t("pickaColor")}
                             />
                         </div>
                     </div>
 
                     {/* Quantity */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("quantity")}</label>
                         <input
                             type="number"
                             value={newVariant.quantity}
@@ -124,7 +126,7 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                             onClick={handleSaveVariant}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Save
+                            {t("save")}
                         </button>
                     ) : (
                         <button
@@ -132,7 +134,7 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                             onClick={handleAddVariant}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Add
+                            {t("add")}
                         </button>
                     )}
                 </div>
@@ -143,10 +145,10 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">STT</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Color</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Size</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Quantity</th>
-                                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 border-b">Actions</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t("color")}</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t("size")}</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t("quantity")}</th>
+                                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 border-b">{t("action")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -189,14 +191,14 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                         onClick={() => navigate(-1)}
                         className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                     >
-                        Back
+                        {t("back")}
                     </button>
                     <button
                         type="button"
                         onClick={handleSubmit}
                         className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
-                        Submit
+                        {t("submit")}
                     </button>
                 </div>
             </div>

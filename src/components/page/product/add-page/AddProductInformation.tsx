@@ -6,6 +6,7 @@ import { Category } from '../../../../types/category/Category';
 import { getCategories } from '../../../../apis/categoryApi';
 import { toast } from 'react-toastify';
 import { ProductRequest } from '../../../../types/product/ProductRequest';
+import { useTranslation } from 'react-i18next';
 
 
 interface AddProductInformationProps {
@@ -22,6 +23,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
     const pageRef = useRef(page);
     const fetchingRef = useRef(isFetching);
     const dropdownRef = useRef<HTMLUListElement | null>(null);
+    const { t } = useTranslation('product')
 
     const handleCategorySelect = (category: Category) => {
         setFormData((prev) => ({
@@ -87,33 +89,33 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Product Information</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t("productInformation")}</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6">
                     <div className="space-y-6">
                         {/* Product Name */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t("productName")}</label>
                             <input
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Enter product name"
+                                placeholder={t("placeholderName")}
                                 required
                             />
                         </div>
 
                         {/* Category */}
                         <div className="relative">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t("category")}</label>
                             <button
                                 type="button"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-left bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 onClick={() => setShowDropdown((prev) => !prev)}
                             >
-                                {formData.categoryName || 'Select category'}
+                                {formData.categoryName || t("category")}
                             </button>
                             {showDropdown && (
                                 <ul
@@ -137,7 +139,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                         {/* Price and Cost */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t("price")}</label>
                                 <input
                                     type="number"
                                     name="price"
@@ -151,7 +153,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Cost</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t("cost")}</label>
                                 <input
                                     type="number"
                                     name="cost"
@@ -176,7 +178,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                                     onChange={handleChange}
                                     className="w-5 h-5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                                 />
-                                <label className="text-sm font-medium text-gray-700">Enable Product</label>
+                                <label className="text-sm font-medium text-gray-700">{t("enable")}</label>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <input
@@ -186,17 +188,17 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                                     onChange={handleChange}
                                     className="w-5 h-5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                                 />
-                                <label className="text-sm font-medium text-gray-700">In Stock</label>
+                                <label className="text-sm font-medium text-gray-700">{t("inStock")}</label>
                             </div>
                         </div>
 
                         {/* Description */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t("description")}</label>
                             <ReactQuill
                                 value={formData.description}
                                 onChange={(value) => setFormData((prev) => ({ ...prev, description: value }))}
-                                placeholder="Write your product description here..."
+                                placeholder={t("placeholder")}
                                 className='h-48'
                             />
                         </div>
@@ -209,14 +211,14 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                             onClick={() => navigate(-1)}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                         <button
                             type="button"
                             onClick={() => navigate('/products/add/images')}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Next
+                            {t("next")}
                         </button>
                     </div>
                 </div>

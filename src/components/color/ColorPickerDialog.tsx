@@ -4,6 +4,7 @@ import { getColors } from '../../apis/colorApi';
 import { toast } from 'react-toastify';
 import Pagination from '../common/Pagination';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ColorPickerDialogProps {
     isOpen: boolean;
@@ -20,7 +21,7 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedId, setSelectedId] = useState<string | null>(null);
-
+    const { t } = useTranslation('product');
     const fetchColors = async (page: number) => {
         try {
             const response = await getColors(page - 1, ITEMS_PER_PAGE);
@@ -55,7 +56,7 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
             <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl mx-2">
                 <div className="flex items-center justify-between mb-6 border-gray-200">
-                    <h2 className="text-2xl font-semibold text-gray-800">Color Picker Dialog</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">{t("colorPicker")}</h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
                         <X size={24} />
                     </button>
@@ -67,7 +68,7 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Search color by name"
+                        placeholder={t("colorPlaceholder")}
                     />
                 </div>
 
@@ -76,15 +77,15 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Color</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Color Code</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("color")}</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("colorCode")}</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-100">
                             {filteredColors.length === 0 && (
                                 <tr>
                                     <td colSpan={2} className="text-center py-6 text-gray-400">
-                                        No colors found.
+                                        {t("noColorsFound")}
                                     </td>
                                 </tr>
                             )}

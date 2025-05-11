@@ -18,34 +18,37 @@ import EditCategory from './components/page/category/edit-page/EditCategory';
 import EditProduct from './components/page/product/edit-page/EditProduct';
 import About from './pages/About';
 import EditProfile from './components/page/about/edit-page/EditProfile';
+import { Suspense } from 'react';
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route element={<AdminLayout />}>
-            <Route path="/colors" element={<PrivateRoute element={Color} />} />
-            <Route path="/sizes" element={<PrivateRoute element={Sizes} />} />
-            <Route path="/products" element={<PrivateRoute element={Products} />} />
-            <Route path="/categories" element={<PrivateRoute element={Categories} />} />
-            <Route path="/" element={<Navigate to="/products" />} />
-            <Route path="/products/add/*" element={<PrivateRoute element={AddProduct} />} />
-            <Route path="/colors/add" element={<PrivateRoute element={AddColor} />} />
-            <Route path="/colors/edit/:id" element={<PrivateRoute element={EditColor} />} />
-            <Route path="/sizes/add" element={<PrivateRoute element={AddSize} />} />
-            <Route path="/sizes/edit/:id" element={<PrivateRoute element={EditSize} />} />
-            <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
-            <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
-            <Route path="/products/edit/:id/*" element={<PrivateRoute element={EditProduct} />} />
-            <Route path="/about" element={<PrivateRoute element={About} />} />
-            <Route path="/about/edit" element={<PrivateRoute element={EditProfile} />} />
-          </Route>
-        </Routes>
-      </AuthProvider>
-      <ToastContainer />
-    </Router>
+    <Suspense fallback="loading">
+      <Router>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route element={<AdminLayout />}>
+              <Route path="/colors" element={<PrivateRoute element={Color} />} />
+              <Route path="/sizes" element={<PrivateRoute element={Sizes} />} />
+              <Route path="/products" element={<PrivateRoute element={Products} />} />
+              <Route path="/categories" element={<PrivateRoute element={Categories} />} />
+              <Route path="/" element={<Navigate to="/products" />} />
+              <Route path="/products/add/*" element={<PrivateRoute element={AddProduct} />} />
+              <Route path="/colors/add" element={<PrivateRoute element={AddColor} />} />
+              <Route path="/colors/edit/:id" element={<PrivateRoute element={EditColor} />} />
+              <Route path="/sizes/add" element={<PrivateRoute element={AddSize} />} />
+              <Route path="/sizes/edit/:id" element={<PrivateRoute element={EditSize} />} />
+              <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
+              <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
+              <Route path="/products/edit/:id/*" element={<PrivateRoute element={EditProduct} />} />
+              <Route path="/about" element={<PrivateRoute element={About} />} />
+              <Route path="/about/edit" element={<PrivateRoute element={EditProfile} />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
+        <ToastContainer />
+      </Router>
+    </Suspense>
   );
 }
 

@@ -9,6 +9,7 @@ import { Product } from '../../types/product/Product';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories, getCategories } from '../../apis/categoryApi';
 import { Category } from '../../types/category/Category';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
@@ -21,7 +22,7 @@ const Products = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loadingCategories, setLoadingCategories] = useState(false);
-
+  const { t } = useTranslation('product');
   const fetchProducts = async (page: number, category = '', keysearch = '') => {
     const response = await getProducts(page - 1, ITEMS_PER_PAGE, "createdAt,asc", category, keysearch);
     if (!response.isSuccess) {
@@ -47,6 +48,9 @@ const Products = () => {
         setCategories(response.data || []);
       }
     };
+    console.log(t('allCategories'));
+    console.log(t('searchProducts'));
+
     fetchCategories();
   }, []);
 
@@ -75,7 +79,7 @@ const Products = () => {
     <MotionPageWrapper>
       <div className="flex-1 bg-gray-100 p-8">
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1 className="text-2xl font-semibold text-gray-900">Products</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">{t('products')}</h1>
         </div>
         <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4 justify-between">
           <div className='flex gap-4'>
@@ -86,7 +90,7 @@ const Products = () => {
               className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={loadingCategories}
             >
-              <option value="">All Categories</option>
+              <option value="">{t('all')}</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
@@ -95,7 +99,7 @@ const Products = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder={t('search')}
                 value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
                 onKeyDown={handleSearchKeyDown}
@@ -120,7 +124,7 @@ const Products = () => {
               className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
             >
               <Plus size={20} />
-              <span>Add Product</span>
+              <span>{t('addProduct')}</span>
             </button>
           </div>
         </div>

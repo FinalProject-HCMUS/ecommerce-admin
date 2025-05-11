@@ -4,6 +4,7 @@ import Pagination from '../common/Pagination';
 import { Size } from '../../types/size/Size';
 import { getSizes } from '../../apis/sizeApi';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface SizePickerDialogProps {
     isOpen: boolean;
@@ -19,7 +20,7 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedId, setSelectedId] = useState<string | null>(null);
-
+    const { t } = useTranslation('product');
     const fetchSizes = async (page: number) => {
         try {
             const response = await getSizes(page - 1, ITEMS_PER_PAGE);
@@ -52,7 +53,7 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
             <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl mx-2">
                 <div className="flex items-center justify-between mb-6 border-gray-200">
-                    <h2 className="text-2xl font-semibold text-gray-800">Size Picker Dialog</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">{t("sizePicker")}</h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
                         <X size={24} />
                     </button>
@@ -73,18 +74,18 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Name</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Min Height</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Max Height</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Min Weight</th>
-                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Max Weight</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("name")}</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("minHeight")}</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("maxHeight")}</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("minWeight")}</th>
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">{t("maxWeight")}</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-100">
                             {filteredSizes.length === 0 && (
                                 <tr>
                                     <td colSpan={5} className="text-center py-6 text-gray-400">
-                                        No sizes found.
+                                        {t("noSizeFound")}
                                     </td>
                                 </tr>
                             )}
