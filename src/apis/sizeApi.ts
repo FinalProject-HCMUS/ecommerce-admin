@@ -7,11 +7,11 @@ import { Size } from "../types/size/Size";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
-export const getSizes = async (page: number, size: number, keyword: string = ""): Promise<CustomResponse<SizeResponse>> => {
+export const getSizes = async (page: number, size: number, keyword: string = "", minHeight: number = 0, maxHeight: number = 500, minWeight: number = 0, maxWeight: number = 500): Promise<CustomResponse<SizeResponse>> => {
     try {
         const response = await axios.get<CustomResponse<SizeResponse>>(`${API_URL}/sizes`, {
             params: {
-                page, size, keyword
+                page, size, keyword, minHeight, maxHeight, minWeight, maxWeight
             },
         });
         return response.data;

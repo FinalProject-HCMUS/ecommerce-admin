@@ -86,7 +86,7 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                                 readOnly
                                 onClick={() => setIsColorModalOpen(true)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                                placeholder={t("pickaSize")}
+                                placeholder={t("pickaColor")}
                             />
                         </div>
                     </div>
@@ -101,7 +101,7 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                                 readOnly
                                 onClick={() => setIsSizeModalOpen(true)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                                placeholder={t("pickaColor")}
+                                placeholder={t("pickaSize")}
                             />
                         </div>
                     </div>

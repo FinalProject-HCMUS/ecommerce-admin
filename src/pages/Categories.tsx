@@ -60,6 +60,7 @@ const Categories = () => {
                             type="text"
                             placeholder={t('search')}
                             value={searchInput}
+                            size={25}
                             onChange={e => setSearchInput(e.target.value)}
                             onKeyDown={handleSearchKeyDown}
                             className="border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"

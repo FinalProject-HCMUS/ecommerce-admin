@@ -48,9 +48,6 @@ const Products = () => {
         setCategories(response.data || []);
       }
     };
-    console.log(t('allCategories'));
-    console.log(t('searchProducts'));
-
     fetchCategories();
   }, []);
 

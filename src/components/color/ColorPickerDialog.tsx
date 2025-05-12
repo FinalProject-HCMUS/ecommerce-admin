@@ -89,7 +89,7 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
                             {colors.length === 0 && (
                                 <tr>
                                     <td colSpan={2} className="text-center py-6 text-gray-400">
-                                        {t("noColorsFound")}
+                                        {t("noColorFound")}
                                     </td>
                                 </tr>
                             )}

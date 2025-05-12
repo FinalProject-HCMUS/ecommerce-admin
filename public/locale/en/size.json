@@ -17,5 +17,7 @@
     "editSize": "Edit Size",
     "deleteSuccess": "Delete size successfully",
     "deleteSize": "Delete Size",
-    "search": "Search size by name"
+    "search": "Search size by name",
+    "heightRange": "Height Range",
+    "weightRange": "Weight Range"
 }

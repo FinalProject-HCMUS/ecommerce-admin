@@ -17,5 +17,7 @@
     "editSize": "Chỉnh sửa kích thước",
     "deleteSuccess": "Xóa kích thước thành công",
     "deleteSize": "Xóa kích thước",
-    "search": "Tìm kiếm kích thước theo tên"
+    "search": "Tìm kiếm kích thước theo tên",
+    "heightRange": "Phạm vi chiều cao",
+    "weightRange": "Phạm vi cân nặng"
 }

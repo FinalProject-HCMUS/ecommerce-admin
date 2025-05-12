@@ -11,13 +11,13 @@ import Color from './pages/product/Color';
 import AddColor from './components/page/color/add-page/AddColor';
 import EditColor from './components/page/color/edit-page/EditColor';
 import AddSize from './components/page/size/add-page/AddSize';
-import Sizes from './pages/product/Size';
 import EditSize from './components/page/size/edit-page/EditSize';
 import AddCategory from './components/page/category/add-page/AddCategory';
 import EditCategory from './components/page/category/edit-page/EditCategory';
 import EditProduct from './components/page/product/edit-page/EditProduct';
 import About from './pages/About';
 import EditProfile from './components/page/about/edit-page/EditProfile';
+import Sizes from './pages/product/Size';
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route element={<AdminLayout />}>
             <Route path="/colors" element={<PrivateRoute element={Color} />} />
-            <Route path="/sizes" Component={Sizes} />
+            <Route path="/sizes" element={<PrivateRoute element={Sizes} />} />
             <Route path="/products" element={<PrivateRoute element={Products} />} />
             <Route path="/categories" element={<PrivateRoute element={Categories} />} />
             <Route path="/" element={<Navigate to="/products" />} />

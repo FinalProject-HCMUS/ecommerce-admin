@@ -42,7 +42,8 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
         if (isOpen) {
             fetchSizes(currentPage, search);
         }
-    }, [currentPage, isOpen, search]);
+    }, [currentPage, search, isOpen]);
+
     const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             setSearch(searchTerm.trim());
@@ -50,9 +51,6 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
         }
     }
 
-    const filteredSizes = sizes.filter((size) =>
-        size.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     if (!isOpen) return null;
 
@@ -90,14 +88,14 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-100">
-                            {filteredSizes.length === 0 && (
+                            {sizes.length === 0 && (
                                 <tr>
                                     <td colSpan={5} className="text-center py-6 text-gray-400">
                                         {t("noSizeFound")}
                                     </td>
                                 </tr>
                             )}
-                            {filteredSizes.map((size) => (
+                            {sizes.map((size) => (
                                 <tr
                                     key={size.id}
                                     className={`transition-colors duration-150 hover:bg-blue-50 cursor-pointer ${selectedId === size.id ? 'bg-blue-100' : ''
