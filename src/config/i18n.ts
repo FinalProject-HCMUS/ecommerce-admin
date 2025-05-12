@@ -16,7 +16,7 @@ i18n
         backend: {
             loadPath: '/locale/{{lng}}/{{ns}}.json',
         },
-        ns: ['sidebar', 'product', 'pagination', 'common', 'color', 'size'],
+        ns: ['sidebar', 'product', 'pagination', 'common', 'color', 'size', 'delete', 'profile'],
         defaultNS: 'sidebar',
     });
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import MotionModalWrapper from './MotionModal';
+import { useTranslation } from 'react-i18next';
 
 interface DeleteConfirmationModalProps {
     title: string;
@@ -10,6 +11,7 @@ interface DeleteConfirmationModalProps {
 }
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpen, onClose, onConfirm, title }) => {
+    const { t } = useTranslation('delete');
     if (!isOpen) return null;
     return (
         <MotionModalWrapper>
@@ -25,21 +27,21 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpe
                         </button>
                     </div>
                     <div className="p-6">
-                        <p>Are you sure you want to delete this item. This action cannot be undone.</p>
+                        <p>{t('deleteConfirm')}</p>
                         <div className="mt-6 flex justify-end space-x-3">
                             <button
                                 type="button"
                                 onClick={onClose}
                                 className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="button"
                                 onClick={onConfirm}
                                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                             >
-                                Delete
+                                {t('delete')}
                             </button>
                         </div>
                     </div>

@@ -7,5 +7,7 @@
     "preview": "Xem trước",
     "cancel": "Hủy",
     "save": "Lưu",
-    "editColor": "Chỉnh sửa màu"
+    "editColor": "Chỉnh sửa màu",
+    "deleteSuccess": "Xóa màu thành công",
+    "deleteColor": "Xóa màu"
 }

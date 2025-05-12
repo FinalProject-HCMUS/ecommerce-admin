@@ -29,7 +29,7 @@ const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
             alert(response.message);
             return;
         }
-        toast.success("Color deleted successfully", {
+        toast.success(t('deleteSuccess'), {
             autoClose: 1000,
         });
         refresh();
@@ -78,7 +78,7 @@ const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
                 </tbody>
             </table>
             {isDeleteConfirmOpen && <DeleteConfirmationModal
-                title='Delete Color'
+                title={t('deleteColor')}
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => { setIsDeleteConfirmOpen(false); }}
                 onConfirm={handleConfirmDelete}

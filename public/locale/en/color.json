@@ -7,5 +7,7 @@
     "preview": "Preview",
     "cancel": "Cancel",
     "save": "Save",
-    "editColor": "Edit Color"
+    "editColor": "Edit Color",
+    "deleteSuccess": "Delete color successfully",
+    "deleteColor": "Delete Color"
 }

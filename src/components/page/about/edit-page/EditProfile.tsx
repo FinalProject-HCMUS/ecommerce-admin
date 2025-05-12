@@ -8,6 +8,7 @@ import { uploadImage } from '../../../../apis/imageApi';
 import { toast } from 'react-toastify';
 import { UserRequest } from '../../../../types/user/UserRequest';
 import { updateProfile } from '../../../../apis/userApi';
+import { useTranslation } from 'react-i18next';
 
 const EditProfile: React.FC = () => {
     const [updateUser, setUpdateUser] = useState<User | undefined>();
@@ -15,6 +16,7 @@ const EditProfile: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [saving, setSaving] = useState(false);
     const { user, setUser } = useAuth();;
+    const { t } = useTranslation('profile');
     const navigate = useNavigate();
     useEffect(() => {
         setUpdateUser(user);
@@ -85,10 +87,10 @@ const EditProfile: React.FC = () => {
         <MotionPageWrapper>
             {updateUser && <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Edit profile</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t('editProfile')}</h1>
                 </div>
                 <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-8 max-w-4xl mx-auto mt-8">
-                    <h2 className="text-2xl font-bold text-center mb-5">Personal information</h2>
+                    <h2 className="text-2xl font-bold text-center mb-5">{t('personalInfo')}</h2>
                     <div className="flex justify-center items-center mb-8">
                         <div className="relative">
                             <img
@@ -109,7 +111,7 @@ const EditProfile: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium mb-1">First Name</label>
+                            <label className="block text-sm font-medium mb-1">{t('firstName')}</label>
                             <input
                                 type="text"
                                 name="firstName"
@@ -119,7 +121,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Last Name</label>
+                            <label className="block text-sm font-medium mb-1">{t('lastName')}</label>
                             <input
                                 type="text"
                                 name="lastName"
@@ -129,7 +131,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Email</label>
+                            <label className="block text-sm font-medium mb-1">{t('email')}</label>
                             <input
                                 type="email"
                                 name="email"
@@ -139,7 +141,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Phone Number</label>
+                            <label className="block text-sm font-medium mb-1">{t('phone')}</label>
                             <input
                                 type="number"
                                 name="phoneNumber"
@@ -149,7 +151,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Address</label>
+                            <label className="block text-sm font-medium mb-1">{t('address')}</label>
                             <input
                                 type="text"
                                 name="address"
@@ -159,7 +161,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Weight</label>
+                            <label className="block text-sm font-medium mb-1">{t('weight')}</label>
                             <input
                                 type="number"
                                 name="weight"
@@ -169,7 +171,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Height</label>
+                            <label className="block text-sm font-medium mb-1">{t('height')}</label>
                             <input
                                 type="number"
                                 name="height"
@@ -179,7 +181,7 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Role</label>
+                            <label className="block text-sm font-medium mb-1">{t('userRole')}</label>
                             <input
                                 type="text"
                                 name="role"
@@ -198,14 +200,14 @@ const EditProfile: React.FC = () => {
                             }}
                             className="mr-4 bg-gray-300 text-gray-700 px-8 py-2 rounded-full font-semibold hover:bg-gray-400 transition"
                         >
-                            Cancel
+                            {t('cancel')}
                         </button>
                         <button
                             type="submit"
                             className={`bg-blue-600 text-white px-8 py-2 rounded-full font-semibold hover:bg-blue-700 transition ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
                             disabled={saving}
                         >
-                            Save
+                            {t('save')}
                         </button>
                     </div>
                 </form>
