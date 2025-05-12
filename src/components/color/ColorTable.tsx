@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DeleteConfirmationModal from '../common/DeleteConfirm';
 import { deleteColor } from '../../apis/colorApi';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -17,6 +18,7 @@ const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
     const naviate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedColorId, setSelectedColorId] = useState<string | null>(null);
+    const { t } = useTranslation('color');
     const handleDeleteClick = (id: string) => {
         setSelectedColorId(id);
         setIsDeleteConfirmOpen(true); // Open the confirmation dialog
@@ -39,9 +41,9 @@ const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Color</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Color Code</th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('color')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('colorCode')}</th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t('actions')}</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
