@@ -6,11 +6,11 @@ import { ColorRequest } from "../types/color/ColorRequest";
 import { Color } from "../types/color/Color";
 
 const API_URL = import.meta.env.VITE_API_URL;
-export const getColors = async (page: number, size: number): Promise<CustomResponse<ColorResponse>> => {
+export const getColors = async (page: number, size: number, keyword: string = ""): Promise<CustomResponse<ColorResponse>> => {
     try {
         const response = await axios.get<CustomResponse<ColorResponse>>(`${API_URL}/colors`, {
             params: {
-                page, size
+                page, size, keyword
             },
         });
         return response.data;

@@ -9,5 +9,6 @@
     "save": "Save",
     "editColor": "Edit Color",
     "deleteSuccess": "Delete color successfully",
-    "deleteColor": "Delete Color"
+    "deleteColor": "Delete Color",
+    "search": "Search color by name"
 }

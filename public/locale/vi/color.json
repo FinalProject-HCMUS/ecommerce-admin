@@ -9,5 +9,6 @@
     "save": "Lưu",
     "editColor": "Chỉnh sửa màu",
     "deleteSuccess": "Xóa màu thành công",
-    "deleteColor": "Xóa màu"
+    "deleteColor": "Xóa màu",
+    "search": "Tìm kiếm màu theo tên"
 }
