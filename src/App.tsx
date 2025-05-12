@@ -28,7 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route element={<AdminLayout />}>
             <Route path="/colors" element={<PrivateRoute element={Color} />} />
-            <Route path="/sizes" element={<PrivateRoute element={Sizes} />} />
+            <Route path="/sizes" Component={Sizes} />
             <Route path="/products" element={<PrivateRoute element={Products} />} />
             <Route path="/categories" element={<PrivateRoute element={Categories} />} />
             <Route path="/" element={<Navigate to="/products" />} />

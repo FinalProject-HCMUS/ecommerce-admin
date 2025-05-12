@@ -17,14 +17,15 @@ const ITEMS_PER_PAGE = 8;
 
 const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, onPick, colorsSelected }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [search, setSearch] = useState('');
     const [colors, setColors] = useState<Color[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { t } = useTranslation('product');
-    const fetchColors = async (page: number) => {
+    const fetchColors = async (page: number, keysearch = '') => {
         try {
-            const response = await getColors(page - 1, ITEMS_PER_PAGE);
+            const response = await getColors(page - 1, ITEMS_PER_PAGE, keysearch);
             if (!response.isSuccess) {
                 toast.error(response.message, { autoClose: 1000 });
                 return;
@@ -40,13 +41,15 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
 
     useEffect(() => {
         if (isOpen) {
-            fetchColors(currentPage);
+            fetchColors(currentPage, search);
         }
-    }, [currentPage, isOpen]);
-
-    const filteredColors = colors.filter((color) =>
-        color.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    }, [currentPage, search, isOpen]);
+    const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            setSearch(searchTerm.trim());
+            setCurrentPage(1);
+        }
+    }
 
     const selectedColorIds = new Set(colorsSelected.map(c => c.id));
 
@@ -67,6 +70,7 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={handleSearchKeyDown}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder={t("colorPlaceholder")}
                     />
@@ -82,14 +86,14 @@ const ColorPickerDialog: React.FC<ColorPickerDialogProps> = ({ isOpen, onClose, 
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-100">
-                            {filteredColors.length === 0 && (
+                            {colors.length === 0 && (
                                 <tr>
                                     <td colSpan={2} className="text-center py-6 text-gray-400">
                                         {t("noColorsFound")}
                                     </td>
                                 </tr>
                             )}
-                            {filteredColors.map((color) => {
+                            {colors.map((color) => {
                                 const isAlreadySelected = selectedColorIds.has(color.id);
                                 return (
                                     <tr
