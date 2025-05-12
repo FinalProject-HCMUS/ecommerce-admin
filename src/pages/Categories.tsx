@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import MotionPageWrapper from '../components/common/MotionPage';
 import { Category } from '../types/category/Category';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const ITEMS_PER_PAGE = 10;
@@ -17,6 +18,7 @@ const Categories = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const navigate = useNavigate();
+    const { t } = useTranslation('category');
 
     const fetchCategories = async (page: number) => {
         const response = await getCategories(page - 1, ITEMS_PER_PAGE);
@@ -42,7 +44,7 @@ const Categories = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">Categories</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">{t('category')}</h1>
                     <button
                         onClick={() => {
                             navigate("/categories/add");
@@ -51,7 +53,7 @@ const Categories = () => {
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
                     >
                         <Plus size={20} />
-                        <span>Add Category</span>
+                        <span>{t('addCategory')}</span>
                     </button>
                 </div>
 

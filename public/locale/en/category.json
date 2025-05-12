@@ -1,0 +1,14 @@
+{
+    "category": "Category",
+    "description": "Description",
+    "addCategory": "Add Category",
+    "actions": "Actions",
+    "deleteCategory": "Delete Category",
+    "categoryName": "Category Name",
+    "categoryDescription": "Category Description",
+    "namePlaceholder": "Enter category name",
+    "descriptionPlaceholder": "Enter category description",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editCategory": "Edit Category"
+}

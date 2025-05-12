@@ -1,0 +1,14 @@
+{
+    "category": "Danh mục",
+    "description": "Mô tả",
+    "addCategory": "Thêm danh mục",
+    "actions": "Hành động",
+    "deleteCategory": "Xóa danh mục",
+    "categoryName": "Tên danh mục",
+    "categoryDescription": "Mô tả danh mục",
+    "namePlaceholder": "Nhập tên danh mục",
+    "descriptionPlaceholder": "Nhập mô tả danh mục",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "editCategory": "Chỉnh sửa danh mục"
+}

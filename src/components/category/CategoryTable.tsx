@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DeleteConfirmationModal from '../common/DeleteConfirm';
 import { toast } from 'react-toastify';
 import { deleteCategory } from '../../apis/categoryApi';
+import { useTranslation } from 'react-i18next';
 
 
 interface CategoryTableProps {
@@ -16,6 +17,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) =>
     const navigate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+    const { t } = useTranslation('category');
     const handleDeleteClick = (id: string) => {
         setSelectedCategoryId(id);
         setIsDeleteConfirmOpen(true); // Open the confirmation dialog
@@ -38,9 +40,9 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) =>
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('category')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('description')}</th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t('actions')}</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -74,7 +76,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) =>
                 </tbody>
             </table>
             <DeleteConfirmationModal
-                title='Delete Category'
+                title={t('deleteCategory')}
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => { setIsDeleteConfirmOpen(false); }}
                 onConfirm={handleConfirmDelete}

@@ -4,12 +4,14 @@ import MotionPageWrapper from "../../../common/MotionPage";
 import { CategoryRequest } from "../../../../types/category/CategoryRequest";
 import { getCategoryById, updateCategory } from "../../../../apis/categoryApi";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const EditCategory: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
+    const { t } = useTranslation('category');
     const fetchCategoryById = async (id: string) => {
         const response = await getCategoryById(id);
         if (!response.isSuccess) {
@@ -55,28 +57,28 @@ const EditCategory: React.FC = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Add Category</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t('editCategory')}</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6">
                     <div className="space-y-6">
                         {/* Category Name */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('categoryName')}</label>
                             <input
                                 type="text"
                                 value={categoryName}
                                 onChange={(e) => setCategoryName(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter category name"
+                                placeholder={t('namePlaceholder')}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Category Description</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('categoryDescripton')}</label>
                             <textarea
                                 value={categoryDescription}
                                 onChange={(e) => setCategoryDescription(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter category description"
+                                placeholder={t('descriptionPlaceholder')}
                                 rows={4}
                             />
                         </div>
@@ -89,14 +91,14 @@ const EditCategory: React.FC = () => {
                             onClick={() => navigate("/categories")}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                         >
-                            Cancel
+                            {t('cancel')}
                         </button>
                         <button
                             type="button"
                             onClick={handleSubmit}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Save
+                            {t('save')}
                         </button>
                     </div>
                 </div>
