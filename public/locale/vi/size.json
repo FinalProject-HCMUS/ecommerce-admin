@@ -1,0 +1,20 @@
+{
+    "size": "Kích thước",
+    "nameSize": "Tên kích thước",
+    "minHeight": "Chiều cao tối thiểu",
+    "maxHeight": "Chiều cao tối đa",
+    "minWeight": "Cân nặng tối thiểu",
+    "maxWeight": "Cân nặng tối đa",
+    "actions": "Hành động",
+    "addSize": "Thêm kích thước mới",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "namePlaceholder": "Nhập tên kích thước (ví dụ: S, M, L, XL)",
+    "minHeightPlaceholder": "Nhập chiều cao tối thiểu",
+    "maxHeightPlaceholder": "Nhập chiều cao tối đa",
+    "minWeightPlaceholder": "Nhập cân nặng tối thiểu",
+    "maxWeightPlaceholder": "Nhập cân nặng tối đa",
+    "editSize": "Chỉnh sửa kích thước",
+    "deleteSuccess": "Xóa kích thước thành công",
+    "deleteSize": "Xóa kích thước"
+}

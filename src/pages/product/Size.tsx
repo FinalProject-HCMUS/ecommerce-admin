@@ -7,6 +7,7 @@ import { Size } from "../../types/size/Size";
 import { getSizes } from "../../apis/sizeApi";
 import SizeTable from "../../components/size/SizeTable";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const Sizes = () => {
@@ -14,6 +15,7 @@ const Sizes = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const navigate = useNavigate();
+    const { t } = useTranslation('size');
     const fetchsizes = async (page: number) => {
         const response = await getSizes(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
@@ -36,13 +38,13 @@ const Sizes = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">Sizes</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">{t('size')}</h1>
                     <button
                         onClick={() => navigate('/sizes/add')}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-sizes"
                     >
                         <Plus size={20} />
-                        <span>Add Size</span>
+                        <span>{t('addSize')}</span>
                     </button>
                 </div>
 

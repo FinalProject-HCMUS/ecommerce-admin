@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteSize } from '../../apis/sizeApi';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../common/DeleteConfirm';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -17,7 +18,7 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
     const navigate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
-
+    const { t } = useTranslation('size');
     const handleDeleteClick = (id: string) => {
         setSelectedSizeId(id);
         setIsDeleteConfirmOpen(true);
@@ -30,7 +31,7 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
             });
             return;
         }
-        toast.success("Size deleted successfully", {
+        toast.success(t('deleteSuccess'), {
             autoClose: 1000,
         });
         refresh();
@@ -41,12 +42,12 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name Size</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Min Height</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max Height</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Min Weight</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max Weight</th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('nameSize')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('minHeight')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('maxHeight')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('minWeight')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('maxWeight')}</th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t('actions')}</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -86,7 +87,7 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
                 </tbody>
             </table>
             {isDeleteConfirmOpen && <DeleteConfirmationModal
-                title='Delete Size'
+                title={t('deleteSize')}
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => { setIsDeleteConfirmOpen(false); }}
                 onConfirm={handleConfirmDelete}

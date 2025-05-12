@@ -5,10 +5,12 @@ import { getSizeById, updateSize } from "../../../../apis/sizeApi";
 import { Size } from "../../../../types/size/Size";
 import { toast } from "react-toastify";
 import { SizeRequest } from "../../../../types/size/SizeRequest";
+import { useTranslation } from "react-i18next";
 
 const EditSize: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
+    const { t } = useTranslation('size');
     const [formData, setFormData] = useState<Size>({
         name: "",
         minHeight: 0,
@@ -82,13 +84,13 @@ const EditSize: React.FC = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Edit Size</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t('editSize')}</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6">
                     <div className="space-y-6">
                         {/* Size Name */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Size Name</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('nameSize')}</label>
                             <input
                                 type="text"
                                 name="name"
@@ -102,26 +104,26 @@ const EditSize: React.FC = () => {
                         {/* Height Range */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Height (cm)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('minHeight')} (cm)</label>
                                 <input
                                     type="number"
                                     name="minHeight"
                                     value={formData.minHeight}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Enter minimum height"
+                                    placeholder={t('minHeightPlaceholder')}
 
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Maximum Height (cm)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('maxHeight')} (cm)</label>
                                 <input
                                     type="number"
                                     name="maxHeight"
                                     value={formData.maxHeight}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Enter maximum height"
+                                    placeholder={t('maxHeightPlaceholder')}
                                     min="0"
                                 />
                             </div>
@@ -130,26 +132,26 @@ const EditSize: React.FC = () => {
                         {/* Weight Range */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Weight (kg)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('minWeight')} (kg)</label>
                                 <input
                                     type="number"
                                     name="minWeight"
                                     value={formData.minWeight}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Enter minimum weight"
+                                    placeholder={t('minWeightPlaceholder')}
                                     min="0"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Maximum Weight (kg)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">{t('maxWeight')} (kg)</label>
                                 <input
                                     type="number"
                                     name="maxWeight"
                                     value={formData.maxWeight}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Enter maximum weight"
+                                    placeholder={t('maxWeightPlaceholder')}
                                     min="0"
                                 />
                             </div>
@@ -163,14 +165,14 @@ const EditSize: React.FC = () => {
                             onClick={() => navigate("/sizes")}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                         >
-                            Cancel
+                            {t('cancel')}
                         </button>
                         <button
                             type="button"
                             onClick={handleSubmit}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Save
+                            {t('save')}
                         </button>
                     </div>
                 </div>
