@@ -8,14 +8,17 @@ import { useTranslation } from 'react-i18next';
 const Login = () => {
     const [email, setEmail] = useState('admin@gmail.com');
     const [password, setPassword] = useState('12345678');
+    const [saving, setSaving] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
     const { t } = useTranslation('login');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSaving(true);
         const credentials: LoginInterface = { email, password };
-        login(credentials, navigate);
+        await login(credentials, navigate);
+        setSaving(false);
     };
 
     return (
@@ -47,7 +50,8 @@ const Login = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                            className={`w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={saving}
                         >
                             {t('signIn')}
                         </button>

@@ -10,5 +10,6 @@
     "descriptionPlaceholder": "Enter category description",
     "cancel": "Cancel",
     "save": "Save",
-    "editCategory": "Edit Category"
+    "editCategory": "Edit Category",
+    "search": "Search category by name"
 }

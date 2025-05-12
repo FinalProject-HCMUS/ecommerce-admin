@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import MotionPageWrapper from '../../components/common/MotionPage';
 import { Product } from '../../types/product/Product';
 import { useNavigate } from 'react-router-dom';
-import { getAllCategories, getCategories } from '../../apis/categoryApi';
+import { getAllCategories } from '../../apis/categoryApi';
 import { Category } from '../../types/category/Category';
 import { useTranslation } from 'react-i18next';
 

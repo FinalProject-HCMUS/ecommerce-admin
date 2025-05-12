@@ -11,6 +11,7 @@ const EditCategory: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
+    const [saving, setSaving] = useState(false);
     const { t } = useTranslation('category');
     const fetchCategoryById = async (id: string) => {
         const response = await getCategoryById(id);
@@ -33,16 +34,22 @@ const EditCategory: React.FC = () => {
 
     const handleSubmit = async () => {
         if (!categoryName || !categoryDescription) {
-            alert("Please fill in all fields.");
+            toast.error("Please fill in all fields.", {
+                autoClose: 1000, position: "top-right"
+            });
             return;
         }
+        setSaving(true);
         const categoryRequest: CategoryRequest = {
             name: categoryName,
             description: categoryDescription,
         };
         const response = await updateCategory(id!, categoryRequest);
         if (!response.isSuccess) {
-            alert(response.message);
+            toast.error(response.message, {
+                autoClose: 1000, position: "top-right"
+            });
+            setSaving(false);
             return;
         }
         toast.success("Category added successfully", {
@@ -51,6 +58,7 @@ const EditCategory: React.FC = () => {
                 navigate("/categories");
             }
         });
+        setSaving(false);
     };
 
     return (
@@ -96,7 +104,8 @@ const EditCategory: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={saving}
                         >
                             {t('save')}
                         </button>

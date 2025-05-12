@@ -67,10 +67,7 @@ const EditProfile: React.FC = () => {
             photo: updateUser!.photo,
             role: updateUser!.role,
         }
-        console.log(userRequest);
         const response = await updateProfile(user!.id, userRequest);
-        console.log(response);
-
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: 'top-center' });
             return;

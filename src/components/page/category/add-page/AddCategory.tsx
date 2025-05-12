@@ -10,6 +10,7 @@ const AddCategory: React.FC = () => {
     const navigate = useNavigate();
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
+    const [saving, setSaving] = useState(false);
     const { t } = useTranslation('category');
 
     const handleSubmit = async () => {
@@ -19,6 +20,7 @@ const AddCategory: React.FC = () => {
             });
             return;
         }
+        setSaving(true);
         const categoryRequest: CategoryRequest = {
             name: categoryName,
             description: categoryDescription,
@@ -28,6 +30,7 @@ const AddCategory: React.FC = () => {
             toast.error(response.message, {
                 autoClose: 1000, position: "top-right"
             });
+            setSaving(false);
             return;
         }
         toast.success("Category added successfully", {
@@ -36,6 +39,7 @@ const AddCategory: React.FC = () => {
                 navigate("/categories");
             }
         });
+        setSaving(false);
     };
 
     return (
@@ -83,7 +87,8 @@ const AddCategory: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={saving}
                         >
                             {t('save')}
                         </button>
