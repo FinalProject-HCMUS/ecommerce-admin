@@ -1,0 +1,17 @@
+{
+    "about": "About",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "address": "Address",
+    "height": "Height",
+    "weight": "Weight",
+    "userRole": "User Role",
+    "enabled": "Enabled",
+    "personalInfo": "Personal Information",
+    "edit": "Edit",
+    "editProfile": "Edit Profile",
+    "cancel": "Cancel",
+    "save": "Save"
+}

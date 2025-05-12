@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Login as LoginInterface } from '../types';
+import { Login as LoginInterface } from '../types/auth/Login';
 import MotionPageWrapper from '../components/common/MotionPage';
 import { useTranslation } from 'react-i18next';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('admin@gmail.com');
+    const [password, setPassword] = useState('12345678');
+    const [saving, setSaving] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
-    const { t } = useTranslation();
-    const handleSubmit = (e: React.FormEvent) => {
+    const { t } = useTranslation('login');
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const credentials: LoginInterface = { username, password };
-        login(credentials, navigate);
+        setSaving(true);
+        const credentials: LoginInterface = { email, password };
+        await login(credentials, navigate);
+        setSaving(false);
     };
 
     return (
@@ -25,11 +29,11 @@ const Login = () => {
                 <MotionPageWrapper>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('userName')}</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('email')}</label>
                             <input
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 required
                             />
@@ -44,16 +48,10 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        {/* <div className="mb-4 flex items-center justify-between">
-                            <label className="flex items-center">
-                                <input type="checkbox" className="form-checkbox" />
-                                <span className="ml-2 text-sm text-gray-700">Remember password</span>
-                            </label>
-                            <a href="#" className="text-sm text-blue-600 hover:underline">Forgot password?</a>
-                        </div> */}
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                            className={`w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={saving}
                         >
                             {t('signIn')}
                         </button>

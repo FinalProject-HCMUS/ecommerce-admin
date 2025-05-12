@@ -1,10 +1,40 @@
 import axios from "axios";
-import { User } from "../types";
-import { CustomResponse } from "../types/common/CustomResponse";
+import { CustomResponse } from "../types/color/common/CustomResponse";
+import { User } from "../types/user/User";
+import { UserRequest } from "../types/user/UserRequest";
 import { UserResponse } from "../types/customer/UserResponse";
-import { UserRequest } from "../types/customer/UserRequest";
-const API_URL = import.meta.env.VITE_API_URL;
 
+const API_URL = import.meta.env.VITE_API_URL;
+export const getProfile = async (): Promise<CustomResponse<User>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.get(`${API_URL}/users/me`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+export const updateProfile = async (id: string, user: UserRequest): Promise<CustomResponse<User>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.put(`${API_URL}/users/${id}`, user,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
 export const getUsers = async (page: number, perpage: number): Promise<CustomResponse<UserResponse>> => {
     try {
         const response = await axios.get<CustomResponse<UserResponse>>(`${API_URL}/users`, {

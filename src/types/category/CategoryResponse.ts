@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Pageable } from "../common/Pageable";
+import { Pageable } from "../color/common/Pageable";
 import { Category } from "./Category";
 
 

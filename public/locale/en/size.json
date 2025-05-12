@@ -1,0 +1,23 @@
+{
+    "size": "Sizes",
+    "nameSize": "Name Size",
+    "minHeight": "Min Height",
+    "maxHeight": "Max Height",
+    "minWeight": "Min Weight",
+    "maxWeight": "Max Weight",
+    "actions": "Actions",
+    "addSize": "Add Size",
+    "cancel": "Cancel",
+    "save": "Save",
+    "namePlaceholder": "Enter size name (e.g. S, M, L, XL)",
+    "minHeightPlaceholder": "Enter min height",
+    "maxHeightPlaceholder": "Enter max height",
+    "minWeightPlaceholder": "Enter min weight",
+    "maxWeightPlaceholder": "Enter max weight",
+    "editSize": "Edit Size",
+    "deleteSuccess": "Delete size successfully",
+    "deleteSize": "Delete Size",
+    "search": "Search size by name",
+    "heightRange": "Height Range",
+    "weightRange": "Weight Range"
+}
