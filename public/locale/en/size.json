@@ -16,5 +16,6 @@
     "maxWeightPlaceholder": "Enter max weight",
     "editSize": "Edit Size",
     "deleteSuccess": "Delete size successfully",
-    "deleteSize": "Delete Size"
+    "deleteSize": "Delete Size",
+    "search": "Search size by name"
 }

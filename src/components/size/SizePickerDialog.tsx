@@ -16,14 +16,15 @@ const ITEMS_PER_PAGE = 8;
 
 const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, onPick }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [search, setSearch] = useState('');
     const [sizes, setSizes] = useState<Size[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { t } = useTranslation('product');
-    const fetchSizes = async (page: number) => {
+    const fetchSizes = async (page: number, keysearch = '') => {
         try {
-            const response = await getSizes(page - 1, ITEMS_PER_PAGE);
+            const response = await getSizes(page - 1, ITEMS_PER_PAGE, keysearch);
             if (!response.isSuccess) {
                 toast.error(response.message, { autoClose: 1000 });
                 return;
@@ -39,9 +40,15 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
 
     useEffect(() => {
         if (isOpen) {
-            fetchSizes(currentPage);
+            fetchSizes(currentPage, search);
         }
-    }, [currentPage, isOpen]);
+    }, [currentPage, isOpen, search]);
+    const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            setSearch(searchTerm.trim());
+            setCurrentPage(1);
+        }
+    }
 
     const filteredSizes = sizes.filter((size) =>
         size.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -64,6 +71,7 @@ const SizePickerDialog: React.FC<SizePickerDialogProps> = ({ isOpen, onClose, on
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={handleSearchKeyDown}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Search size by name"
                     />
