@@ -20,6 +20,8 @@ import EditProfile from './components/page/about/edit-page/EditProfile';
 import Sizes from './pages/product/Size';
 import Customers from './pages/Customers';
 import Orders from './pages/Order';
+import AddCustomer from './components/page/customer/add-page/AddCustomer';
+import EditCustomer from './components/page/customer/edit-page/EditCustomer';
 
 
 function App() {
@@ -32,8 +34,9 @@ function App() {
             <Route path="/colors" element={<PrivateRoute element={Color} />} />
             <Route path="/sizes" element={<PrivateRoute element={Sizes} />} />
             <Route path="/products" element={<PrivateRoute element={Products} />} />
-            <Route path="/categories" element={<PrivateRoute element={Categories} />} />
             <Route path="/customers" element={<PrivateRoute element={Customers} />} />
+            <Route path="/customers/add" element={<PrivateRoute element={AddCustomer} />} />
+            <Route path="/customers/edit/:id" element={<PrivateRoute element={EditCustomer} />} />
             <Route path="/orders" element={<PrivateRoute element={Orders} />} />
             <Route path="/" element={<Navigate to="/products" />} />
             <Route path="/products/add/*" element={<PrivateRoute element={AddProduct} />} />
@@ -41,6 +44,7 @@ function App() {
             <Route path="/colors/edit/:id" element={<PrivateRoute element={EditColor} />} />
             <Route path="/sizes/add" element={<PrivateRoute element={AddSize} />} />
             <Route path="/sizes/edit/:id" element={<PrivateRoute element={EditSize} />} />
+            <Route path="/categories" element={<PrivateRoute element={Categories} />} />
             <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
             <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
             <Route path="/products/edit/:id/*" element={<PrivateRoute element={EditProduct} />} />

@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             autoClose: 1000,
             position: 'top-right',
             onClose: () => {
-                navigate('/products');
+                navigate('/customers');
             }
         });
     };

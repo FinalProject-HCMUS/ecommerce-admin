@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Package, List, LogOut, Palette, RulerIcon, Info, Users } from 'lucide-react';
+import { Package, List, LogOut, Palette, RulerIcon, Info, Users, Boxes } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 
@@ -19,7 +19,7 @@ const Sidebar = () => {
         }
         >
           <Users size={20} />
-          <span>{t('customerSidebar')}</span>
+          <span>{t('customers')}</span>
         </NavLink>
         <NavLink
           to="/products"
@@ -60,6 +60,16 @@ const Sidebar = () => {
         >
           <List size={20} />
           <span>{t('categories')}</span>
+        </NavLink>
+        <NavLink to="/orders" className={({ isActive }) =>
+          `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+          }`
+        }>
+          <Boxes size={20} />
+          <span>{t('orders')}</span>
+
+
+
         </NavLink>
         <NavLink
           to="/about"

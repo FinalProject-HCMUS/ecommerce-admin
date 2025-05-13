@@ -1,15 +1,42 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { User } from "../../types/customer/User";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import DeleteConfirmationModal from "../common/DeleteConfirm";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { deleteUser } from "../../apis/userApi";
 
 
 interface CustomerTableProps {
     customers: User[];
-    onEdit: (id: string) => void;
-    onDelete: (id: string) => void;
+    refresh: () => void;
 }
-const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onEdit, onDelete }) => {
+const CustomerTable: React.FC<CustomerTableProps> = ({ customers, refresh }) => {
     const { t } = useTranslation();
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
+    const handleDeleteClick = (id: string) => {
+        setSelectedCustomerId(id);
+        setIsDeleteConfirmOpen(true);
+    };
+    const handleConfirmDelete = async () => {
+        const response = await deleteUser(selectedCustomerId!);
+        if (!response.isSuccess) {
+            toast.error(response.message, {
+                autoClose: 1000,
+                position: "top-right",
+            });
+            return;
+        }
+        toast.success("Customer deleted successfully", {
+            autoClose: 1000,
+            position: "top-right",
+        });
+        refresh();
+        setIsDeleteConfirmOpen(false);
+    };
+    const navigate = useNavigate();
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -54,13 +81,13 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onEdit, onDele
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button
-                                    onClick={() => onEdit(customer.id)}
+                                    onClick={() => navigate(`/customers/edit/${customer.id}`)}
                                     className="text-blue-600 hover:text-blue-900 mr-4"
                                 >
                                     <Pencil size={16} />
                                 </button>
                                 <button
-                                    onClick={() => onDelete(customer.id)}
+                                    onClick={() => handleDeleteClick(customer.id)}
                                     className="text-red-600 hover:text-red-900"
                                 >
                                     <Trash2 size={16} />
@@ -70,6 +97,12 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onEdit, onDele
                     ))}
                 </tbody>
             </table>
+            <DeleteConfirmationModal
+                title='Delete Customer'
+                isOpen={isDeleteConfirmOpen}
+                onClose={() => { setIsDeleteConfirmOpen(false); }}
+                onConfirm={handleConfirmDelete}
+            />
         </div>
     );
 };
