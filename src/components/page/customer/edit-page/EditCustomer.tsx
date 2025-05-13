@@ -31,7 +31,7 @@ const EditCustomer: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [saving, setSaving] = useState(false);
     const { user, setUser } = useAuth();;
-    const { t } = useTranslation('profile');
+    const { t } = useTranslation('user');
     const navigate = useNavigate();
     const fetchUserById = async (id: string) => {
         const response = await getUserById(id);
@@ -109,7 +109,7 @@ const EditCustomer: React.FC = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('editProfile')}</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t('editUser')}</h1>
                 </div>
                 <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-8 max-w-4xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-center mb-5">{t('personalInfo')}</h2>
@@ -210,12 +210,12 @@ const EditCustomer: React.FC = () => {
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                <option value="Enabled">{t('enabled')}</option>
-                                <option value="Disabled">{t('disabled')}</option>
+                                <option value="Enabled">{t('enable')}</option>
+                                <option value="Disabled">{t('disable')}</option>
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('userRole')}</label>
+                            <label className="block text-sm font-medium mb-1">{t('role')}</label>
                             <input
                                 type="text"
                                 name="role"

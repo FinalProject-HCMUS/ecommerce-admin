@@ -9,5 +9,4 @@ export interface UserRequestCreated {
     enabled: boolean;
     photo: string;
     password: string;
-    role: string;
 }

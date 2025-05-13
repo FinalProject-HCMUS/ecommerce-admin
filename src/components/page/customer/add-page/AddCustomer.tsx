@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import MotionPageWrapper from "../../../common/MotionPage";
 import { useTranslation } from "react-i18next";
-import { UserCreateRequest } from "../../../../types/customer/UserCreateRequest";
 import { useNavigate } from "react-router-dom";
 import { Camera } from "lucide-react";
 import { uploadImage } from "../../../../apis/imageApi";
 import { toast } from "react-toastify";
 import { createUser } from "../../../../apis/userApi";
+import { UserRequestCreated } from "../../../../types/user/UserRequestCreated";
 
 const AddCustomer: React.FC = () => {
-    const [formData, setFormData] = useState<UserCreateRequest>({
+    const [formData, setFormData] = useState<UserRequestCreated>({
         email: '',
         phoneNumber: '',
         firstName: '',
@@ -19,11 +19,12 @@ const AddCustomer: React.FC = () => {
         height: 0,
         password: '',
         photo: './images/default.png',
+
         enabled: true,
     });
     const [saving, setSaving] = useState(false);
     const [file, setFile] = useState<File | null>(null);
-    const { t } = useTranslation('customer');
+    const { t } = useTranslation('user');
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -143,7 +144,7 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('phoneNumber')}</label>
+                            <label className="block text-sm font-medium mb-1">{t('phone')}</label>
                             <input
                                 type="tel"
                                 name="phoneNumber"
@@ -199,8 +200,8 @@ const AddCustomer: React.FC = () => {
                                 }
                                 className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                <option value="Enabled">{t('enabled')}</option>
-                                <option value="Disabled">{t('disabled')}</option>
+                                <option value="Enabled">{t('enable')}</option>
+                                <option value="Disabled">{t('disable')}</option>
                             </select>
                         </div>
                     </div>

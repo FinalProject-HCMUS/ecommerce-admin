@@ -2,7 +2,7 @@ import axios from "axios";
 import { CustomResponse } from "../types/color/common/CustomResponse";
 import { User } from "../types/user/User";
 import { UserRequest } from "../types/user/UserRequest";
-import { UserResponse } from "../types/customer/UserResponse";
+import { UserResponse } from "../types/user/UserResponse";
 import { UserRequestCreated } from "../types/user/UserRequestCreated";
 
 const API_URL = import.meta.env.VITE_API_URL;
