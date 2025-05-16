@@ -4,6 +4,7 @@ export interface Order {
     firstName: string;
     lastName: string;
     phoneNumber: string;
+    address: string;
     status: string;
     deliveryDate: string;
     paymentMethod: string;
@@ -13,8 +14,4 @@ export interface Order {
     total: number;
     customerId: string;
     orderTracks: OrderTrack[];
-    createdAt: string;
-    createdBy: string;
-    updatedAt: string;
-    updatedBy: string;
 }

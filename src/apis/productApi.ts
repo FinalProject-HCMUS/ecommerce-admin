@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { CustomResponse } from '../types/color/common/CustomResponse';
+import { CustomResponse } from '../types/common/CustomResponse';
 import { ProductResponse } from '../types/product/ProductResponse';
 import { Product } from '../types/product/Product';
 import { ProductImage } from '../types/product/ProductImage';
 import { ProductRequest } from '../types/product/ProductRequest';
 import { ProductColorSizeRequest } from '../types/product/ProductColorSizeRequest';
 import { ProductColorSize } from '../types/product/ProductColorSize';
+import { ProductColorSizeResponse } from '../types/product/ProductColorSizeResponse';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -143,6 +144,22 @@ export const createProductColorSizes = async (productColorSizes: ProductColorSiz
 export const getProductColorSizes = async (id: string): Promise<CustomResponse<ProductColorSize[]>> => {
   try {
     const response = await axios.get<CustomResponse<ProductColorSize[]>>(`${API_URL}/product-color-sizes/product/${id}`);
+    return response.data;
+  }
+  catch (error: any) {
+    return error.response.data;
+  }
+}
+
+export const getProductColorSizesByProductId = async (id: string, page: number, size: number): Promise<CustomResponse<ProductColorSizeResponse>> => {
+  try {
+    const response = await axios.get<CustomResponse<ProductColorSizeResponse>>(`${API_URL}/product-color-sizes/product/${id}`,
+      {
+        params: {
+          page, size
+        }
+      }
+    );
     return response.data;
   }
   catch (error: any) {

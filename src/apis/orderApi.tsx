@@ -1,17 +1,21 @@
 import axios from "axios";
 import { OrderResponse } from "../types/order/OrderResponse";
-import { CustomResponse } from "../types/common/CustomResponse";
 import { OrderDetail } from "../types/order/OrderDetail";
 import { Order } from "../types/order/Order";
 import { OrderRequestUpdate } from "../types/order/OrderRequestUpdate";
+import { CustomResponse } from "../types/common/CustomResponse";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const getOrders = async (page: number, perpage: number): Promise<CustomResponse<OrderResponse>> => {
     try {
+        const accessToken = localStorage.getItem("accessToken");
         const response = await axios.get<CustomResponse<OrderResponse>>(`${API_URL}/orders`, {
             params: {
                 page,
                 perpage,
+            },
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
             },
         });
         return response.data;

@@ -119,7 +119,6 @@ const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onSubmit
                             <X size={24} />
                         </button>
                     </div>
-
                     <form onSubmit={handleSubmit} className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Customer Information */}
                         <div>

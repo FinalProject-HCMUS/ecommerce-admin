@@ -22,6 +22,9 @@ import Customers from './pages/Customers';
 import Orders from './pages/Order';
 import AddCustomer from './components/page/customer/add-page/AddCustomer';
 import EditCustomer from './components/page/customer/edit-page/EditCustomer';
+import AddOrder from './components/page/order/add-page/AddOrder';
+import AddOrderInformation from './components/page/order/add-page/AddOrderInformation';
+import AddOrderProduct from './components/page/order/add-page/AddOrderProduct';
 
 
 function App() {
@@ -38,6 +41,7 @@ function App() {
             <Route path="/customers/add" element={<PrivateRoute element={AddCustomer} />} />
             <Route path="/customers/edit/:id" element={<PrivateRoute element={EditCustomer} />} />
             <Route path="/orders" element={<PrivateRoute element={Orders} />} />
+            <Route path="/orders/add/*" element={<PrivateRoute element={AddOrder} />} />
             <Route path="/" element={<Navigate to="/products" />} />
             <Route path="/products/add/*" element={<PrivateRoute element={AddProduct} />} />
             <Route path="/colors/add" element={<PrivateRoute element={AddColor} />} />

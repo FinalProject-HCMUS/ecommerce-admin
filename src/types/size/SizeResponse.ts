@@ -1,4 +1,4 @@
-import { Pageable } from "../color/common/Pageable";
+import { Pageable } from "../common/Pageable";
 import { Size } from "./Size";
 
 export interface SizeResponse {

@@ -30,7 +30,7 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => 
                                 <div className="text-sm text-gray-900">{order.firstName} {order.lastName}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">Waitting</div>
+                                <div className="text-sm text-gray-900">{order.address}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { CustomResponse } from "../types/color/common/CustomResponse";
+import { CustomResponse } from "../types/common/CustomResponse";
 import { ColorResponse } from "../types/color/ColorResponse";
 import { ColorRequest } from "../types/color/ColorRequest";
 import { Color } from "../types/color/Color";

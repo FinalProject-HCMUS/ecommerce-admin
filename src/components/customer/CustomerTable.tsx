@@ -1,11 +1,11 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { User } from "../../types/customer/User";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DeleteConfirmationModal from "../common/DeleteConfirm";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { deleteUser } from "../../apis/userApi";
+import { User } from "../../types/user/User";
 
 
 interface CustomerTableProps {

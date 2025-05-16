@@ -1,10 +1,16 @@
-import { Color } from "../color/Color";
-import { Size } from "../size/Size";
+import { Pageable } from "../common/Pageable";
+import { ProductColorSize } from "./ProductColorSize";
 
 export interface ProductColorSizeResponse {
-    id: string;
-    productId: string;
-    quantity: number;
-    color: Color;
-    size: Size;
+    content: ProductColorSize[];
+    pageable: Pageable;
+    last: boolean;
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    sort: any[];
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
 }

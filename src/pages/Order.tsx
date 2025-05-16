@@ -12,6 +12,8 @@ import { Order } from '../types/order/Order';
 import { OrderDetail } from '../types/order/OrderDetail';
 import { OrderRequestUpdate } from '../types/order/OrderRequestUpdate';
 import { OrderDetailRequest } from '../types/order/OrderDetailRequest';
+import { Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
@@ -24,7 +26,7 @@ const Orders = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | undefined>();
     const [orderToDelete, setOrderToDelete] = useState<Order | undefined>();
-
+    const navigate = useNavigate();
     const fetchOrders = async (page: number) => {
         const response = await getOrders(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
@@ -98,9 +100,10 @@ const Orders = () => {
                 <div className="mb-8 flex justify-between items-center">
                     <h1 className="text-2xl font-semibold text-gray-900">Orders</h1>
                     <button
-                        onClick={() => setIsAddModalOpen(true)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        onClick={() => navigate('/orders/add/information')}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
                     >
+                        <Plus size={20} />
                         Add New Order
                     </button>
                 </div>
