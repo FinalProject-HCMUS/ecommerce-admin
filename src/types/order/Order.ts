@@ -1,4 +1,3 @@
-import { OrderTrack } from "./OrderTrack";
 export interface Order {
     id: string;
     firstName: string;
@@ -13,5 +12,4 @@ export interface Order {
     subTotal: number;
     total: number;
     customerId: string;
-    orderTracks: OrderTrack[];
 }

@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+import { MousePointer2 } from "lucide-react";
 import { Product } from "../../types/product/Product";
 
 interface ProductTableProps {
@@ -8,7 +8,7 @@ interface ProductTableProps {
 
 const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductSelect }) => {
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border border-gray-300 rounded-lg shadow-md">
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
@@ -16,7 +16,7 @@ const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductS
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">cateogry</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">price</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">cost</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">action</th>
+                        <th className="px-6 py-3 text-xs text-left font-medium text-gray-500 uppercase tracking-wider">action</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -41,7 +41,7 @@ const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductS
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{product.cost}</div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td className="px-10 py-4 whitespace-nowrap">
                                 <button
                                     type="button"
                                     className="text-blue-600 hover:text-blue-900"
@@ -49,7 +49,7 @@ const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductS
                                         onProductSelect(product);
                                     }}
                                 >
-                                    <Pencil size={16} />
+                                    <MousePointer2 size={20} />
                                 </button>
                             </td>
                         </tr>

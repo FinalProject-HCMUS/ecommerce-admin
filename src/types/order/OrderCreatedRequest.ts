@@ -10,6 +10,7 @@ export interface OrderCreatedRequest {
     productCost: number;
     subTotal: number;
     total: number;
+    customerId?: string;
 }
 
 export const defaultOrderCreatedRequest: OrderCreatedRequest = {

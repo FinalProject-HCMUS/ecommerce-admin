@@ -2,6 +2,7 @@ import React from "react";
 import MotionPageWrapper from "../../../common/MotionPage";
 import { OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface Props {
     formData: OrderCreatedRequest;
@@ -17,9 +18,15 @@ const AddOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();;
-    };
+    const handleNextStep = () => {
+        // Handle the next step logic here
+        //check fill all informations
+        if (!formData.firstName || !formData.phoneNumber || !formData.address || !formData.paymentMethod || !formData.status) {
+            toast.error("Please fill in all required fields.", { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        navigate("/orders/add/product");
+    }
     const navigate = useNavigate();
     return (
         <MotionPageWrapper>
@@ -29,16 +36,27 @@ const AddOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                 </div>
                 <div className="bg-white rounded-lg shadow p-6 mb-6">
                     <p className="text-gray-600 mb-4 italic">Please fill in the customer information below.</p>
-                    <form onSubmit={handleSubmit} className="p-6 grid grid-cols-1 gap-6">
+                    <form className="p-6 grid grid-cols-1 gap-6">
                         {/* Customer Information */}
                         <div>
                             <h3 className="text-lg font-semibold mb-4">Customer Information</h3>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                                <label className="block text-sm font-medium text-gray-700">First Name</label>
                                 <input
                                     type="text"
                                     name="firstName"
                                     value={formData.firstName}
+                                    onChange={handleChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
@@ -113,9 +131,7 @@ const AddOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => {
-                                    navigate("/orders/add/product");
-                                }}
+                                onClick={handleNextStep}
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                             >
                                 Next

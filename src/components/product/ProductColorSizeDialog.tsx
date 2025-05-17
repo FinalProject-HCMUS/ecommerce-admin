@@ -15,8 +15,6 @@ interface ProductColorSizeProps {
 
 
 const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClose, onPick, productColorSizesSelected, productId }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [search, setSearch] = useState('');
     const [variants, setVariants] = useState<ProductColorSize[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { t } = useTranslation('product');
@@ -34,11 +32,6 @@ const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClo
             fetchProductColorSizes(productId);
         }
     }, [isOpen, productId]);
-    const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            setSearch(searchTerm.trim());
-        }
-    }
 
     const selectedVariantsId = new Set(productColorSizesSelected.map(c => c.id));
 
@@ -53,17 +46,7 @@ const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClo
                         <X size={24} />
                     </button>
                 </div>
-                {/* Search Input */}
-                <div className="mb-6">
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={handleSearchKeyDown}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder={t("colorPlaceholder")}
-                    />
-                </div>
+
 
                 {/* Product color size table */}
                 <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -91,7 +74,7 @@ const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClo
                                         key={variant.id}
                                         className={`transition-colors duration-150 
                                             ${isAlreadySelected ? 'bg-blue-200 cursor-not-allowed opacity-60' : 'hover:bg-blue-200 cursor-pointer'}
-                                            }
+                                             }
                                         `}
                                         onClick={() => {
                                             if (isAlreadySelected) return;

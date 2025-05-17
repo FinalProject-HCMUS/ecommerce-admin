@@ -34,7 +34,7 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => 
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                    {format(new Date(order.orderTracks[0].createdAt), 'MMMM dd, yyyy, hh:mm a')}
+                                    {format(new Date(order.deliveryDate), 'MMMM dd, yyyy, hh:mm a')}
                                 </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">

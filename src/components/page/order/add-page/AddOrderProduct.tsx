@@ -9,7 +9,7 @@ import { getProducts } from "../../../../apis/productApi";
 import { toast } from "react-toastify";
 import { ProductColorSize } from "../../../../types/product/ProductColorSize";
 import ProductColorSizeDialog from "../../../product/ProductColorSizeDialog";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
 
 interface Props {
@@ -25,12 +25,13 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
+    const [searchInput, setSearchInput] = useState('');
     const [selectedProduct, setSelectedProduct] = useState<Product>({} as Product);
     const [isProductColorSizeDialogOpen, setIsProductColorSizeDialogOpen] = useState(false);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
     const navigate = useNavigate();
-    const fetchProducts = async (page: number, category = '', keysearch = '') => {
-        const response = await getProducts(page - 1, ITEMS_PER_PAGE, "createdAt,asc", category, keysearch);
+    const fetchProducts = async (page: number, keysearch = '') => {
+        const response = await getProducts(page - 1, ITEMS_PER_PAGE, "createdAt,asc", '', keysearch);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
@@ -144,6 +145,12 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         );
         setOrderDetails(updatedDetails);
     };
+    const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            setSearch(searchInput.trim());
+            setCurrentPage(1);
+        }
+    }
     return (
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
@@ -153,6 +160,29 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                 <div className="bg-white rounded-lg shadow p-6 mb-6 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* show product list selected */}
                     <div className="col-span-2">
+                        <div className="flex mb-4">
+                            <div className="relative">
+                                <input
+                                    placeholder="Search products by name"
+                                    type="text"
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyDown={handleSearchKeyDown}
+                                    className="border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                                <button
+                                    onClick={() => {
+                                        setSearch(searchInput.trim());
+                                        setCurrentPage(1);
+                                    }}
+                                    type="button"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+
+                                >
+                                    <Search size={18} />
+                                </button>
+                            </div>
+                        </div>
                         <ProductPickerDialog products={products} onProductSelect={handleProductSelect} />
                         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
                     </div>
@@ -209,7 +239,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                         </div>
                         <div>
                             {/* Order Summary */}
-                            <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
+                            <h3 className="text-lg font-semibold mb-4 ">Order Summary</h3>
                             <div className="space-y-2">
                                 <div className="flex justify-between">
                                     <span className="text-sm text-gray-500">Subtotal</span>
@@ -226,14 +256,16 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                             </div>
                         </div>
                     </div>
-                    <ProductColorSizeDialog isOpen={isProductColorSizeDialogOpen}
-                        productId={selectedProduct.id} onPick={handlePickPoroductColorSize}
-                        productColorSizesSelected={productColorSizes}
-                        onClose={() => {
-                            setIsProductColorSizeDialogOpen(false);
-                        }
-                        }
-                    />
+                    <div className="col-span-2">
+                        <ProductColorSizeDialog isOpen={isProductColorSizeDialogOpen}
+                            productId={selectedProduct.id} onPick={handlePickPoroductColorSize}
+                            productColorSizesSelected={productColorSizes}
+                            onClose={() => {
+                                setIsProductColorSizeDialogOpen(false);
+                            }
+                            }
+                        />
+                    </div>
                     <div className="col-span-3 flex justify-end space-x-4 mt-6">
                         <button
                             type="button"

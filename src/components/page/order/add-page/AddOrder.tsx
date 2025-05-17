@@ -5,12 +5,39 @@ import AddOrderProduct from "./AddOrderProduct";
 import Preview from "./Preview";
 import { defaultOrderCreatedRequest, OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
 import { Route, Routes } from "react-router-dom";
+import { useAuth } from "../../../../context/AuthContext";
+import { createListOrderDetails, createOrder } from "../../../../apis/orderApi";
+import { toast } from "react-toastify";
+import { OrderDetailCreated } from "../../../../types/order/OrderDetailCreated";
 
 const AddOrder: React.FC = () => {
     const [formData, setFormData] = useState<OrderCreatedRequest>(defaultOrderCreatedRequest);
     const [orderDetails, setOrderDetails] = useState<OrderDetailRequest[]>([]);
+    const { user } = useAuth();
     const handleSubmit = async () => {
-
+        const idUser = user?.id;
+        formData.customerId = idUser;
+        formData.deliveryDate = new Date().toISOString();
+        const orderResponse = await createOrder(formData);
+        if (!orderResponse.isSuccess) {
+            toast.error(orderResponse.message, { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        //add order details
+        const orderDetailsRequest: OrderDetailCreated[] = orderDetails.map((item) => ({
+            orderId: orderResponse.data!.id,
+            itemId: item.itemId,
+            productCost: item.productCost,
+            total: item.total,
+            unitPrice: item.unitPrice,
+            quantity: item.quantity
+        }));
+        const orderDetailsResponse = await createListOrderDetails(orderDetailsRequest);
+        if (!orderDetailsResponse.isSuccess) {
+            toast.error(orderDetailsResponse.message, { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        toast.success("Create order successfully", { autoClose: 1000, position: "top-right" });
     }
     return (
         <>
