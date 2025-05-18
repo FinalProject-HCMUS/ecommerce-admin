@@ -11,7 +11,7 @@ import DeleteConfirmationModal from '../components/common/DeleteConfirm';
 import { Order } from '../types/order/Order';
 import { OrderDetail } from '../types/order/OrderDetail';
 import { OrderRequestUpdate } from '../types/order/OrderRequestUpdate';
-import { OrderDetailRequest } from '../types/order/OrderDetailRequest';
+import { OrderDetailRequest } from '../types/order/OrderDetailResponse';
 import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -109,7 +109,7 @@ const Orders = () => {
                 </div>
 
                 <div className="bg-white rounded-lg shadow">
-                    <OrderTable orders={orders} onEdit={handleEditOrder} onDelete={handleDeleteOrder} />
+                    <OrderTable orders={orders} />
                     <Pagination
                         currentPage={currentPage}
                         totalPages={totalPages}
@@ -129,17 +129,8 @@ const Orders = () => {
                 orderDetails={orderDetails || []}
                 onSubmit={handleUpdateOrder}
             />}
-            <AddOrderModal
-                isOpen={isAddModalOpen}
-                onClose={() => setIsAddModalOpen(false)}
-                onSubmit={handleAddOrder}
-            />
-            <DeleteConfirmationModal
-                isOpen={!!orderToDelete}
-                onClose={() => setOrderToDelete(undefined)}
-                onConfirm={confirmDelete}
-                itemName={selectedOrder?.id || ''}
-            />
+
+
         </MotionPageWrapper>
     );
 };

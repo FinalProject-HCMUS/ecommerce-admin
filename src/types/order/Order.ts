@@ -13,3 +13,18 @@ export interface Order {
     total: number;
     customerId: string;
 }
+export const defaultOrder: Order = {
+    id: "",
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    address: "",
+    status: "NEW",
+    deliveryDate: "",
+    paymentMethod: "COD",
+    shippingCost: 0,
+    productCost: 0,
+    subTotal: 0,
+    total: 0,
+    customerId: "",
+};

@@ -2,7 +2,8 @@ import { Color } from "../color/Color";
 import { Product } from "../product/Product";
 import { Size } from "../size/Size";
 
-export interface OrderDetailRequest {
+export interface OrderDetailResponse {
+    id: string;
     productCost: number;
     quantity: number;
     unitPrice: number;
@@ -10,6 +11,7 @@ export interface OrderDetailRequest {
     itemId: string
     product: Product;
     color: Color;
+    orderId: string;
     size: Size;
     limitedQuantity: number;
 }

@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { OrderDetailRequest } from "../../../../types/order/OrderDetailRequest";
 import AddOrderInformation from "./AddOrderInformation";
 import AddOrderProduct from "./AddOrderProduct";
 import Preview from "./Preview";
 import { defaultOrderCreatedRequest, OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
 import { createListOrderDetails, createOrder } from "../../../../apis/orderApi";
 import { toast } from "react-toastify";
 import { OrderDetailCreated } from "../../../../types/order/OrderDetailCreated";
+import { OrderDetailCreatedUI } from "../../../../types/order/OrderDetailCreatedUI";
 
 const AddOrder: React.FC = () => {
     const [formData, setFormData] = useState<OrderCreatedRequest>(defaultOrderCreatedRequest);
-    const [orderDetails, setOrderDetails] = useState<OrderDetailRequest[]>([]);
+    const [orderDetails, setOrderDetails] = useState<OrderDetailCreatedUI[]>([]);
     const { user } = useAuth();
+    const navigate = useNavigate();
     const handleSubmit = async () => {
         const idUser = user?.id;
         formData.customerId = idUser;
@@ -38,6 +39,8 @@ const AddOrder: React.FC = () => {
             return;
         }
         toast.success("Create order successfully", { autoClose: 1000, position: "top-right" });
+        navigate("/orders");
+
     }
     return (
         <>

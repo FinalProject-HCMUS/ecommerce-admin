@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { OrderDetailResponse } from "../../../../types/order/OrderDetailResponse";
 import MotionPageWrapper from "../../../common/MotionPage";
 import { useNavigate } from "react-router-dom";
 import { Product } from "../../../../types/product/Product";
@@ -9,17 +10,16 @@ import { toast } from "react-toastify";
 import { ProductColorSize } from "../../../../types/product/ProductColorSize";
 import ProductColorSizeDialog from "../../../product/ProductColorSizeDialog";
 import { Search, X } from "lucide-react";
-import { OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
-import { OrderDetailCreatedUI } from "../../../../types/order/OrderDetailCreatedUI";
+import { Order } from "../../../../types/order/Order";
 
 interface Props {
-    orderDetails: OrderDetailCreatedUI[];
-    setOrderDetails: React.Dispatch<React.SetStateAction<OrderDetailCreatedUI[]>>;
-    formData: OrderCreatedRequest;
-    setFormData: React.Dispatch<React.SetStateAction<OrderCreatedRequest>>;
+    orderDetails: OrderDetailResponse[];
+    setOrderDetails: React.Dispatch<React.SetStateAction<OrderDetailResponse[]>>;
+    formData: Order;
+    setFormData: React.Dispatch<React.SetStateAction<Order>>;
 }
 const ITEMS_PER_PAGE = 6;
-const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formData, setFormData }) => {
+const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formData, setFormData }) => {
     //load product list
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +45,18 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     useEffect(() => {
         fetchProducts(currentPage, search);
     }, [currentPage, search]);
+
+
+    useEffect(() => {
+        const newProductColorSizes: ProductColorSize[] = orderDetails.map((detail) => ({
+            id: detail.itemId,
+            color: detail.color,
+            productId: detail.product.id,
+            size: detail.size,
+            quantity: detail.limitedQuantity,
+        }));
+        setProductColorSizes(newProductColorSizes);
+    }, [])
     const handleProductSelect = (product: Product) => {
         //show product color size dialog
         setIsProductColorSizeDialogOpen(true);
@@ -55,6 +67,8 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         setOrderDetails((prev) => {
             return [...prev,
             {
+                id: "",
+                orderId: formData.id,
                 product: selectedProduct, itemId: productColorSize.id, unitPrice: selectedProduct.price, quantity: 1, color: productColorSize.color
                 , size: productColorSize.size, productColorSizeId: productColorSize.id, productCost: selectedProduct.cost, total: selectedProduct.price,
                 limitedQuantity: productColorSize.quantity
@@ -226,13 +240,13 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                                 +
                                             </button>
                                         </div>
-                                        <button
+                                        {detail.id == "" && <button
                                             type="button"
                                             onClick={() => handleRemoveItem(detail.itemId)}
                                             className="text-red-500 hover:text-red-700"
                                         >
                                             <X size={24} />
-                                        </button>
+                                        </button>}
                                     </div>
                                 ))}
                             </div>
@@ -279,7 +293,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                         <button
                             type="button"
                             onClick={() => {
-                                navigate("/orders/add/preview");
+                                navigate(`/orders/edit/${formData.id}/preview`);
                             }}
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         >
@@ -293,4 +307,4 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     );
 };
 
-export default AddOrderProduct;
+export default EditOrderProduct;

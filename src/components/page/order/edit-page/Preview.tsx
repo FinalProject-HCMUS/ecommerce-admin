@@ -1,12 +1,12 @@
 import React from "react";
-import { OrderDetailRequest } from "../../../../types/order/OrderDetailResponse";
-import { OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
+import { OrderDetailResponse } from "../../../../types/order/OrderDetailResponse";
 import MotionPageWrapper from "../../../common/MotionPage";
 import { useNavigate } from "react-router-dom";
+import { Order } from "../../../../types/order/Order";
 
 interface Props {
-    formData: OrderCreatedRequest;
-    orderDetails: OrderDetailRequest[];
+    formData: Order;
+    orderDetails: OrderDetailResponse[];
     handleSubmit: () => void;
 }
 
@@ -82,7 +82,7 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
                                     onClick={handleSubmit}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                                 >
-                                    Create Order
+                                    Update
                                 </button>
                             </div>
                         </div>

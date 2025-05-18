@@ -4,7 +4,7 @@ import ProductSelectionModal from './ProductSelectionModal';
 import { X } from 'lucide-react';
 import { Product } from '../../types/product/Product';
 import { defaultOrderRequestUpdate, OrderRequestUpdate } from '../../types/order/OrderRequestUpdate';
-import { OrderDetailRequest } from '../../types/order/OrderDetailRequest';
+import { OrderDetailRequest } from '../../types/order/OrderDetailResponse';
 
 interface AddOrderModalProps {
     isOpen: boolean;

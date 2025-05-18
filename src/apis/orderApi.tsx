@@ -6,6 +6,8 @@ import { OrderRequestUpdate } from "../types/order/OrderRequestUpdate";
 import { CustomResponse } from "../types/common/CustomResponse";
 import { OrderCreatedRequest } from "../types/order/OrderCreatedRequest";
 import { OrderDetailCreated } from "../types/order/OrderDetailCreated";
+import { OrderDetailResponse } from "../types/order/OrderDetailResponse";
+import { OrderDetailUpdate } from "../types/order/OrderDetailUpdate";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const getOrders = async (page: number, perpage: number): Promise<CustomResponse<OrderResponse>> => {
@@ -34,10 +36,31 @@ export const getOrderDetail = async (id: string): Promise<CustomResponse<OrderDe
         return error.response.data;
     }
 }
-
+export const getOrderById = async (id: string): Promise<CustomResponse<Order>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.get<CustomResponse<Order>>(`${API_URL}/orders/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
 export const updateOrder = async (id: string, order: OrderRequestUpdate): Promise<CustomResponse<Order>> => {
     try {
-        const response = await axios.put<CustomResponse<Order>>(`${API_URL}/orders/${id}`, order);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.put<CustomResponse<Order>>(`${API_URL}/orders/${id}`, order,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
         return response.data;
     } catch (error: any) {
         return error.response.data;
@@ -73,6 +96,54 @@ export const createListOrderDetails = async (orderDetails: OrderDetailCreated[])
     try {
         const accessToken = localStorage.getItem("accessToken");
         const response = await axios.post<CustomResponse<OrderDetail[]>>(`${API_URL}/order-details/batch`, orderDetails,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+
+export const getOrderDetailByOrderId = async (id: string): Promise<CustomResponse<OrderDetailResponse[]>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.get<CustomResponse<OrderDetailResponse[]>>(`${API_URL}/order-details/order/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+
+export const updateOrderDetail = async (id: string, orderDetail: OrderDetailUpdate): Promise<CustomResponse<OrderDetail>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.put<CustomResponse<OrderDetail>>(`${API_URL}/order-details/${id}`, orderDetail,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+
+export const createOrderDetail = async (orderDetail: OrderDetailCreated): Promise<CustomResponse<OrderDetail>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post<CustomResponse<OrderDetail>>(`${API_URL}/order-details`, orderDetail,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

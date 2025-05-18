@@ -2,14 +2,14 @@ import React from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Order } from '../../types/order/Order';
+import { useNavigate } from 'react-router-dom';
 
 interface OrderTableProps {
     orders: Order[];
-    onEdit: (id: string) => void;
-    onDelete: (id: string) => void;
 }
 
-const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => {
+const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
+    const navigate = useNavigate();
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -45,13 +45,13 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onEdit, onDelete }) => 
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button
-                                    onClick={() => onEdit(order.id)}
+                                    onClick={() => navigate(`/orders/edit/${order.id}/information`)}
                                     className="text-blue-600 hover:text-blue-900 mr-4"
                                 >
                                     <Pencil size={16} />
                                 </button>
                                 <button
-                                    onClick={() => onDelete(order.id)}
+
                                     className="text-red-600 hover:text-red-900"
                                 >
                                     <Trash2 size={16} />
