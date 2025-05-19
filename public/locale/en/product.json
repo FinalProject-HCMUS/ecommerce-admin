@@ -45,5 +45,6 @@
     "minHeight": "Min Height",
     "maxHeight": "Max Height",
     "minWeight": "Min Weight",
-    "maxWeight": "Max Weight"
+    "maxWeight": "Max Weight",
+    "editVariant": "Edit Product Variant"
 }

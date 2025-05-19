@@ -7,6 +7,7 @@ import { ProductColorSize } from '../../../../types/product/ProductColorSize';
 import ColorPickerDialog from '../../../color/ColorPickerDialog';
 import SizePickerDialog from '../../../size/SizePickerDialog';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 interface EditVariantsProps {
     productColorSizes: ProductColorSize[];
@@ -24,6 +25,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
     setAddedProductColorSizes,
 }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation('product');
     const [editingIndexOld, setEditingIndexOld] = useState<number | null>(null);
     const [editingInexNew, setEditingIndexNew] = useState<number | null>(null);
     const [colorsSelected, setColorsSelected] = useState<Color[]>(productColorSizes.map(v => v.color!));
@@ -87,14 +89,14 @@ const EditVariants: React.FC<EditVariantsProps> = ({
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="mb-8 flex justify-between items-center">
-                <h1 className="text-3xl font-semibold text-gray-900">Edit Variants</h1>
+                <h1 className="text-3xl font-semibold text-gray-900">{t("editVariant")}</h1>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
                 {/* Add Variant Form */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
                     {/* Color Picker */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("color")}</label>
                         <div className="relative">
                             <input
                                 type="text"
@@ -109,7 +111,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
 
                     {/* Size Picker */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("size")}</label>
                         <div className="relative">
                             <input
                                 type="text"
@@ -124,7 +126,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
 
                     {/* Quantity */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t("quantity")}</label>
                         <input
                             type="number"
                             value={newVariant.quantity}
@@ -142,7 +144,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                             onClick={handleSaveVariant}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Save
+                            {t("save")}
                         </button>
                     ) : (
                         <button
@@ -150,7 +152,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                             onClick={handleAddVariant}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Add
+                            {t("add")}
                         </button>
                     )}
                 </div>
@@ -161,10 +163,10 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                         <thead>
                             <tr className="bg-gray-100">
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">STT</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Color</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Size</th>
-                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Quantity</th>
-                                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 border-b">Actions</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t("color")}</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t("size")}</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t("quantity")}</th>
+                                <th className="px-4 py-2 text-center text-sm font-medium text-gray-700 border-b">{t("action")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -228,14 +230,14 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                         onClick={() => navigate(-1)}
                         className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                     >
-                        Back
+                        {t("back")}
                     </button>
                     <button
                         type="button"
                         onClick={handleSubmit}
                         className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
-                        Submit
+                        {t("submit")}
                     </button>
                 </div>
             </div>
