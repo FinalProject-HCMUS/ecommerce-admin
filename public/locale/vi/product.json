@@ -45,5 +45,6 @@
     "minHeight": "Chiều cao tối thiểu",
     "maxHeight": "Chiều cao tối đa",
     "minWeight": "Cân nặng tối thiểu",
-    "maxWeight": "Cân nặng tối đa"
+    "maxWeight": "Cân nặng tối đa",
+    "editVariant": "Chỉnh sửa tùy chọn sản phẩm"
 }

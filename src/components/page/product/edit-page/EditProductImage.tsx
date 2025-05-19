@@ -4,6 +4,7 @@ import { X, Upload } from 'lucide-react';
 import MotionPageWrapper from '../../../common/MotionPage';
 import { ProductImage } from '../../../../types/product/ProductImage';
 import { Product } from '../../../../types/product/Product';
+import { useTranslation } from 'react-i18next';
 
 interface EditProductImageProps {
     files: File[];
@@ -19,6 +20,7 @@ interface EditProductImageProps {
 
 const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, formData, setFormData, setFiles, setIndexThumbnail, setDeletedProductImages }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation('product');
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         setFiles((prev) => [...prev, ...files]);
@@ -55,14 +57,14 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Edit Product Images</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t("productImage")}</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6">
                     <div className="space-y-6">
                         {/* Thumbnail Image */}
                         {formData.mainImageUrl && (
                             <>
-                                <label className="block text-sm font-medium text-gray-700 mb-2 text-center">Thumbnail Image</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-2 text-center">{t("thumbnailImage")}</label>
                                 <div className="flex justify-center mb-6">
                                     <img
                                         src={formData.mainImageUrl}
@@ -99,15 +101,15 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
 
                         {/* Image Upload */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Images</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">{t("uploadImage")}</label>
                             <div
                                 onClick={() => document.getElementById('image-upload')?.click()}
                                 className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer"
                             >
                                 <div className="flex flex-col items-center">
                                     <Upload className="h-12 w-12 text-gray-400" />
-                                    <p className="mt-2 text-sm text-gray-600">Drop your images here, or browse</p>
-                                    <p className="text-xs text-gray-500">JPEG, PNG are allowed</p>
+                                    <p className="mt-2 text-sm text-gray-600">{t("placeholderImage")}</p>
+                                    <p className="text-xs text-gray-500">{t("supportImage")}</p>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -128,14 +130,14 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
                             onClick={() => navigate(-1)}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                         >
-                            Back
+                            {t("back")}
                         </button>
                         <button
                             type="button"
                             onClick={() => navigate(`/products/edit/${formData.id}/variants`)}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Next
+                            {t("next")}
                         </button>
                     </div>
                 </div>
