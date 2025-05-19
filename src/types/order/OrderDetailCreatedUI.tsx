@@ -10,7 +10,6 @@ export interface OrderDetailCreatedUI {
     itemId: string
     product: Product;
     color: Color;
-    orderId: string;
     size: Size;
     limitedQuantity: number;
 }

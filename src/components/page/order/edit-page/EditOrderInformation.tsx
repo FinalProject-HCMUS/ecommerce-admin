@@ -3,6 +3,7 @@ import MotionPageWrapper from "../../../common/MotionPage";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Order } from "../../../../types/order/Order";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     formData: Order;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
+    const { t } = useTranslation("order");
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -30,16 +32,16 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Order Information</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t('orderInformation')}</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6 mb-6">
-                    <p className="text-gray-600 mb-4 italic">Please fill in the customer information below.</p>
+                    <p className="text-gray-600 mb-4 italic">{t('guide')}</p>
                     <form className="p-6 grid grid-cols-1 gap-6">
                         {/* Customer Information */}
                         <div>
-                            <h3 className="text-lg font-semibold mb-4">Customer Information</h3>
+                            <h3 className="text-lg font-semibold mb-4">{t('headerCustomer')}</h3>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">First Name</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('firstName')}</label>
                                 <input
                                     type="text"
                                     name="firstName"
@@ -50,7 +52,7 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('lastName')}</label>
                                 <input
                                     type="text"
                                     name="lastName"
@@ -61,7 +63,7 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('phone')}</label>
                                 <input
                                     type="text"
                                     name="phoneNumber"
@@ -72,7 +74,7 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Address</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('address')}</label>
                                 <textarea
                                     name="address"
                                     value={formData.address}
@@ -83,7 +85,7 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Payment Method</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('paymentMethod')}</label>
                                 <select
                                     name="paymentMethod"
                                     value={formData.paymentMethod}
@@ -91,13 +93,13 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
                                 >
-                                    <option value="COD">Cash on Delivery</option>
+                                    <option value="COD">{t('cod')}</option>
                                     <option value="VN_PAY">VN Pay</option>
                                     <option value="MOMO">Momo</option>
                                 </select>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Status</label>
+                                <label className="block text-sm font-medium text-gray-700">{t('status')}</label>
                                 <select
                                     name="status"
                                     value={formData.status}
@@ -105,14 +107,14 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                     required
                                 >
-                                    <option value="NEW">New</option>
-                                    <option value="PROCESSING">Processing</option>
-                                    <option value="PACKAGED">Packaged</option>
-                                    <option value="PICKED">Picked</option>
-                                    <option value="SHIPPING">Shipping</option>
-                                    <option value="DELIVERED">Delivered</option>
-                                    <option value="REFUNDED">Refunded</option>
-                                    <option value="CANCELLED">Cancelled</option>
+                                    <option value="NEW">{t('new')}</option>
+                                    <option value="PROCESSING">{t('processing')}</option>
+                                    <option value="PACKAGED">{t('packaged')}</option>
+                                    <option value="PICKED">{t('picked')}</option>
+                                    <option value="SHIPPING">{t('shipping')}</option>
+                                    <option value="DELIVERED">{t('delivered')}</option>
+                                    <option value="REFUNDED">{t('refunded')}</option>
+                                    <option value="CANCELLED">{t('cancelled')}</option>
                                 </select>
                             </div>
                         </div>
@@ -125,14 +127,14 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                     navigate(-1);
                                 }}
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="button"
                                 onClick={handleNextStep}
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                             >
-                                Next
+                                {t('next')}
                             </button>
                         </div>
                     </form>

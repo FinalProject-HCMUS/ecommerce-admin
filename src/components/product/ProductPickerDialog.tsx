@@ -1,5 +1,6 @@
 import { MousePointer2 } from "lucide-react";
 import { Product } from "../../types/product/Product";
+import { useTranslation } from "react-i18next";
 
 interface ProductTableProps {
     products: Product[];
@@ -7,16 +8,17 @@ interface ProductTableProps {
 }
 
 const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductSelect }) => {
+    const { t } = useTranslation("order");
     return (
         <div className="overflow-x-auto border border-gray-300 rounded-lg shadow-md">
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">product</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">cateogry</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">price</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">cost</th>
-                        <th className="px-6 py-3 text-xs text-left font-medium text-gray-500 uppercase tracking-wider">action</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('product')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('category')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('cost')}</th>
+                        <th className="px-6 py-3 text-xs text-left font-medium text-gray-500 uppercase tracking-wider">{t('action')}</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">

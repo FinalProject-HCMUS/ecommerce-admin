@@ -11,6 +11,7 @@ import ProductColorSizeDialog from "../../../product/ProductColorSizeDialog";
 import { Search, X } from "lucide-react";
 import { OrderCreatedRequest } from "../../../../types/order/OrderCreatedRequest";
 import { OrderDetailCreatedUI } from "../../../../types/order/OrderDetailCreatedUI";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     orderDetails: OrderDetailCreatedUI[];
@@ -20,7 +21,6 @@ interface Props {
 }
 const ITEMS_PER_PAGE = 6;
 const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formData, setFormData }) => {
-    //load product list
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -29,6 +29,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     const [selectedProduct, setSelectedProduct] = useState<Product>({} as Product);
     const [isProductColorSizeDialogOpen, setIsProductColorSizeDialogOpen] = useState(false);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
+    const { t } = useTranslation("order");
     const navigate = useNavigate();
     const fetchProducts = async (page: number, keysearch = '') => {
         const response = await getProducts(page - 1, ITEMS_PER_PAGE, "createdAt,asc", '', keysearch);
@@ -155,7 +156,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">Choose Products</h1>
+                    <h1 className="text-3xl font-semibold text-gray-900">{t('chooseProduct')}</h1>
                 </div>
                 <div className="bg-white rounded-lg shadow p-6 mb-6 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* show product list selected */}
@@ -163,7 +164,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                         <div className="flex mb-4">
                             <div className="relative">
                                 <input
-                                    placeholder="Search products by name"
+                                    placeholder={t('placeHolder')}
                                     type="text"
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
@@ -189,7 +190,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                     {/* Order Details */}
                     <div className="flex flex-col space-y-4 col-span-1 justify-between">
                         <div>
-                            <h3 className="text-lg font-semibold mb-4">Order Details</h3>
+                            <h3 className="text-lg font-semibold mb-4">{t('orderDetail')}</h3>
                             <div className="space-y-4 max-h-[420px] overflow-y-auto">
                                 {orderDetails.map((detail) => (
                                     <div key={detail.itemId} className="flex items-center space-x-4">
@@ -200,8 +201,8 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                         />
                                         <div className="flex-1">
                                             <h4 className="text-sm font-medium">{detail.product.name}</h4>
-                                            <p className="text-sm text-gray-500">Size: {detail.size.name}</p>
-                                            <p className="text-sm text-gray-500">Color: {detail.color.name}</p>
+                                            <p className="text-sm text-gray-500">{t('size')}: {detail.size.name}</p>
+                                            <p className="text-sm text-gray-500">{t('color')}: {detail.color.name}</p>
                                         </div>
                                         <div className="text-sm font-medium">{detail.unitPrice.toFixed(2)}</div>
                                         <div className="flex items-center space-x-2">
@@ -239,18 +240,18 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                         </div>
                         <div>
                             {/* Order Summary */}
-                            <h3 className="text-lg font-semibold mb-4 ">Order Summary</h3>
+                            <h3 className="text-lg font-semibold mb-4 ">{t('orderSummary')}</h3>
                             <div className="space-y-2">
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-500">Subtotal</span>
+                                    <span className="text-sm text-gray-500">{t('subtotal')}</span>
                                     <span className="text-sm font-medium">${formData.productCost.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-500">Shipping Cost</span>
+                                    <span className="text-sm text-gray-500">{t('shippingCost')}</span>
                                     <span className="text-sm font-medium">${formData.shippingCost.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-500">Total</span>
+                                    <span className="text-sm text-gray-500">{t('total')}</span>
                                     <span className="text-lg font-semibold">${formData.total.toFixed(2)}</span>
                                 </div>
                             </div>
@@ -274,7 +275,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                 navigate(-1);
                             }}
                         >
-                            Cancel
+                            {t('back')}
                         </button>
                         <button
                             type="button"
@@ -283,7 +284,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                             }}
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         >
-                            Next
+                            {t('next')}
                         </button>
                     </div>
                 </div>
