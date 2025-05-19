@@ -18,11 +18,12 @@ const Blogs: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [search, setSearch] = useState('');
     const [blogToDelete, setBlogToDelete] = React.useState<Blog | null>(null);
     const navigate = useNavigate();
     const { t } = useTranslation('blog');
-    const fetchBlogs = async (page: number) => {
-        const response = await getBlogs(page - 1, ITEMS_PER_PAGE);
+    const fetchBlogs = async (page: number, keysearch = '') => {
+        const response = await getBlogs(page - 1, ITEMS_PER_PAGE, "createdAt,asc", keysearch);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
@@ -33,8 +34,8 @@ const Blogs: React.FC = () => {
         }
     }
     useEffect(() => {
-        fetchBlogs(currentPage);
-    }, [currentPage]);
+        fetchBlogs(currentPage, search);
+    }, [currentPage, search]);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -47,6 +48,12 @@ const Blogs: React.FC = () => {
     };
     const handleDelete = (blog: Blog) => {
         setBlogToDelete(blog);
+    }
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            setSearch(searchTerm);
+            setCurrentPage(1);
+        }
     }
     const confirmDelete = async () => {
         if (blogToDelete) {
@@ -92,6 +99,7 @@ const Blogs: React.FC = () => {
                         placeholder={t('searchPlaceholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={handleKeyDown}
                         className="w-auto px-4 py-2 border border-gray-300 rounded-lg"
                     />
                     <button
