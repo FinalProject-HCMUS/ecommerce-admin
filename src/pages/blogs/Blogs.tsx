@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Blog } from '../../types/blog/blog';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../components/common/DeleteConfirm';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -19,6 +20,7 @@ const Blogs: React.FC = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [blogToDelete, setBlogToDelete] = React.useState<Blog | null>(null);
     const navigate = useNavigate();
+    const { t } = useTranslation('blog');
     const fetchBlogs = async (page: number) => {
         const response = await getBlogs(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
@@ -75,7 +77,7 @@ const Blogs: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <h1 className="text-2xl font-semibold text-gray-900">Blogs</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">{t('blogs')}</h1>
                 </motion.div>
 
                 {/* Search Bar */}
@@ -87,7 +89,7 @@ const Blogs: React.FC = () => {
                 >
                     <input
                         type="text"
-                        placeholder="Search blogs"
+                        placeholder={t('searchPlaceholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-auto px-4 py-2 border border-gray-300 rounded-lg"
@@ -97,7 +99,7 @@ const Blogs: React.FC = () => {
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
                     >
                         <Plus size={20} />
-                        <span>Add Blog</span>
+                        <span>{t('addBlog')}</span>
                     </button>
                 </motion.div>
 
@@ -116,10 +118,10 @@ const Blogs: React.FC = () => {
                         ))}
                     </motion.div>
                     <DeleteConfirmationModal
+                        title='Delete Blog'
                         isOpen={!!blogToDelete}
                         onClose={() => setBlogToDelete(null)}
                         onConfirm={confirmDelete}
-                        itemName={blogToDelete?.id || ''}
                     />
                     {/* Pagination */}
                     <motion.div

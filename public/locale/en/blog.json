@@ -1,0 +1,17 @@
+{
+    "blogs": "Blogs",
+    "searchPlaceholder": "Search blogs",
+    "addBlog": "Add Blog",
+    "writeNewBlog": "Write new blog",
+    "blogTitle": "Blog title",
+    "blogContentPlaceholder": "Write your blog content here...",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "uploadImage": "Upload Blog Image",
+    "placeholderImage": "Drag and drop or click to upload",
+    "supportImage": "JPEG, PNG are allowed",
+    "image": "Image",
+    "preview": "Preview",
+    "editBlog": "Edit Blog"
+}

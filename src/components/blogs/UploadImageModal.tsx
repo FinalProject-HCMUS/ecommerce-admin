@@ -1,6 +1,7 @@
 import { Upload, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import MotionModalWrapper from '../common/MotionModal';
+import { useTranslation } from 'react-i18next';
 
 interface UploadImageModalProps {
     onClose: () => void;
@@ -11,6 +12,7 @@ interface UploadImageModalProps {
 const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, imageUrl }) => {
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+    const { t } = useTranslation('blog');
     useEffect(() => {
         if (imageUrl) {
             setPreview(imageUrl);
@@ -56,11 +58,11 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, 
                     >
                         <X size={16} />
                     </button>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Upload Blog Image</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('uploadImage')}</h2>
 
                     {/* Image Upload */}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Image</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">{t('image')}</label>
                         <div
                             onDrop={handleDrop}
                             onDragOver={handleDragOver}
@@ -70,9 +72,9 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, 
                             <div className="flex flex-col items-center">
                                 <Upload className="h-12 w-12 text-gray-400" />
                                 <p className="mt-2 text-sm text-gray-600">
-                                    Drop your image here, or browse
+                                    {t('placeholderImage')}
                                 </p>
-                                <p className="text-xs text-gray-500">jpeg, png are allowed</p>
+                                <p className="text-xs text-gray-500">{t('supportImage')}</p>
                             </div>
                             <input
                                 type="file"
@@ -88,7 +90,7 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, 
                     {preview && (
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Preview
+                                {t('preview')}
                             </label>
                             <div className="rounded-lg p-2 flex flex-col items-center ">
                                 <img
@@ -107,13 +109,13 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, 
                             onClick={onClose}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
                         >
-                            Back
+                            {t('back')}
                         </button>
                         <button
                             onClick={handleSubmit}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         >
-                            Submit
+                            {t('submit')}
                         </button>
                     </div>
                 </div>

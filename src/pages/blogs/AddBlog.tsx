@@ -9,6 +9,7 @@ import { BlogRequest } from '../../types/blog/BlogRequest';
 import { addNewBlog } from '../../apis/blogApi';
 import { uploadImage } from '../../apis/imageApi';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 
 const AddBlog: React.FC = () => {
@@ -17,6 +18,7 @@ const AddBlog: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { t } = useTranslation('blog');
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) {
@@ -86,13 +88,13 @@ const AddBlog: React.FC = () => {
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-6">Write New Blog</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 mb-6">{t('writeNewBlog')}</h1>
                 <div className="bg-white rounded-lg shadow p-6">
                     {/* Title Input */}
                     <div className="mb-4">
                         <input
                             type="text"
-                            placeholder="Blog Title..."
+                            placeholder={t('blogTitle')}
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
@@ -106,7 +108,7 @@ const AddBlog: React.FC = () => {
                             onChange={setContent}
                             modules={modules}
                             formats={formats}
-                            placeholder="Write your blog content here..."
+                            placeholder={t('blogContentPlaceholder')}
                             className='h-96'
                         />
                     </div>
@@ -117,13 +119,13 @@ const AddBlog: React.FC = () => {
                             onClick={() => navigate(-1)}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
                         >
-                            Back
+                            {t('back')}
                         </button>
                         <button
                             onClick={handleNextStep}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         >
-                            Next step
+                            {t('next')}
                         </button>
                     </div>
                 </div>
