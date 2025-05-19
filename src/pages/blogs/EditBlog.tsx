@@ -6,8 +6,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import UploadImageModal from '../../components/blogs/UploadImageModal';
 import { toast } from 'react-toastify';
 import { getBlogById, updateBlog } from '../../apis/blogApi';
-import { BlogRequest } from '../../types/blog/BlogRequest';
 import { Blog } from '../../types/blog/blog';
+import { uploadImage } from '../../apis/imageApi';
+import { useAuth } from '../../context/AuthContext';
 
 const EditBlog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ const EditBlog: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const { user } = useAuth();
     const getBlog = async () => {
         const response = await getBlogById(id || '');
         if (!response.isSuccess) {
@@ -44,13 +46,26 @@ const EditBlog: React.FC = () => {
     };
 
     const handleSubmit = async (newImage: File | null) => {
-        const updatedBlog: BlogRequest = {
+        let updatedBlog: Blog = {
+            ...blog!,
+            userId: user!.id,
             title,
             content,
-            image: newImage ? URL.createObjectURL(newImage) : image || '',
-            userId: blog?.userId || '',
         };
-        const response = await updateBlog(id || '', updatedBlog);
+        if (newImage) {
+            const imageResposne = await uploadImage(newImage);
+            if (!imageResposne.isSuccess) {
+                toast.error(imageResposne.message, { position: "top-right", autoClose: 1000 });
+                return;
+            }
+            updatedBlog = {
+                ...updatedBlog,
+                image: imageResposne.data!,
+            };
+        }
+        console.log('updatedBlog', updatedBlog);
+
+        const response = await updateBlog(id!, updatedBlog);
         if (!response.isSuccess) {
             toast.error(response.message, { position: 'top-right', autoClose: 1000 });
             return;
@@ -107,7 +122,6 @@ const EditBlog: React.FC = () => {
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                         />
                     </div>
-
                     {/* React Quill Editor */}
                     <div className="mb-16">
                         <ReactQuill
@@ -139,7 +153,6 @@ const EditBlog: React.FC = () => {
 
             {/* Upload Image Modal */}
             {isModalOpen && (
-
                 <UploadImageModal
                     onClose={() => setIsModalOpen(false)}
                     onSubmit={handleSubmit}

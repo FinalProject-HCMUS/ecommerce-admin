@@ -6,12 +6,13 @@ import { Blog } from "../types/blog/blog";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getBlogs = async (page: number, size: number): Promise<CustomResponse<BlogResponse>> => {
+export const getBlogs = async (page: number, size: number, sort: string = "createdAt,asc"): Promise<CustomResponse<BlogResponse>> => {
     try {
         const response = await axios.get<CustomResponse<BlogResponse>>(`${API_URL}/blogs`, {
             params: {
                 page,
                 size,
+                sort,
             },
         });
         return response.data;
@@ -29,9 +30,16 @@ export const getBlogById = async (id: string): Promise<CustomResponse<Blog>> => 
         return error.response.data;
     };
 }
-export const updateBlog = async (id: string, blog: BlogRequest): Promise<CustomResponse<Blog>> => {
+export const updateBlog = async (id: string, blog: Blog): Promise<CustomResponse<Blog>> => {
     try {
-        const response = await axios.put<CustomResponse<Blog>>(`${API_URL}/blogs/${id}`, blog);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.put<CustomResponse<Blog>>(`${API_URL}/blogs/${id}`, blog,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            }
+        );
         return response.data;
     }
     catch (error: any) {
@@ -40,7 +48,14 @@ export const updateBlog = async (id: string, blog: BlogRequest): Promise<CustomR
 }
 export const addNewBlog = async (blog: BlogRequest): Promise<CustomResponse<Blog>> => {
     try {
-        const response = await axios.post<CustomResponse<Blog>>(`${API_URL}/blogs`, blog);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post<CustomResponse<Blog>>(`${API_URL}/blogs`, blog,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            }
+        );
         return response.data;
     }
     catch (error: any) {
@@ -49,7 +64,14 @@ export const addNewBlog = async (blog: BlogRequest): Promise<CustomResponse<Blog
 }
 export const deleteBlog = async (id: string): Promise<CustomResponse<Blog>> => {
     try {
-        const response = await axios.delete<CustomResponse<Blog>>(`${API_URL}/blogs/${id}`);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.delete<CustomResponse<Blog>>(`${API_URL}/blogs/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            }
+        );
         return response.data;
     }
     catch (error: any) {

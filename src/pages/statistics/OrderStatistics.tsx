@@ -44,7 +44,7 @@ const OrderStatistics: React.FC = () => {
                         </div>
                     </div>
                     {/* Order Table */}
-                    <OrderTable orders={orders} onEdit={handleEdit} onDelete={handleDelete} />
+                    <OrderTable orders={orders} />
                     {/* Pagination */}
                     <Pagination
                         currentPage={currentPage}

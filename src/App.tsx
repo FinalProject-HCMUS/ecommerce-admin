@@ -24,6 +24,15 @@ import AddCustomer from './components/page/customer/add-page/AddCustomer';
 import EditCustomer from './components/page/customer/edit-page/EditCustomer';
 import AddOrder from './components/page/order/add-page/AddOrder';
 import EditOrder from './components/page/order/edit-page/EditOrder';
+import Message from './pages/Message';
+import Blogs from './pages/blogs/Blogs';
+import AddBlog from './pages/blogs/AddBlog';
+import EditBlog from './pages/blogs/EditBlog';
+import Statistics from './pages/statistics/Statistics';
+import OrderStatistics from './pages/statistics/OrderStatistics';
+import ProductCategories from './pages/statistics/ProductCategories';
+import RevenueAnalysis from './pages/statistics/RevenueAnalysis';
+import TopProduct from './pages/statistics/TopProducts';
 
 
 function App() {
@@ -57,7 +66,7 @@ function App() {
             <Route path="/statistics/orders" element={<PrivateRoute element={OrderStatistics} />} />
             <Route path="/statistics/categories" element={<PrivateRoute element={ProductCategories} />} />
             <Route path="/statistics/revenue" element={<PrivateRoute element={RevenueAnalysis} />} />
-            <Route path="/statistics/top-products" element={<PrivateRoute element={TopProducts} />} />
+            <Route path="/statistics/top-products" element={<PrivateRoute element={TopProduct} />} />
             <Route path="/categories/add" element={<PrivateRoute element={AddCategory} />} />
             <Route path="/categories/edit/:id" element={<PrivateRoute element={EditCategory} />} />
             <Route path="/products/edit/:id/*" element={<PrivateRoute element={EditProduct} />} />

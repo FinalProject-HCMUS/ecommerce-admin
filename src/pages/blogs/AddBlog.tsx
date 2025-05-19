@@ -7,6 +7,8 @@ import UploadImageModal from '../../components/blogs/UploadImageModal'; // Impor
 import { toast } from 'react-toastify';
 import { BlogRequest } from '../../types/blog/BlogRequest';
 import { addNewBlog } from '../../apis/blogApi';
+import { uploadImage } from '../../apis/imageApi';
+import { useAuth } from '../../context/AuthContext';
 
 
 const AddBlog: React.FC = () => {
@@ -14,7 +16,7 @@ const AddBlog: React.FC = () => {
     const [content, setContent] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
-
+    const { user } = useAuth();
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) {
@@ -25,11 +27,17 @@ const AddBlog: React.FC = () => {
     };
     const handleSubmit = async (image: File | null) => {
         if (image) {
+            //add image to cloudinary
+            const imageResposne = await uploadImage(image);
+            if (!imageResposne.isSuccess) {
+                toast.error(imageResposne.message, { position: "top-right", autoClose: 1000 });
+                return;
+            }
             const newBlog: BlogRequest = {
                 title,
                 content,
-                image: URL.createObjectURL(image),
-                userId: '2cb387ac-98e0-42db-ae71-cf5c4a606c47', // Replace with actual user ID
+                image: imageResposne.data!,
+                userId: user!.id, // Replace with actual user ID
             };
             const response = await addNewBlog(newBlog); // Replace with actual API call
             if (!response.isSuccess) {

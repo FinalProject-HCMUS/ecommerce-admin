@@ -1,11 +1,13 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Package, List, LogOut, Palette, RulerIcon, Info, Users, Boxes, MessageCircleMore, NotebookPen } from 'lucide-react';
+import { Package, List, LogOut, Palette, RulerIcon, Info, Users, Boxes, MessageCircleMore, NotebookPen, BarChart3Icon, ChevronUp, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 const Sidebar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [isStatisticsOpen, setIsStatisticsOpen] = useState(false);
   const { t } = useTranslation('sidebar');
   return (
     <div className="w-64 bg-white h-screen border-r border-gray-200 flex flex-col">
