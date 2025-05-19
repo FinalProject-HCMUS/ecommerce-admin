@@ -6,13 +6,14 @@ import { Blog } from "../types/blog/blog";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getBlogs = async (page: number, size: number, sort: string = "createdAt,asc"): Promise<CustomResponse<BlogResponse>> => {
+export const getBlogs = async (page: number, size: number, sort: string = "createdAt,asc", keysearch: string = ""): Promise<CustomResponse<BlogResponse>> => {
     try {
         const response = await axios.get<CustomResponse<BlogResponse>>(`${API_URL}/blogs`, {
             params: {
                 page,
                 size,
                 sort,
+                keysearch
             },
         });
         return response.data;
