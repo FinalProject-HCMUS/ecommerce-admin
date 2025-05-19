@@ -5,11 +5,11 @@ import MotionPageWrapper from '../../components/common/MotionPage';
 import { useNavigate, useParams } from 'react-router-dom';
 import UploadImageModal from '../../components/blogs/UploadImageModal';
 import { toast } from 'react-toastify';
-import { getBlogById, updateBlog } from '../../apis/blogApi';
 import { Blog } from '../../types/blog/blog';
 import { uploadImage } from '../../apis/imageApi';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { getBlogById, updateBlog } from '../../apis/blogApi';
 
 const EditBlog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
