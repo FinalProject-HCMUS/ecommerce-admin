@@ -1,27 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
-import { } from '../../types';
 import { Product } from '../../types/product/Product';
+import DeleteConfirmationModal from '../common/DeleteConfirm';
+import { useNavigate } from 'react-router-dom';
+import { deleteProduct } from '../../apis/productApi';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 interface ProductTableProps {
   products: Product[];
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
+  refresh(): void;
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
+  const naviate = useNavigate();
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const { t } = useTranslation('product');
+  const handleDeleteClick = (id: string) => {
+    setSelectedProductId(id);
+    setIsDeleteConfirmOpen(true); // Open the confirmation dialog
+  };
+  const handleConfirmDelete = async () => {
+    const response = await deleteProduct(selectedProductId!);
+    if (!response.isSuccess) {
+      alert(response.message);
+      return;
+    }
+    toast.success("Product deleted successfully", {
+      autoClose: 1000,
+    });
+    refresh();
+    setIsDeleteConfirmOpen(false);
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enable</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('product')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('category')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('stock')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('status')}</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('enable')}</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{t('action')}</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -47,9 +71,9 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
                 <div className="text-sm text-gray-900">{product.total}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.in_stock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                   }`}>
-                  {product.in_stock ? 'In Stock' : 'Out of Stock'}
+                  {product.inStock ? 'In Stock' : 'Out of Stock'}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -60,13 +84,15 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button
-                  onClick={() => onEdit(product.id)}
+                  onClick={() => {
+                    naviate(`/products/edit/${product.id}/information`);
+                  }}
                   className="text-blue-600 hover:text-blue-900 mr-4"
                 >
                   <Pencil size={16} />
                 </button>
                 <button
-                  onClick={() => onDelete(product.id)}
+                  onClick={() => handleDeleteClick(product.id)}
                   className="text-red-600 hover:text-red-900"
                 >
                   <Trash2 size={16} />
@@ -75,6 +101,12 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
             </tr>
           ))}
         </tbody>
+        <DeleteConfirmationModal
+          title='Delete Product'
+          isOpen={isDeleteConfirmOpen}
+          onClose={() => { setIsDeleteConfirmOpen(false); }}
+          onConfirm={handleConfirmDelete}
+        />
       </table>
     </div>
   );

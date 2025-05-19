@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface PaginationProps {
   currentPage: number;
@@ -9,7 +10,7 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   const maxVisiblePages = 5; // Maximum number of visible page buttons
-
+  const { t } = useTranslation('pagination');
   const getVisiblePages = () => {
     const pages: (number | string)[] = [];
     const half = Math.floor(maxVisiblePages / 2);
@@ -50,7 +51,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing page <span className="font-medium">{currentPage}</span> of{' '}
+            {t('showingPage')} <span className="font-medium">{currentPage}</span> {t('of')} {' '}
             <span className="font-medium">{totalPages}</span>
           </p>
         </div>
