@@ -6,9 +6,12 @@ import type { Message } from '../types/message/Message';
 import { Conversation } from '../types/message/Conversation';
 import { getConversations, getMessagesByConversationId } from '../apis/messageApi';
 import { toast } from 'react-toastify';
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 import { useAuth } from '../context/AuthContext';
-
+const API_URL = import.meta.env.VITE_API_URL;
 const Message: React.FC = () => {
+
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [loadingConversations, setLoadingConversations] = useState(true);
     const [loadingMessages, setLoadingMessages] = useState(true);
@@ -20,7 +23,9 @@ const Message: React.FC = () => {
     const [chatMessages, setChatMessages] = useState<Message[]>([]);
     const [searchInput, setSearchInput] = useState('');
     const [search, setSearch] = useState('');
+    const [conversationId, setConversationId] = useState('');
     const { user } = useAuth();
+    const stompClientRef = useRef<Client | null>(null);
     const size = import.meta.env.VITE_ITEMS_PER_PAGE;
 
     const fetchConversations = useCallback(async () => {
@@ -78,15 +83,13 @@ const Message: React.FC = () => {
             toast.error(response.message, { autoClose: 1000, position: "top-right" });
             return;
         }
+        setConversationId(conversationId);
         if (response.data) {
             setChatMessages(response.data);
             setLoadingMessages(false);
         }
     };
 
-    const handleSendMessage = () => {
-
-    };
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             setSearch(searchInput);
@@ -94,7 +97,59 @@ const Message: React.FC = () => {
             setHasMore(true);
         }
     }
+    useEffect(() => {
+        const socket = new SockJS(`${API_URL}/ws`);
+        const stompClient = new Client({
+            webSocketFactory: () => socket,
+            reconnectDelay: 5000,
+            debug: (str) => {
+                // console.log(str);
+            },
+            onConnect: () => {
+                stompClient.subscribe('/topic/conversation/' + conversationId, (response) => {
+                    console.log('Message received');
+                    const message: Message = JSON.parse(response.body);
+                    setChatMessages((prevMessages) => {
+                        const updatedMessages = [...prevMessages, message];
+                        return updatedMessages;
+                    });
+                    //update latest message in conversation
+                    conversations.forEach((element, index) => {
+                        if (element.id == conversationId) {
+                            conversations[index].latestMessage = message;
+                        }
+                    })
+                });
+            },
+            onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+            },
+        });
+        stompClient.activate();
+        stompClientRef.current = stompClient;
+        return () => {
+            stompClient.deactivate();
+        };
+    }, [conversationId]);
 
+    const handleSendMessage = () => {
+        const stompClient = stompClientRef.current;
+        if (stompClient && stompClient.connected) {
+            stompClient.publish({
+                destination: "/app/chat.sendMessage/" + conversationId,
+                body: JSON.stringify({
+                    content: newMessage,
+                    userId: user?.id,
+                    conversationId: conversationId,
+                    messageType: 'TEXT'
+                })
+            });
+        } else {
+            console.error('Stomp client is not connected');
+        }
+        setNewMessage('');
+    };
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
