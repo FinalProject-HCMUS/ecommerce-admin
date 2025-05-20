@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CustomResponse } from "../types/common/CustomResponse";
 import { RevenueResponse } from "../types/statistics/RevenueResponse";
+import { ProductCategoryResponse } from "../types/statistics/ProductCategoryResponse";
 
 const API_URL = import.meta.env.VITE_API_URL;
 export const getRevenueResponse = async (type: string, date: string): Promise<CustomResponse<RevenueResponse>> => {
@@ -19,5 +20,18 @@ export const getRevenueResponse = async (type: string, date: string): Promise<Cu
     } catch (error: any) {
         return error.response.data;
 
+    }
+}
+export const getProductCategories = async (): Promise<CustomResponse<ProductCategoryResponse>> => {
+    try {
+        const acceessToken = localStorage.getItem("accessToken");
+        const response = await axios.get<CustomResponse<ProductCategoryResponse>>(`${API_URL}/statistics/product-categories`, {
+            headers: {
+                Authorization: `Bearer ${acceessToken}`,
+            }
+        })
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
     }
 }

@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import UploadImageModal from '../../components/blogs/UploadImageModal'; // Import the modal component
 import { toast } from 'react-toastify';
 import { BlogRequest } from '../../types/blog/BlogRequest';
-import { addNewBlog } from '../../apis/blogApi';
 import { uploadImage } from '../../apis/imageApi';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { addNewBlog } from '../../apis/blogApi';
 
 
 const AddBlog: React.FC = () => {

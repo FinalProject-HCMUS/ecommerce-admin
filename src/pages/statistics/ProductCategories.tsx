@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import { Doughnut } from "react-chartjs-2";
 import MotionPageWrapper from "../../components/common/MotionPage";
@@ -13,6 +13,9 @@ import {
     Legend,
     ArcElement,
 } from 'chart.js';
+import { ProductCategoryResponse } from "../../types/statistics/ProductCategoryResponse";
+import { getProductCategories } from "../../apis/statisticsApi";
+import { toast } from "react-toastify";
 
 ChartJS.register(
     CategoryScale,
@@ -25,44 +28,78 @@ ChartJS.register(
     ArcElement
 );
 
-const productCategoryLabels = ['Winter', 'Office', 'Casual', 'Trendy', 'Sportswear'];
-const productCategoryDataArr = [24, 28, 18, 21, 9];
-const totalProducts = 3000;
 
-const productCategoryData = {
-    labels: productCategoryLabels,
-    datasets: [
+
+const ProductCategories: React.FC = () => {
+    const [productCategories, setProductCategories] = useState<ProductCategoryResponse>(
         {
-            data: productCategoryDataArr,
-            backgroundColor: ['#34D399', '#60A5FA', '#F87171', '#A78BFA', '#FBBF24'],
-            hoverBackgroundColor: ['#059669', '#2563EB', '#DC2626', '#7C3AED', '#F59E42'],
-            borderWidth: 2,
-        },
-    ],
-};
+            categories: [],
+            data: []
+        }
+    );
+    const [loading, setLoading] = useState<boolean>(true);
 
-const doughnutChartOptions = {
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            display: false, // We'll use a custom legend
-        },
-        tooltip: {
-            callbacks: {
-                label: function (context: any) {
-                    const label = context.label || '';
-                    const value = context.raw;
-                    const percent = ((value / productCategoryDataArr.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
-                    return `${label}: ${value} (${percent}%)`;
+    const fetchProductCategories = async () => {
+        setLoading(true);
+        const response = await getProductCategories();
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        if (response.data) {
+            setProductCategories(response.data);
+            setLoading(false);
+        }
+    }
+    const generateColors = (count: number) => {
+        {
+            return Array.from({ length: count }, (_, i) =>
+                `hsl(${Math.round((360 / count) * i)}, 70%, 55%)`
+            );
+        }
+    }
+    const generateHoverColors = (count: number) => {
+        return Array.from({ length: count }, (_, i) =>
+            `hsl(${Math.round((360 / count) * i)}, 70%, 40%)`
+        );
+    }
+    useEffect(() => {
+        fetchProductCategories();
+    }, []);
+    const productCategoryLabels = productCategories!.categories;
+    const productCategoryDataArr = productCategories!.data;
+    const totalProducts = productCategoryDataArr.reduce((a, b) => a + b, 0);
+
+    const productCategoryData = {
+        labels: productCategoryLabels,
+        datasets: [
+            {
+                data: productCategoryDataArr,
+                backgroundColor: generateColors(productCategoryLabels.length),
+                hoverBackgroundColor: generateHoverColors(productCategoryLabels.length),
+                borderWidth: 2,
+            },
+        ],
+    };
+
+    const doughnutChartOptions = {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false, // We'll use a custom legend
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context: any) {
+                        const label = context.label || '';
+                        const value = context.raw;
+                        const percent = ((value / productCategoryDataArr.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                        return `${label}: ${value} (${percent}%)`;
+                    }
                 }
             }
         }
-    }
-};
-
-const ProductCategories: React.FC = () => {
-    // Calculate percentages for each category
-    const total = productCategoryDataArr.reduce((a, b) => a + b, 0);
+    };
 
     return (
         <MotionPageWrapper>
@@ -73,7 +110,12 @@ const ProductCategories: React.FC = () => {
                     variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                 >
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center tracking-tight">Product Categories</h2>
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+
+                    {loading ? (
+                        <div className="flex justify-center items-center h-[400px]">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                        </div>
+                    ) : <div className="flex flex-col md:flex-row items-center justify-center gap-8">
                         {/* Chart */}
                         <div className="w-full md:w-1/2 h-[350px] flex items-center justify-center">
                             <Doughnut data={productCategoryData} options={doughnutChartOptions} />
@@ -84,7 +126,7 @@ const ProductCategories: React.FC = () => {
                                 {productCategoryLabels.map((label, idx) => {
                                     const color = productCategoryData.datasets[0].backgroundColor[idx];
                                     const value = productCategoryDataArr[idx];
-                                    const percent = ((value / total) * 100).toFixed(1);
+                                    const percent = ((value / totalProducts) * 100).toFixed(1);
                                     return (
                                         <li key={label} className="flex items-center space-x-3">
                                             <span
@@ -101,7 +143,7 @@ const ProductCategories: React.FC = () => {
                                 Total products: <span className="text-blue-600">{totalProducts}</span>
                             </div>
                         </div>
-                    </div>
+                    </div>}
                 </motion.div>
             </div>
         </MotionPageWrapper>

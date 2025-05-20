@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import MotionPageWrapper from '../../components/common/MotionPage';
-import { deleteBlog, getBlogs } from '../../apis/blogApi';
 import Pagination from '../../components/common/Pagination';
 import BlogCard from '../../components/blogs/BlogCard';
 import { Plus } from 'lucide-react';
@@ -10,6 +9,7 @@ import { Blog } from '../../types/blog/blog';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../components/common/DeleteConfirm';
 import { useTranslation } from 'react-i18next';
+import { deleteBlog, getBlogs } from '../../apis/blogApi';
 
 const ITEMS_PER_PAGE = 6;
 

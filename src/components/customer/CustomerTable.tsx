@@ -13,7 +13,7 @@ interface CustomerTableProps {
     refresh: () => void;
 }
 const CustomerTable: React.FC<CustomerTableProps> = ({ customers, refresh }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("user");
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
     const handleDeleteClick = (id: string) => {
