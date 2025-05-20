@@ -4,22 +4,28 @@ import MotionPageWrapper from '../components/common/MotionPage';
 import { User } from '../types/user/User';
 import type { Message } from '../types/message/Message';
 import { Conversation } from '../types/message/Conversation';
-import { getConversations } from '../apis/messageApi';
+import { getConversations, getMessagesByConversationId } from '../apis/messageApi';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
 
 const Message: React.FC = () => {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [loadingConversations, setLoadingConversations] = useState(true);
+    const [loadingMessages, setLoadingMessages] = useState(true);
     const [hasMore, setHasMore] = useState(true);
     const [newMessage, setNewMessage] = useState('');
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [conversationsPage, setConversationsPage] = useState(0);
     const conversationRef = useRef<HTMLDivElement | null>(null);
+    const [chatMessages, setChatMessages] = useState<Message[]>([]);
+    const [searchInput, setSearchInput] = useState('');
+    const [search, setSearch] = useState('');
+    const { user } = useAuth();
     const size = import.meta.env.VITE_ITEMS_PER_PAGE;
 
     const fetchConversations = useCallback(async () => {
         setLoadingConversations(true);
-        const response = await getConversations(conversationsPage, size);
+        const response = await getConversations(conversationsPage, size, search);
         setLoadingConversations(false);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: "top-right" });
@@ -37,7 +43,7 @@ const Message: React.FC = () => {
                 setHasMore(false);
             }
         }
-    }, [conversationsPage, size]);
+    }, [conversationsPage, size, search]);
 
     useEffect(() => {
         fetchConversations();
@@ -63,13 +69,31 @@ const Message: React.FC = () => {
 
 
 
-    const handleSelectUser = (user: User) => {
+    const handleSelectUser = async (user: User, conversationId: string) => {
         setSelectedUser(user);
+        // Fetch messages for the selected user
+        setLoadingMessages(true);
+        const response = await getMessagesByConversationId(conversationId);
+        if (!response.isSuccess) {
+            toast.error(response.message, { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        if (response.data) {
+            setChatMessages(response.data);
+            setLoadingMessages(false);
+        }
     };
 
     const handleSendMessage = () => {
 
     };
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            setSearch(searchInput);
+            setConversationsPage(0);
+            setHasMore(true);
+        }
+    }
 
     return (
         <MotionPageWrapper>
@@ -85,6 +109,9 @@ const Message: React.FC = () => {
                         <div className="p-4">
                             <input
                                 type="text"
+                                value={searchInput}
+                                onChange={(e) => { setSearchInput(e.target.value) }}
+                                onKeyDown={handleKeyDown}
                                 placeholder="Search"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                             />
@@ -92,10 +119,14 @@ const Message: React.FC = () => {
                         {loadingConversations ? (<div className="flex justify-center items-center h-[400px]">
                             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                         </div>) : <div ref={conversationRef} className="overflow-y-auto h-[calc(90vh-200px)]">
-                            {conversations.map((c) => (
+                            {conversations.length == 0 ? <>
+                                <div className="flex justify-center items-center h-[400px]">
+                                    <p className="text-gray-500">No conversations found</p>
+                                </div>
+                            </> : conversations.map((c) => (
                                 <div
                                     key={c.id + 1}
-                                    onClick={() => handleSelectUser(c.customer)}
+                                    onClick={() => handleSelectUser(c.customer, c.id)}
                                     className={`flex items-center p-4 cursor-pointer hover:bg-gray-100 ${selectedUser?.id === c.customer.id ? 'bg-gray-200' : ''
                                         }`}
                                 >
@@ -105,7 +136,7 @@ const Message: React.FC = () => {
                                         className="w-10 h-10 rounded-full object-cover"
                                     />
                                     <div className="ml-4">
-                                        <h4 className="text-sm font-medium text-gray-800">{c.customer.firstName}</h4>
+                                        <h4 className="text-sm font-medium text-gray-800">{c.customer.firstName} {c.customer.lastName}</h4>
                                         <p className="text-xs text-gray-500">
                                             {c.latestMessage ? c.latestMessage.content : 'No messages yet'}
                                         </p>
@@ -133,25 +164,30 @@ const Message: React.FC = () => {
                                 </div>
 
                                 {/* Chat Messages */}
-                                {/* <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+                                {loadingMessages ? <div className="flex justify-center items-center h-[400px]">
+                                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                                </div> : <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
                                     {chatMessages.map((message) => (
                                         <div
                                             key={message.id}
-                                            className={`flex ${message.role_chat === 'ADMIN' ? 'justify-end' : 'justify-start'
+                                            className={`flex ${message.userId === user?.id ? 'justify-end' : 'justify-start'
                                                 } mb-4`}
                                         >
-                                            <div
-                                                className={`px-4 py-2 rounded-lg ${message.role_chat === 'ADMIN'
+                                            {message.messageType == "IMAGE" ? <img
+                                                src={message.contentUrl}
+                                                alt="attachment"
+                                                className="mt-2 max-w-xs rounded-lg"
+                                            /> : <div
+                                                className={`px-4 py-2 rounded-lg ${message.userId === user?.id
                                                     ? 'bg-blue-600 text-white'
                                                     : 'bg-gray-200 text-gray-800'
                                                     }`}
                                             >
                                                 {message.content}
-                                            </div>
+                                            </div>}
                                         </div>
                                     ))}
-                                </div> */}
-
+                                </div>}
                                 {/* Chat Input */}
                                 <div className="p-4 bg-gray-50 border-t border-gray-200 flex items-center">
                                     <input

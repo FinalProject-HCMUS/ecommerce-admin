@@ -57,12 +57,14 @@ const RevenueAnalysis: React.FC = () => {
         }
     }
     useEffect(() => {
-        const date = type === "month" ? (selectedMonth.getMonth() + 1) + "-" + selectedMonth.getFullYear() : selectedYear.getFullYear() + "";
+        const date = type === "month" ? String(selectedMonth.getMonth() + 1).padStart(2, "0") + "-" + selectedMonth.getFullYear() : selectedYear.getFullYear() + "";
+        console.log(date);
+
         fetchRevenueData(type, date);
     }, [selectedMonth, selectedYear, type]);
     const revenueData = {
         labels: revenueResponse?.labels.map((label: number) => {
-            return type === "month" ? label + "-" + (selectedMonth.getMonth() + 1) : label.toString();
+            return type === "month" ? String(label).padStart(2, "0") + "-" + String(selectedMonth.getMonth() + 1).padStart(2, "0") : label.toString();
         }),
         datasets: [
             {
@@ -88,7 +90,7 @@ const RevenueAnalysis: React.FC = () => {
             legend: { display: false },
             tooltip: {
                 callbacks: {
-                    label: (context: any) => `${context.raw}k`,
+                    label: (context: any) => `${context.raw}`,
                 },
             },
         },
@@ -96,7 +98,7 @@ const RevenueAnalysis: React.FC = () => {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    callback: (value: number) => `${value}k`,
+                    callback: (value: number) => `${value}`,
                 },
             },
         },
