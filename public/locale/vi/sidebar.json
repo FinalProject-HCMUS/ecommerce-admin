@@ -7,5 +7,12 @@
     "about": "Thông tin",
     "logout": "Đăng xuất",
     "customers": "Khách hàng",
-    "orders": "Đơn hàng"
+    "orders": "Đơn hàng",
+    "messages": "Tin nhắn",
+    "blog": "Bài viết",
+    "statistics": "Thống kê",
+    "revenueAnalysis": "Phân tích doanh thu",
+    "productCategory": "Thống kê sản phẩm",
+    "orderStatistics": "Thống kê đơn hàng",
+    "topProducts": "Sản phẩm bán chạy"
 }

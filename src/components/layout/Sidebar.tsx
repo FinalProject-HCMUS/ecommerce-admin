@@ -86,7 +86,7 @@ const Sidebar = () => {
           }
         >
           <MessageCircleMore size={20} />
-          <span>Messages</span>
+          <span>{t('messages')}</span>
         </NavLink>
         <NavLink
           to="/blogs"
@@ -96,7 +96,7 @@ const Sidebar = () => {
           }
         >
           <NotebookPen size={20} />
-          <span>Blogs</span>
+          <span>{t('blog')}</span>
         </NavLink>
         {/* Dropdown Menu for Statistics */}
         <div>
@@ -106,7 +106,7 @@ const Sidebar = () => {
           >
             <div className="flex items-center space-x-2">
               <BarChart3Icon size={20} />
-              <span>Statistics</span>
+              <span>{t('statistics')}</span>
             </div>
             {isStatisticsOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </button>
@@ -119,7 +119,7 @@ const Sidebar = () => {
                   }`
                 }
               >
-                Revenue Analysis
+                {t('revenueAnalysis')}
               </NavLink>
               <NavLink
                 to="/statistics/categories"
@@ -127,8 +127,7 @@ const Sidebar = () => {
                   `block px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
                   }`
                 }
-              >
-                Product Categories
+              >{t('productCategory')}
               </NavLink>
               <NavLink
                 to="/statistics/orders"
@@ -137,7 +136,7 @@ const Sidebar = () => {
                   }`
                 }
               >
-                Order Statistics
+                {t('orderStatistics')}
               </NavLink>
               <NavLink
                 to="/statistics/top-products"
@@ -146,7 +145,7 @@ const Sidebar = () => {
                   }`
                 }
               >
-                Top Products
+                {t('topProducts')}
               </NavLink>
             </div>
           )}

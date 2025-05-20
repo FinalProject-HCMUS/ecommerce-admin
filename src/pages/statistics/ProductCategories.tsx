@@ -28,8 +28,6 @@ ChartJS.register(
     ArcElement
 );
 
-
-
 const ProductCategories: React.FC = () => {
     const [productCategories, setProductCategories] = useState<ProductCategoryResponse>(
         {
@@ -38,7 +36,6 @@ const ProductCategories: React.FC = () => {
         }
     );
     const [loading, setLoading] = useState<boolean>(true);
-
     const fetchProductCategories = async () => {
         setLoading(true);
         const response = await getProductCategories();

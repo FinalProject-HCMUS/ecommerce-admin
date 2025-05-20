@@ -1,9 +1,16 @@
-import { User } from "../user/User";
+import { Pageable } from "../common/Pageable";
+import { Conversation } from "./Conversation";
 
 export interface ConversationResponse {
-    id: string;
-    customer: User
-    latestMessage: string;
-    adminRead: boolean;
-    customerRead: boolean;
+    content: Conversation[];
+    pageable: Pageable;
+    last: boolean;
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    sort: any[];
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
 }
