@@ -107,7 +107,7 @@ const Message: React.FC = () => {
             webSocketFactory: () => socket,
             reconnectDelay: 5000,
             debug: (str) => {
-                // console.log(str);
+                console.log(str);
             },
             onConnect: () => {
                 stompClient.subscribe('/topic/conversation/' + conversationId, (response) => {

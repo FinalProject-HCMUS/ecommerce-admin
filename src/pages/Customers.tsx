@@ -14,15 +14,18 @@ const Customers = () => {
     const [customers, setCustomers] = useState<User[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { t } = useTranslation('user');
     const fetchCustomers = async (page: number) => {
+        setLoading(true);
         const response = await getUsers(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
         }
         if (response.data) {
+            setLoading(false);
             setCustomers(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
@@ -49,15 +52,17 @@ const Customers = () => {
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-lg">
-                    <CustomerTable
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <><CustomerTable
                         customers={customers}
                         refresh={refresh}
                     />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        /></>}
                 </div>
             </div>
         </MotionPageWrapper>

@@ -22,16 +22,19 @@ const Sizes = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [heightRange, setHeightRange] = useState<[number, number]>([MIN_HEIGHT, MAX_HEIGHT]);
     const [weightRange, setWeightRange] = useState<[number, number]>([MIN_WEIGHT, MAX_WEIGHT]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { t } = useTranslation('size');
 
     const fetchsizes = async (page: number, keysearch = '', minH = MIN_HEIGHT, maxH = MAX_HEIGHT, minW = MIN_WEIGHT, maxW = MAX_WEIGHT) => {
+        setLoading(true);
         const response = await getSizes(page - 1, ITEMS_PER_PAGE, keysearch, minH, maxH, minW, maxW);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
         }
         if (response.data) {
+            setLoading(false);
             setsizes(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
@@ -170,15 +173,19 @@ const Sizes = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-2xl shadow-lg">
-                    <SizeTable
-                        refresh={refresh}
-                        sizes={sizes}
-                    />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <>
+                        <SizeTable
+                            refresh={refresh}
+                            sizes={sizes}
+                        />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        />
+                    </>}
                 </div>
             </div>
         </MotionPageWrapper>

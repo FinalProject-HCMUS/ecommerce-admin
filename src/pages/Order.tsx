@@ -16,15 +16,18 @@ const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { t } = useTranslation("order")
     const fetchOrders = async (page: number) => {
+        setLoading(true);
         const response = await getOrders(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
         }
         if (response.data) {
+            setLoading(false);
             setOrders(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
@@ -48,12 +51,16 @@ const Orders = () => {
                 </div>
 
                 <div className="bg-white rounded-2xl shadow-lg">
-                    <OrderTable orders={orders} />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <>
+                        <OrderTable orders={orders} />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        />
+                    </>}
                 </div>
             </div>
         </MotionPageWrapper>

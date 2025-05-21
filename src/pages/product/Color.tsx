@@ -16,15 +16,18 @@ const Colors = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
     const [searchInput, setSearchInput] = useState('');
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { t } = useTranslation('color');
     const fetchColors = async (page: number, keysearch = '') => {
+        setLoading(true);
         const response = await getColors(page - 1, ITEMS_PER_PAGE, keysearch);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
         }
         if (response.data) {
+            setLoading(false);
             setColors(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
@@ -78,15 +81,18 @@ const Colors = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-2xl shadow-lg">
-                    <ColorTable
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <><ColorTable
                         refresh={refresh}
                         colors={colors}
                     />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        />
+                    </>}
                 </div>
             </div>
         </MotionPageWrapper>

@@ -20,16 +20,19 @@ const Products = () => {
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loadingCategories, setLoadingCategories] = useState(false);
   const { t } = useTranslation('product');
   const fetchProducts = async (page: number, category = '', keysearch = '') => {
+    setLoading(true);
     const response = await getProducts(page - 1, ITEMS_PER_PAGE, "createdAt,asc", category, keysearch);
     if (!response.isSuccess) {
       toast.error(response.message, { autoClose: 1000 });
       return;
     }
     if (response.data) {
+      setLoading(false);
       setProducts(response.data.content || []);
       setTotalPages(response.data.totalPages || 0);
     }
@@ -126,15 +129,19 @@ const Products = () => {
           </div>
         </div>
         <div className="bg-white rounded-2xl shadow-lg">
-          <ProductTable
-            refresh={refresh}
-            products={products}
-          />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          {loading ? <div className="flex justify-center items-center h-[400px]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+          </div> : <>
+            <ProductTable
+              refresh={refresh}
+              products={products}
+            />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>}
         </div>
       </div>
     </MotionPageWrapper>
