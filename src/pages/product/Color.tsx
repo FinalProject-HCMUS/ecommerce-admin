@@ -47,7 +47,7 @@ const Colors = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">{t('color')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('color')}</h1>
 
                 </div>
                 <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4 justify-between">
@@ -77,7 +77,7 @@ const Colors = () => {
                         <span>{t('addColor')}</span>
                     </button>
                 </div>
-                <div className="bg-white rounded-lg shadow">
+                <div className="bg-white rounded-2xl shadow-lg">
                     <ColorTable
                         refresh={refresh}
                         colors={colors}

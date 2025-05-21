@@ -32,9 +32,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('orderInformation')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('orderInformation')}</h1>
                 </div>
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
                     <p className="text-gray-600 mb-4 italic">{t('guide')}</p>
                     <form className="p-6 grid grid-cols-1 gap-6">
                         {/* Customer Information */}

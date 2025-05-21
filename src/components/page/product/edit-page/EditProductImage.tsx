@@ -57,9 +57,9 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t("productImage")}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t("productImage")}</h1>
                 </div>
-                <div className="bg-white rounded-lg shadow p-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6">
                     <div className="space-y-6">
                         {/* Thumbnail Image */}
                         {formData.mainImageUrl && (

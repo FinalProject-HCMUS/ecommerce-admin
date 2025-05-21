@@ -18,9 +18,9 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('orderPreview')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('orderPreview')}</h1>
                 </div>
-                <div className="bg-white rounded-lg shadow p-6 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                         <h3 className="text-lg font-semibold mb-4">{t('headerCustomer')}</h3>
                         <div className="mb-2">

@@ -88,8 +88,8 @@ const AddBlog: React.FC = () => {
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-6">{t('writeNewBlog')}</h1>
-                <div className="bg-white rounded-lg shadow p-6">
+                <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('writeNewBlog')}</h1>
+                <div className="bg-white shadow-lg rounded-2xl p-6">
                     {/* Title Input */}
                     <div className="mb-4">
                         <input

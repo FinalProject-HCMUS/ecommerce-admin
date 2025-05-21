@@ -76,9 +76,9 @@ const AddCustomer: React.FC = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('addCustomer')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('addCustomer')}</h1>
                 </div>
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-8 max-w-4xl mx-auto mt-8">
+                <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-center mb-5">{t('personalInfo')}</h2>
                     <div className="flex justify-center items-center mb-8">
                         <div className="relative">

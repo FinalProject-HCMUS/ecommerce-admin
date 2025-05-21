@@ -156,9 +156,9 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('chooseProduct')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('chooseProduct')}</h1>
                 </div>
-                <div className="bg-white rounded-lg shadow p-6 mb-6 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* show product list selected */}
                     <div className="col-span-2">
                         <div className="flex mb-4">

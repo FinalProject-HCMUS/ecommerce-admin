@@ -38,7 +38,7 @@ const Customers = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">{t('customers')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('customers')}</h1>
                     <button
                         onClick={() => navigate('/customers/add')}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
@@ -48,7 +48,7 @@ const Customers = () => {
                     </button>
                 </div>
 
-                <div className="bg-white rounded-lg shadow">
+                <div className="bg-white rounded-2xl shadow-lg">
                     <CustomerTable
                         customers={customers}
                         refresh={refresh}

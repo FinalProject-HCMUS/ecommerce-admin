@@ -188,10 +188,10 @@ const Message: React.FC = () => {
             <div className="flex-1 bg-gray-100 p-8">
                 {/* Header */}
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">{t('messages')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('messages')}</h1>
                 </div>
 
-                <div className="flex bg-white rounded-lg shadow overflow-hidden">
+                <div className="flex bg-white rounded-2xl shadow-lg overflow-hidden">
                     {/* Sidebar */}
                     <div className="w-1/3 border-r border-gray-200">
                         <div className="p-4">

@@ -13,10 +13,10 @@ const About: React.FC = () => {
         <MotionPageWrapper>
             {user && <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('about')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('about')}</h1>
                 </div>
                 {/* Profile Card */}
-                <div className="bg-white rounded-xl shadow flex items-center p-6 mb-6">
+                <div className="bg-white rounded-2xl shadow-lg flex items-center p-6 mb-6">
                     <div className="relative">
                         <img
                             src={user.photo}
@@ -31,7 +31,7 @@ const About: React.FC = () => {
                 </div>
 
                 {/* Personal Information */}
-                <div className="bg-white rounded-xl shadow p-6 mb-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-semibold">{t('personalInfo')}</h1>
                         <button onClick={() => { navigate("/about/edit") }} className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-full transition">

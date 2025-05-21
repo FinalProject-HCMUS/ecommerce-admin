@@ -71,9 +71,9 @@ const AddVariants: React.FC<AddVariantsProps> = ({
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="mb-8 flex justify-between items-center">
-                <h1 className="text-3xl font-semibold text-gray-900">{t("addVariant")}</h1>
+                <h1 className="text-3xl font-bold text-gray-900">{t("addVariant")}</h1>
             </div>
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
                 {/* Add Variant Form */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
                     {/* Color Picker */}
