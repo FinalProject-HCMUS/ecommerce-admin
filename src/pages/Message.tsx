@@ -9,12 +9,14 @@ import { toast } from 'react-toastify';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from '../context/AuthContext';
+import { Camera } from 'lucide-react';
+import { uploadImages } from '../apis/imageApi';
 const API_URL = import.meta.env.VITE_API_URL;
 const Message: React.FC = () => {
-
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [loadingConversations, setLoadingConversations] = useState(true);
     const [loadingMessages, setLoadingMessages] = useState(true);
+    const [sendingMessage, setSendingMessage] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [newMessage, setNewMessage] = useState('');
     const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -150,6 +152,35 @@ const Message: React.FC = () => {
         }
         setNewMessage('');
     };
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        setSendingMessage(true);
+        const imageResponse = await uploadImages(files);
+        if (!imageResponse.isSuccess) {
+            toast.error(imageResponse.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            return;
+        }
+        imageResponse.data!.forEach((url) => {
+            const stompClient = stompClientRef.current;
+            if (stompClient && stompClient.connected) {
+                stompClient.publish({
+                    destination: "/app/chat.sendMessage/" + conversationId,
+                    body: JSON.stringify({
+                        contentUrl: url,
+                        userId: user?.id,
+                        conversationId: conversationId,
+                        messageType: 'IMAGE'
+                    })
+                });
+            } else {
+                console.error('Stomp client is not connected');
+            }
+        });
+        setSendingMessage(false);
+    };
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
@@ -219,7 +250,7 @@ const Message: React.FC = () => {
                                 </div>
 
                                 {/* Chat Messages */}
-                                {loadingMessages ? <div className="flex justify-center items-center h-[400px]">
+                                {loadingMessages || sendingMessage ? <div className="flex justify-center items-center h-[400px]">
                                     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                                 </div> : <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
                                     {chatMessages.map((message) => (
@@ -244,7 +275,20 @@ const Message: React.FC = () => {
                                     ))}
                                 </div>}
                                 {/* Chat Input */}
-                                <div className="p-4 bg-gray-50 border-t border-gray-200 flex items-center">
+                                <div className="p-2 bg-gray-50 border-t border-gray-200 flex items-center">
+                                    <div className="flex flex-col items-center">
+                                        <Camera
+                                            onClick={() => document.getElementById('image-upload')?.click()}
+                                            className="text-gray-500 cursor-pointer mx-2" size={20} />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            onChange={handleImageUpload}
+                                            className="hidden"
+                                            id='image-upload'
+                                        />
+                                    </div>
                                     <input
                                         type="text"
                                         placeholder="Type a message..."
@@ -273,7 +317,7 @@ const Message: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </MotionPageWrapper>
+        </MotionPageWrapper >
     );
 };
 
