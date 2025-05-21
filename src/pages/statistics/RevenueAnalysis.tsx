@@ -18,6 +18,7 @@ import {
 import { RevenueResponse } from '../../types/statistics/RevenueResponse';
 import { getRevenueResponse } from '../../apis/statisticsApi';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(
     CategoryScale,
@@ -44,6 +45,7 @@ const RevenueAnalysis: React.FC = () => {
     const [selectedMonth, setSelectedMonth] = useState<Date>(new Date());
     const [selectedYear, setSelectedYear] = useState<Date>(new Date());
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation("statistics");
     const fetchRevenueData = async (type: string, date: string) => {
         setLoading(true);
         const response = await getRevenueResponse(type, date);
@@ -107,7 +109,7 @@ const RevenueAnalysis: React.FC = () => {
     return (
         <MotionPageWrapper>
             <div className="p-8 bg-gray-100 min-h-screen">
-                <h1 className="text-3xl font-bold mb-8">Revenue Statistics</h1>
+                <h1 className="text-3xl font-bold mb-8">{t('revenueStatistics')}</h1>
                 <div className="bg-white shadow-lg rounded-2xl p-8">
                     {loading ? (
                         <div className="flex justify-center items-center h-[400px]">
@@ -121,7 +123,7 @@ const RevenueAnalysis: React.FC = () => {
                                     <ArrowUpRight size={24} />
                                 </div>
                                 <div>
-                                    <div className="text-sm text-gray-500 font-medium">Income</div>
+                                    <div className="text-sm text-gray-500 font-medium">{t('income')}</div>
                                     <div className="text-2xl font-bold text-green-600">{revenueResponse.totalIncome[0]}</div>
                                 </div>
                             </div>
@@ -130,7 +132,7 @@ const RevenueAnalysis: React.FC = () => {
                                     <ArrowDownRight size={24} />
                                 </div>
                                 <div>
-                                    <div className="text-sm text-gray-500 font-medium">Expense</div>
+                                    <div className="text-sm text-gray-500 font-medium">{t('expense')}</div>
                                     <div className="text-2xl font-bold text-yellow-500">{revenueResponse.totalExpense[0]}</div>
                                 </div>
                             </div>
@@ -139,7 +141,7 @@ const RevenueAnalysis: React.FC = () => {
                                     <DollarSign size={24} />
                                 </div>
                                 <div>
-                                    <div className="text-sm text-gray-500 font-medium">Balance</div>
+                                    <div className="text-sm text-gray-500 font-medium">{t('balance')}</div>
                                     <div className="text-2xl font-bold text-blue-600">{revenueResponse.totalBalance[0]}</div>
                                 </div>
                             </div>
@@ -148,11 +150,11 @@ const RevenueAnalysis: React.FC = () => {
                         <div className="bg-white rounded-xl p-6">
                             <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
                                 <h2 className="text-xl font-semibold text-gray-800 text-center md:text-left mb-4 md:mb-0">
-                                    Revenue Trend ({type === "month" ? "Monthly" : "Yearly"})
+                                    {t('revenueTrend')} ({type === "month" ? t('monthly') : t('yearly')})
                                 </h2>
                                 <div className="flex items-center space-x-4">
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-sm text-gray-500">Sort by</span>
+                                        <span className="text-sm text-gray-500">{t('sortBy')}</span>
                                         {type === "month" ? (
                                             <DatePicker
                                                 selected={selectedMonth}
@@ -182,8 +184,8 @@ const RevenueAnalysis: React.FC = () => {
                                             value={type}
                                             onChange={e => setType(e.target.value)}
                                         >
-                                            <option value="month">Month</option>
-                                            <option value="year">Year</option>
+                                            <option value="month">{t('month')}</option>
+                                            <option value="year">{t('year')}</option>
                                         </select>
                                     </div>
                                 </div>

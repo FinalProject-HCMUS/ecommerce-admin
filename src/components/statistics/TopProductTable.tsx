@@ -1,5 +1,6 @@
 import React from 'react';
 import { BestSellerProduct } from '../../types/statistics/BestSellerProduct';
+import { useTranslation } from 'react-i18next';
 
 
 interface TopProductTableProps {
@@ -7,21 +8,22 @@ interface TopProductTableProps {
 }
 
 const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
+    const { t } = useTranslation("statistics");
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image Product</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sold</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('imageProduct')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('productName')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('sold')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('revenue')}</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {products.map((product) => (
-                        <tr key={product.id}>
+                    {products.map((product, index) => (
+                        <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="h-16 w-16 flex-shrink-0">
                                     <img className="h-full w-full rounded-lg object-contain" src={product.imageurl} alt={product.name} />

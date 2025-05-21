@@ -16,6 +16,7 @@ import {
 import { ProductCategoryResponse } from "../../types/statistics/ProductCategoryResponse";
 import { getProductCategories } from "../../apis/statisticsApi";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
     CategoryScale,
@@ -36,6 +37,7 @@ const ProductCategories: React.FC = () => {
         }
     );
     const [loading, setLoading] = useState<boolean>(true);
+    const { t } = useTranslation("statistics");
     const fetchProductCategories = async () => {
         setLoading(true);
         const response = await getProductCategories();
@@ -101,12 +103,12 @@ const ProductCategories: React.FC = () => {
     return (
         <MotionPageWrapper>
             <div className="p-8 bg-gray-100 min-h-screen">
-                <h1 className="text-3xl font-bold mb-8">Statistic</h1>
+                <h1 className="text-3xl font-bold mb-8">{t('statistics')}</h1>
                 <motion.div
                     className="bg-white shadow-xl rounded-2xl p-8 max-w-4xl mx-auto"
                     variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                 >
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center tracking-tight">Product Categories</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center tracking-tight">{t('productCategory')}</h2>
 
                     {loading ? (
                         <div className="flex justify-center items-center h-[400px]">
@@ -137,7 +139,7 @@ const ProductCategories: React.FC = () => {
                                 })}
                             </ul>
                             <div className="mt-8 text-center text-base text-gray-600 font-semibold">
-                                Total products: <span className="text-blue-600">{totalProducts}</span>
+                                {t('totalProducts')}: <span className="text-blue-600">{totalProducts}</span>
                             </div>
                         </div>
                     </div>}

@@ -62,7 +62,6 @@ function App() {
             <Route path="/blogs" element={<PrivateRoute element={Blogs} />} />
             <Route path="/blogs/add" element={<PrivateRoute element={AddBlog} />} />
             <Route path="/blogs/edit/:id" element={<PrivateRoute element={EditBlog} />} />
-            {/* <Route path="/statistics" element={<PrivateRoute element={Statistics} />} /> */}
             <Route path="/statistics/orders" element={<PrivateRoute element={OrderStatistics} />} />
             <Route path="/statistics/categories" element={<PrivateRoute element={ProductCategories} />} />
             <Route path="/statistics/revenue" element={<PrivateRoute element={RevenueAnalysis} />} />

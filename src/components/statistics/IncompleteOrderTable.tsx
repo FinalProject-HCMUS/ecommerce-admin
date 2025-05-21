@@ -8,7 +8,7 @@ interface OrderTableProps {
 }
 
 const IncompleteOrderTable: React.FC<OrderTableProps> = ({ orders }) => {
-    const { t } = useTranslation("order")
+    const { t } = useTranslation("statistics")
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -17,7 +17,7 @@ const IncompleteOrderTable: React.FC<OrderTableProps> = ({ orders }) => {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('customer')}</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('orderTime')}</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('paymentMethod')}</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('revenue')}</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">

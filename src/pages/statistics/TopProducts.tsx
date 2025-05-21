@@ -5,6 +5,7 @@ import { BestSellerProduct } from '../../types/statistics/BestSellerProduct';
 import { getBestSellerProduct } from '../../apis/statisticsApi';
 import { toast } from 'react-toastify';
 import DatePicker from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 
 const TopProduct: React.FC = () => {
     const [products, setProducts] = useState<BestSellerProduct[]>([]);
@@ -12,6 +13,7 @@ const TopProduct: React.FC = () => {
     const [type, setType] = useState('month');
     const [selectedMonth, setSelectedMonth] = useState<Date>(new Date());
     const [selectedYear, setSelectedYear] = useState<Date>(new Date());
+    const { t } = useTranslation("statistics");
     const fetchTopProductData = async (type: string, date: string) => {
         setLoading(true);
         const response = await getBestSellerProduct(type, date);
@@ -32,16 +34,16 @@ const TopProduct: React.FC = () => {
     return (
         <MotionPageWrapper>
             <div className="p-8 bg-gray-100 min-h-screen">
-                <h1 className="text-3xl font-semibold mb-6">Statistic</h1>
+                <h1 className="text-3xl font-bold mb-6">{t('statistics')}</h1>
                 <div className="bg-white shadow-lg rounded-2xl p-6">
                     {loading ? <div className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <div>
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-semibold">Top Product Sell</h2>
+                            <h2 className="text-xl font-semibold">{t('topProductsSold')}</h2>
                             <div className="flex items-center space-x-4">
                                 <div className="flex items-center space-x-2">
-                                    <span className="text-sm text-gray-500">Sort by</span>
+                                    <span className="text-sm text-gray-500">{t('sortBy')}</span>
                                     {type === "month" ? (
                                         <DatePicker
                                             selected={selectedMonth}
@@ -71,8 +73,8 @@ const TopProduct: React.FC = () => {
                                         value={type}
                                         onChange={e => setType(e.target.value)}
                                     >
-                                        <option value="month">Month</option>
-                                        <option value="year">Year</option>
+                                        <option value="month">{t('month')}</option>
+                                        <option value="year">{t('year')}</option>
                                     </select>
                                 </div>
                             </div>
