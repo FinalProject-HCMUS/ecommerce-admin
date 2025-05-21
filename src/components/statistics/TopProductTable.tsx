@@ -1,16 +1,9 @@
 import React from 'react';
+import { BestSellerProduct } from '../../types/statistics/BestSellerProduct';
 
-interface TopProduct {
-    id: string;
-    name: string;
-    price: string;
-    sold: number;
-    revenue: string;
-    imageUrl: string;
-}
 
 interface TopProductTableProps {
-    products: TopProduct[];
+    products: BestSellerProduct[];
 }
 
 const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
@@ -19,11 +12,11 @@ const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ảnh</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên sản phẩm</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá bán</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đã bán</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng thu</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image Product</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sold</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -31,7 +24,7 @@ const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
                         <tr key={product.id}>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="h-16 w-16 flex-shrink-0">
-                                    <img className="h-full w-full rounded-lg object-contain" src={product.imageUrl} alt={product.name} />
+                                    <img className="h-full w-full rounded-lg object-contain" src={product.imageurl} alt={product.name} />
                                 </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -41,7 +34,7 @@ const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
                                 <div className="text-sm text-gray-900">{product.price}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{product.sold}</div>
+                                <div className="text-sm text-gray-900">{product.quantitysold}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{product.revenue}</div>
