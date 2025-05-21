@@ -20,6 +20,7 @@ interface AddProductImageProps {
 const AddProductImage: React.FC<AddProductImageProps> = ({ images, setImages, formData, setFormData, setFiles, setIndexThumbnail }) => {
     const navigate = useNavigate();
     const { t } = useTranslation('product');
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         setFiles((prev) => [...prev, ...files]);

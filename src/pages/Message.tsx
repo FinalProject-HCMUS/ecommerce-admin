@@ -11,6 +11,7 @@ import { Client } from '@stomp/stompjs';
 import { useAuth } from '../context/AuthContext';
 import { Camera } from 'lucide-react';
 import { uploadImages } from '../apis/imageApi';
+import { useTranslation } from 'react-i18next';
 const API_URL = import.meta.env.VITE_API_URL;
 const Message: React.FC = () => {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -29,6 +30,7 @@ const Message: React.FC = () => {
     const { user } = useAuth();
     const stompClientRef = useRef<Client | null>(null);
     const size = import.meta.env.VITE_ITEMS_PER_PAGE;
+    const { t } = useTranslation('message');
 
     const fetchConversations = useCallback(async () => {
         setLoadingConversations(true);
@@ -186,7 +188,7 @@ const Message: React.FC = () => {
             <div className="flex-1 bg-gray-100 p-8">
                 {/* Header */}
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold text-gray-900">Messages</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">{t('messages')}</h1>
                 </div>
 
                 <div className="flex bg-white rounded-lg shadow overflow-hidden">
@@ -198,7 +200,7 @@ const Message: React.FC = () => {
                                 value={searchInput}
                                 onChange={(e) => { setSearchInput(e.target.value) }}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Search"
+                                placeholder={t('search')}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                             />
                         </div>
@@ -207,7 +209,7 @@ const Message: React.FC = () => {
                         </div>) : <div ref={conversationRef} className="overflow-y-auto h-[calc(90vh-200px)]">
                             {conversations.length == 0 ? <>
                                 <div className="flex justify-center items-center h-[400px]">
-                                    <p className="text-gray-500">No conversations found</p>
+                                    <p className="text-gray-500">{t('noConversation')}</p>
                                 </div>
                             </> : conversations.map((c) => (
                                 <div
@@ -224,7 +226,7 @@ const Message: React.FC = () => {
                                     <div className="ml-4">
                                         <h4 className="text-sm font-medium text-gray-800">{c.customer.firstName} {c.customer.lastName}</h4>
                                         <p className="text-xs text-gray-500">
-                                            {c.latestMessage ? c.latestMessage.content : 'No messages yet'}
+                                            {c.latestMessage ? c.latestMessage.content : t('noMessage')}
                                         </p>
                                     </div>
                                 </div>
@@ -245,7 +247,7 @@ const Message: React.FC = () => {
                                     />
                                     <div className="ml-4">
                                         <h4 className="text-sm font-medium text-gray-800">{selectedUser.firstName}</h4>
-                                        <p className="text-xs text-gray-500">Online - Last seen, 2:02pm</p>
+                                        {/* <p className="text-xs text-gray-500">Online - Last seen, 2:02pm</p> */}
                                     </div>
                                 </div>
 
@@ -291,7 +293,7 @@ const Message: React.FC = () => {
                                     </div>
                                     <input
                                         type="text"
-                                        placeholder="Type a message..."
+                                        placeholder={t('typePlaceholder')}
                                         value={newMessage}
                                         onChange={(e) => setNewMessage(e.target.value)}
                                         onKeyDown={(e) => {
@@ -305,13 +307,13 @@ const Message: React.FC = () => {
                                         onClick={handleSendMessage}
                                         className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                                     >
-                                        Send
+                                        {t('send')}
                                     </button>
                                 </div>
                             </>
                         ) : (
                             <div className="flex items-center justify-center flex-1">
-                                <p className="text-gray-500">Select a conversation to start chatting</p>
+                                <p className="text-gray-500"></p>{t('noSelectedConversation')}
                             </div>
                         )}
                     </div>
