@@ -12,11 +12,12 @@ interface ProductTableProps {
   refresh(): void;
 }
 
+const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
   const naviate = useNavigate();
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-  const { t } = useTranslation('product');
+  const { t, i18n } = useTranslation('product');
   const handleDeleteClick = (id: string) => {
     setSelectedProductId(id);
     setIsDeleteConfirmOpen(true); // Open the confirmation dialog
@@ -65,7 +66,11 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
                 <div className="text-sm text-gray-900">{product.categoryName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">${product.price}</div>
+                <div className="text-sm text-gray-900">
+                  {i18n.language === 'vi'
+                    ? product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                    : (product.price / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{product.total}</div>

@@ -21,5 +21,6 @@
     "cancel": "Hủy",
     "save": "Lưu",
     "editUser": "Chỉnh sửa người dùng",
-    "search": "Tìm kiếm khách hàng theo tên"
+    "search": "Tìm kiếm khách hàng theo tên",
+    "addCustomerSuccess": "Thêm khách hàng thành công"
 }

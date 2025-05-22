@@ -6,9 +6,9 @@ interface ProductTableProps {
     products: Product[];
     onProductSelect: (product: Product) => void;
 }
-
+const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductSelect }) => {
-    const { t } = useTranslation("order");
+    const { t, i18n } = useTranslation("order");
     return (
         <div className="overflow-x-auto border border-gray-300 rounded-lg shadow-md">
             <table className="min-w-full divide-y divide-gray-200">
@@ -16,8 +16,8 @@ const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductS
                     <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('product')}</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('category')}</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price')}</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('cost')}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('price')}</th>
                         <th className="px-6 py-3 text-xs text-left font-medium text-gray-500 uppercase tracking-wider">{t('action')}</th>
                     </tr>
                 </thead>
@@ -38,10 +38,17 @@ const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductS
                                 <div className="text-sm text-gray-900">{product.categoryName}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">${product.price}</div>
+                                <div className="text-sm text-gray-900">
+                                    {i18n.language === 'vi'
+                                        ? product.cost.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (product.cost / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{product.cost}</div>
+                                <div className="text-sm text-gray-900">
+                                    {i18n.language === 'vi'
+                                        ? product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (product.price / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</div>
                             </td>
                             <td className="px-10 py-4 whitespace-nowrap">
                                 <button

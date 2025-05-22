@@ -21,5 +21,6 @@
     "cancel": "Cancel",
     "save": "Save",
     "editUser": "Edit User",
-    "search": "Search customer by name"
+    "search": "Search customer by name",
+    "addCustomerSuccess": "Customer added successfully"
 }

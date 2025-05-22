@@ -28,7 +28,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
     const handleCategorySelect = (category: Category) => {
         setFormData((prev) => ({
             ...prev,
-            category: category.name,
+            categoryName: category.name,
             categoryId: category.id,
         }));
         setShowDropdown(false);

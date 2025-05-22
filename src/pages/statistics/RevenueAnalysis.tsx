@@ -30,7 +30,7 @@ ChartJS.register(
     Legend,
     ArcElement
 );
-
+const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const RevenueAnalysis: React.FC = () => {
     const [revenueResponse, setRevenueResponse] = useState<RevenueResponse>(
         {
@@ -45,7 +45,7 @@ const RevenueAnalysis: React.FC = () => {
     const [selectedMonth, setSelectedMonth] = useState<Date>(new Date());
     const [selectedYear, setSelectedYear] = useState<Date>(new Date());
     const [loading, setLoading] = useState(false);
-    const { t } = useTranslation("statistics");
+    const { t, i18n } = useTranslation("statistics");
     const fetchRevenueData = async (type: string, date: string) => {
         setLoading(true);
         const response = await getRevenueResponse(type, date);
@@ -124,7 +124,10 @@ const RevenueAnalysis: React.FC = () => {
                                 </div>
                                 <div>
                                     <div className="text-sm text-gray-500 font-medium">{t('income')}</div>
-                                    <div className="text-2xl font-bold text-green-600">{revenueResponse.totalIncome[0]}</div>
+                                    <div className="text-2xl font-bold text-green-600">
+                                        {i18n.language === 'vi'
+                                            ? revenueResponse.totalIncome[0].toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                            : (revenueResponse.totalIncome[0] / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</div>
                                 </div>
                             </div>
                             <div className="flex items-center p-5 rounded-xl bg-gradient-to-r from-yellow-100 to-yellow-50 shadow">
@@ -133,7 +136,11 @@ const RevenueAnalysis: React.FC = () => {
                                 </div>
                                 <div>
                                     <div className="text-sm text-gray-500 font-medium">{t('expense')}</div>
-                                    <div className="text-2xl font-bold text-yellow-500">{revenueResponse.totalExpense[0]}</div>
+                                    <div className="text-2xl font-bold text-yellow-500">
+                                        {i18n.language === 'vi'
+                                            ? revenueResponse.totalExpense[0].toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                            : (revenueResponse.totalExpense[0] / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex items-center p-5 rounded-xl bg-gradient-to-r from-blue-100 to-blue-50 shadow">
@@ -142,7 +149,11 @@ const RevenueAnalysis: React.FC = () => {
                                 </div>
                                 <div>
                                     <div className="text-sm text-gray-500 font-medium">{t('balance')}</div>
-                                    <div className="text-2xl font-bold text-blue-600">{revenueResponse.totalBalance[0]}</div>
+                                    <div className="text-2xl font-bold text-blue-600">
+                                        {i18n.language === 'vi'
+                                            ? revenueResponse.totalBalance[0].toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                            : (revenueResponse.totalBalance[0] / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                    </div>
                                 </div>
                             </div>
                         </div>

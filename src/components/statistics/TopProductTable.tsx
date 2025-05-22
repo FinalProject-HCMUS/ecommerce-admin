@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 interface TopProductTableProps {
     products: BestSellerProduct[];
 }
-
+const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
-    const { t } = useTranslation("statistics");
+    const { t, i18n } = useTranslation("statistics");
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -33,13 +33,21 @@ const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
                                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{product.price}</div>
+                                <div className="text-sm text-gray-900">
+                                    {i18n.language === 'vi'
+                                        ? product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (product.price / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{product.quantitysold}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{product.revenue}</div>
+                                <div className="text-sm text-gray-900">
+                                    {i18n.language === 'vi'
+                                        ? product.revenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (product.revenue / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                </div>
                             </td>
                         </tr>
                     ))}

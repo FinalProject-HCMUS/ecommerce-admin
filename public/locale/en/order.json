@@ -7,7 +7,7 @@
     "action": "action",
     "order": "Orders",
     "addNewOrder": "Add new order",
-    "orderInfromation": "Order Information",
+    "orderInformation": "Order Information",
     "guide": "Please fill in the customer infromation below",
     "headerCustomer": "Customer Information",
     "firstName": "First Name",

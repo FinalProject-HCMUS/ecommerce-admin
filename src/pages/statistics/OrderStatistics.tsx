@@ -7,11 +7,12 @@ import { getIncompleteOrders } from "../../apis/statisticsApi";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
+const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const OrderStatistics: React.FC = () => {
     const [orders, setOrders] = useState<IncompletedOrder[]>([]);
     const [estimateRevenue, setEstimateRevenue] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
-    const { t } = useTranslation('statistics')
+    const { t, i18n } = useTranslation('statistics')
     const fetchIncompleteOrders = async () => {
         setLoading(true);
         const response = await getIncompleteOrders();
@@ -47,7 +48,12 @@ const OrderStatistics: React.FC = () => {
                             </div>
                             <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2 shadow-sm">
                                 <span className="text-green-600 font-bold text-lg">{t('estimatedRevenue')}:</span>
-                                <span className="text-2xl font-bold text-green-700 tracking-tight">{estimateRevenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
+                                <span className="text-2xl font-bold text-green-700 tracking-tight">
+                                    {i18n.language === 'vi'
+                                        ? estimateRevenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (estimateRevenue / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+
+                                </span>
                             </div>
                         </div>
                         {/* Order Table */}

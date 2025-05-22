@@ -10,10 +10,10 @@ interface Props {
     orderDetails: OrderDetailCreatedUI[];
     handleSubmit: () => void;
 }
-
+const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
     const navigate = useNavigate();
-    const { t } = useTranslation("order");
+    const { t, i18n } = useTranslation("order");
     return (
         <MotionPageWrapper>
             <div className="bg-gray-100 p-8 h-full">
@@ -61,7 +61,11 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
                                                 <p className="text-sm text-gray-500">{t('size')}: {detail.size.name}</p>
                                                 <p className="text-sm text-gray-500">{t('color')}: {detail.color.name}</p>
                                             </div>
-                                            <div className="text-sm font-medium">{detail.unitPrice.toFixed(2)}</div>
+                                            <div className="text-sm font-medium">
+                                                {i18n.language === 'vi'
+                                                    ? detail.unitPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                                    : (detail.unitPrice / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                            </div>
                                             <div className="flex items-center space-x-2">
                                                 <span className="w-12 text-center border border-gray-300 rounded-lg bg-gray-100">
                                                     x{detail.quantity}
@@ -94,15 +98,27 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
                         <div className="space-y-2">
                             <div className="flex justify-between">
                                 <span className="text-sm text-gray-500">{t('subtotal')}</span>
-                                <span className="text-sm font-medium">${formData.productCost.toFixed(2)}</span>
+                                <span className="text-sm font-medium">
+                                    {i18n.language === 'vi'
+                                        ? formData.productCost.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (formData.productCost / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                </span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-sm text-gray-500">{t('shippingCost')}</span>
-                                <span className="text-sm font-medium">${formData.shippingCost.toFixed(2)}</span>
+                                <span className="text-sm font-medium">
+                                    {i18n.language === 'vi'
+                                        ? formData.shippingCost.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (formData.shippingCost / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                </span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-sm text-gray-500">{t('total')}</span>
-                                <span className="text-lg font-semibold">${formData.total.toFixed(2)}</span>
+                                <span className="text-lg font-semibold">
+                                    {i18n.language === 'vi'
+                                        ? formData.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                        : (formData.total / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                </span>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,6 @@ import { User } from '../../../../types/user/User';
 import { Camera } from 'lucide-react';
 import MotionPageWrapper from '../../../common/MotionPage';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../../../../context/AuthContext';
 import { uploadImage } from '../../../../apis/imageApi';
 import { toast } from 'react-toastify';
 import { UserRequest } from '../../../../types/user/UserRequest';
@@ -30,7 +29,6 @@ const EditCustomer: React.FC = () => {
     const [photoPreview, setPhotoPreview] = useState<string>();
     const [file, setFile] = useState<File | null>(null);
     const [saving, setSaving] = useState(false);
-    const { user, setUser } = useAuth();;
     const { t } = useTranslation('user');
     const navigate = useNavigate();
     const fetchUserById = async (id: string) => {
@@ -92,12 +90,12 @@ const EditCustomer: React.FC = () => {
             photo: updateUser!.photo,
             role: updateUser!.role,
         }
-        const response = await updateProfile(user!.id, userRequest);
+        const response = await updateProfile(id!, userRequest);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: 'top-center' });
+            setSaving(false);
             return;
         }
-        setUser(response.data);
         toast.success('Profile updated successfully', {
             autoClose: 1000, position: 'top-right', onClose: () => {
                 navigate(-1);
