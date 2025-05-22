@@ -20,5 +20,6 @@
     "add": "Add",
     "cancel": "Cancel",
     "save": "Save",
-    "editUser": "Edit User"
+    "editUser": "Edit User",
+    "search": "Search customer by name"
 }

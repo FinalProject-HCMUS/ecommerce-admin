@@ -36,12 +36,12 @@ export const updateProfile = async (id: string, user: UserRequest): Promise<Cust
         return error.response.data;
     }
 }
-export const getUsers = async (page: number, perpage: number): Promise<CustomResponse<UserResponse>> => {
+export const getUsers = async (page: number, perpage: number, keyword: string): Promise<CustomResponse<UserResponse>> => {
     try {
         const accessToken = localStorage.getItem("accessToken");
-        const response = await axios.get<CustomResponse<UserResponse>>(`${API_URL}/users`, {
+        const response = await axios.get<CustomResponse<UserResponse>>(`${API_URL}/users/search`, {
             params: {
-                page, perpage
+                page, perpage, keyword
             },
             headers: {
                 Authorization: `Bearer ${accessToken}`,
