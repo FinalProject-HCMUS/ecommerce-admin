@@ -18,7 +18,7 @@ const AddCustomer: React.FC = () => {
         weight: 0,
         height: 0,
         password: '',
-        photo: './images/default.png',
+        photo: 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png',
 
         enabled: true,
     });

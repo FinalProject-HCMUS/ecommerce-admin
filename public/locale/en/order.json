@@ -44,5 +44,6 @@
     "product": "Product",
     "category": "Category",
     "price": "Price",
-    "cost": "Cost"
+    "cost": "Cost",
+    "all": "All"
 }
