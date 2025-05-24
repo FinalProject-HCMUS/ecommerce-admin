@@ -13,7 +13,7 @@ interface ProductColorSizeProps {
     productColorSizesSelected: ProductColorSize[];
 }
 
-const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
+
 const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClose, onPick, productColorSizesSelected, productId }) => {
     const [variants, setVariants] = useState<ProductColorSize[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);

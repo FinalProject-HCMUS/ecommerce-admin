@@ -66,7 +66,6 @@ const Colors = () => {
                         <button
                             type="button"
                             className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
-
                         >
                             <Search size={18} />
                         </button>

@@ -19,7 +19,6 @@ const AddCustomer: React.FC = () => {
         height: 0,
         password: '',
         photo: 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png',
-
         enabled: true,
     });
     const [saving, setSaving] = useState(false);

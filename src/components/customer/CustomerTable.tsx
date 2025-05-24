@@ -58,7 +58,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, refresh }) => 
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                     <div className="h-10 w-10 flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-lg object-cover" src={customer.photo} alt={customer.firstName} />
+                                        <img className="h-10 w-10 rounded-lg object-cover" src={customer.photo == null ? "https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png" : customer.photo} alt={customer.firstName} />
                                     </div>
                                 </div>
                             </td>

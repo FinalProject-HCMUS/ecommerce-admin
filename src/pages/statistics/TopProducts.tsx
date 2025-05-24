@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import DatePicker from 'react-datepicker';
 import { useTranslation } from 'react-i18next';
 
-const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const TopProduct: React.FC = () => {
     const [products, setProducts] = useState<BestSellerProduct[]>([]);
     const [loading, setLoading] = useState<boolean>(true);

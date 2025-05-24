@@ -38,6 +38,9 @@ const EditCustomer: React.FC = () => {
             return;
         }
         if (response.data) {
+            if (!response.data.photo) {
+                response.data.photo = 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png';
+            }
             setUpdateUser(response.data);
             setPhotoPreview(response.data.photo);
         }
