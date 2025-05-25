@@ -41,7 +41,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.CI_CD_TOKEN }}
+          github_token: ${{ secrets.CI_CD_TOKEN }}
           publish_dir: ./dist
-      - name: Show deployed site URL
-        run: echo "🚀 Deployed to: https://finalproject-hcmus.github.io/ecommerce-admin/"
