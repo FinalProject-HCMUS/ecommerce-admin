@@ -22,6 +22,7 @@ i18n
             'statistics'
         ],
         defaultNS: 'sidebar',
+        load: 'languageOnly'
     });
 
 export default i18n;
