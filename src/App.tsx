@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate, HashRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Products from './pages/product/Products';
 import Categories from './pages/Categories';
 import Login from './pages/Login';
@@ -36,7 +36,7 @@ import TopProduct from './pages/statistics/TopProducts';
 
 function App() {
   return (
-    <HashRouter basename="/ecommerce-admin">
+    <Router>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -74,7 +74,7 @@ function App() {
         </Routes>
       </AuthProvider>
       <ToastContainer />
-    </HashRouter>
+    </Router>
   );
 }
 
