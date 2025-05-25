@@ -1,0 +1,9 @@
+{
+    "messages": "Messages",
+    "search": "Search conversations",
+    "send": "Send",
+    "typePlaceholder": "Type a message...",
+    "noMessage": "No messages yet.",
+    "noSelectedConversation": "Select a conversation to start chatting.",
+    "noConversation": "No conversation found"
+}

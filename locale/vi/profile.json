@@ -1,0 +1,17 @@
+{
+    "about": "Thông tin",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "height": "Chiều cao",
+    "weight": "Cân nặng",
+    "userRole": "Vai trò người dùng",
+    "enabled": "Kích hoạt",
+    "personalInfo": "Thông tin cá nhân",
+    "edit": "Chỉnh sửa",
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "cancel": "Hủy",
+    "save": "Lưu"
+}

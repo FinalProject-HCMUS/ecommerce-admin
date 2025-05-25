@@ -1,0 +1,14 @@
+{
+    "color": "Color",
+    "colorCode": "Color Code",
+    "actions": "Actions",
+    "addColor": "Add Color",
+    "colorName": "Color Name",
+    "preview": "Preview",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editColor": "Edit Color",
+    "deleteSuccess": "Delete color successfully",
+    "deleteColor": "Delete Color",
+    "search": "Search color by name"
+}

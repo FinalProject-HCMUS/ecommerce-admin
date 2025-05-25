@@ -1,0 +1,18 @@
+{
+    "blogs": "Bài viết",
+    "searchPlaceholder": "Tìm kiếm bài viết",
+    "addBlog": "Thêm bài viết",
+    "blog": "Bài viết",
+    "writeNewBlog": "Viết bài viết mới",
+    "blogTitle": "Tiêu đề bài viết",
+    "blogContentPlaceholder": "Viết nội dung bài viết của bạn ở đây...",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "submit": "Xác nhận",
+    "uploadImage": "Tải lên hình ảnh bài viết",
+    "placeholderImage": "Kéo và thả hoặc nhấp vào để tải lên",
+    "supportImage": "Hỗ trợ: JPEG, PNG",
+    "image": "Hình ảnh",
+    "preview": "Xem trước",
+    "editBlog": "Chỉnh sửa bài viết"
+}
