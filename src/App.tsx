@@ -36,7 +36,7 @@ import TopProduct from './pages/statistics/TopProducts';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/ecommerce-admin">
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
