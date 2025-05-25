@@ -28,7 +28,6 @@ import Message from './pages/Message';
 import Blogs from './pages/blogs/Blogs';
 import AddBlog from './pages/blogs/AddBlog';
 import EditBlog from './pages/blogs/EditBlog';
-import Statistics from './pages/statistics/Statistics';
 import OrderStatistics from './pages/statistics/OrderStatistics';
 import ProductCategories from './pages/statistics/ProductCategories';
 import RevenueAnalysis from './pages/statistics/RevenueAnalysis';
@@ -37,7 +36,7 @@ import TopProduct from './pages/statistics/TopProducts';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/ecommerce-admin">
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
