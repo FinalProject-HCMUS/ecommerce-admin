@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pencil } from 'lucide-react';
+import { KeyRound, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import MotionPageWrapper from '../components/common/MotionPage';
 import { useAuth } from '../context/AuthContext';
@@ -27,6 +27,11 @@ const About: React.FC = () => {
                     <div className="ml-6">
                         <div className="text-lg font-semibold text-gray-900">{user.firstName} {user.lastName}</div>
                         <div className="text-sm text-gray-500">{user.role}</div>
+                    </div>
+                    <div className='ml-auto '>
+                        <button onClick={() => { navigate("/about/change-password") }} className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition">
+                            Change Password<KeyRound size={16} className="ml-1" />
+                        </button>
                     </div>
                 </div>
 
