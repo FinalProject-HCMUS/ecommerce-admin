@@ -15,7 +15,7 @@ const EditProfile: React.FC = () => {
     const [photoPreview, setPhotoPreview] = useState<string>();
     const [file, setFile] = useState<File | null>(null);
     const [saving, setSaving] = useState(false);
-    const { user, setUser } = useAuth();;
+    const { user, setUser } = useAuth();
     const { t } = useTranslation('profile');
     const navigate = useNavigate();
     useEffect(() => {

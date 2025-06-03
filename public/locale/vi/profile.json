@@ -13,5 +13,16 @@
     "edit": "Chỉnh sửa",
     "editProfile": "Chỉnh sửa hồ sơ",
     "cancel": "Hủy",
-    "save": "Lưu"
+    "save": "Lưu",
+    "changePassword": "Thay đổi mật khẩu",
+    "oldPassword": "Mật khẩu cũ",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "alertMatch": "Mật khẩu mới và xác nhận mật khẩu không khớp.",
+    "alertEnterPassword": "Vui lòng nhập đầy đủ các ký tự cần thiết để tạo mật khẩu an toàn.",
+    "minimumLength": "Tối thiểu 12 ký tự",
+    "oneUppercase": "Ít nhất một chữ cái viết hoa",
+    "oneLowercase": "Ít nhất một chữ cái viết thường",
+    "oneSpecialChar": "Ít nhất một ký tự đặc biệt",
+    "oneNumber": "Ít nhất một số"
 }

@@ -34,3 +34,22 @@ export const updateProfile = async (id: string, user: UserRequest): Promise<Cust
         return error.response.data;
     }
 }
+export const changePassword = async (id: string, currentPassword: string, newPassword: string, confirmPassword: string): Promise<CustomResponse<string>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post(`${API_URL}/users/${id}/change-password`, {
+            currentPassword,
+            newPassword,
+            confirmPassword
+        },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}

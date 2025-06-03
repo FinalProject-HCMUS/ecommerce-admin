@@ -13,5 +13,16 @@
     "edit": "Edit",
     "editProfile": "Edit Profile",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "changePassword": "Change Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "alertMatch": "New password and confirm password do not match.",
+    "alertEnterPassword": "Please add all necessary characters to create safe password.",
+    "minimumLength": "Minimum characters 12",
+    "oneUppercase": "At least one uppercase letter",
+    "oneLowercase": "At least one lowercase letter",
+    "oneSpecialChar": "At least one special character",
+    "oneNumber": "At least one number"
 }

@@ -18,6 +18,7 @@ import EditProduct from './components/page/product/edit-page/EditProduct';
 import About from './pages/About';
 import EditProfile from './components/page/about/edit-page/EditProfile';
 import Sizes from './pages/product/Size';
+import ChangePassword from './components/page/about/edit-page/ChangePassword';
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             <Route path="/products/edit/:id/*" element={<PrivateRoute element={EditProduct} />} />
             <Route path="/about" element={<PrivateRoute element={About} />} />
             <Route path="/about/edit" element={<PrivateRoute element={EditProfile} />} />
+            <Route path="/about/change-password" element={<PrivateRoute element={ChangePassword} />} />
           </Route>
         </Routes>
       </AuthProvider>
