@@ -12,6 +12,7 @@ interface AuthContextType {
     logout: (navigate: ReturnType<typeof useNavigate>) => void;
     user: User | undefined;
     setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+    loading: boolean; // Add this
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,6 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<User | undefined>(undefined);
+    const [loading, setLoading] = useState(true); // Add this
 
     const fetchUserProfile = async () => {
         const userResponse = await getProfile();
@@ -57,13 +59,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
-            fetchUserProfile();
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            setIsAuthenticated(true);
+            fetchUserProfile().finally(() => setLoading(false));
+        } else {
+            setLoading(false);
         }
-    }, [isAuthenticated]);
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, user, setUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, user, setUser, loading }}>
             {children}
         </AuthContext.Provider>
     );
