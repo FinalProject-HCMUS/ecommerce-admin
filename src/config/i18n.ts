@@ -14,7 +14,7 @@ i18n
             escapeValue: false,
         },
         backend: {
-            loadPath: '/locale/{{lng}}/{{ns}}.json',
+            loadPath: '/ecommerce-admin/locale/{{lng}}/{{ns}}.json',
         },
         ns: ['sidebar', 'product', 'pagination',
             'common', 'color', 'size', 'delete',
@@ -22,6 +22,7 @@ i18n
             'statistics'
         ],
         defaultNS: 'sidebar',
+        load: 'languageOnly'
     });
 
 export default i18n;
