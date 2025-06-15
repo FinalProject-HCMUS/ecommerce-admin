@@ -20,7 +20,6 @@ const EditProduct: React.FC = () => {
     const [indexThumbnail, setIndexThumbnail] = useState<number>(-1);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
     const [addedProductColorSizes, setAddedProductColorSizes] = useState<ProductColorSize[]>([]);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -177,7 +176,10 @@ const EditProduct: React.FC = () => {
         });
     };
 
-    if (!formData) return <div className="p-8 text-center">Loading...</div>;
+    if (!formData.id)
+        return <div className="flex justify-center items-center h-[400px]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+        </div>;
 
     return (
         <Routes>

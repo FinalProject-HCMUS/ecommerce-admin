@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MotionPageWrapper from '../../../common/MotionPage';
 import ReactQuill from 'react-quill';
 import { Category } from '../../../../types/category/Category';
-import { getCategories } from '../../../../apis/categoryApi';
-import { toast } from 'react-toastify';
+import { getAllCategories } from '../../../../apis/categoryApi';
 import { ProductRequest } from '../../../../types/product/ProductRequest';
 import { useTranslation } from 'react-i18next';
-
+import { Select } from 'antd';
+const { Option } = Select;
 
 interface AddProductInformationProps {
     formData: ProductRequest;
@@ -16,65 +16,31 @@ interface AddProductInformationProps {
 
 const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData, setFormData }) => {
     const navigate = useNavigate();
-    const [page, setPage] = useState(1);
     const [isFetching, setIsFetching] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
-    const pageRef = useRef(page);
-    const fetchingRef = useRef(isFetching);
-    const dropdownRef = useRef<HTMLUListElement | null>(null);
     const { t } = useTranslation('product')
-
-    const handleCategorySelect = (category: Category) => {
+    const handleCategorySelect = (categoryId: string | number) => {
+        const category = categories.find(cat => cat.id === categoryId);
+        if (!category) return;
         setFormData((prev) => ({
             ...prev,
             category: category.name,
             categoryId: category.id,
         }));
-        setShowDropdown(false);
     };
 
-    const fetchCategories = async (pageNumber: number) => {
+    const fetchCategories = async () => {
         setIsFetching(true);
-        const response = await getCategories(pageNumber - 1, 5);
+        const response = await getAllCategories();
         setIsFetching(false);
-
-        if (!response.isSuccess) {
-            toast.error(response.message, { autoClose: 1000 });
-            return;
-        }
-        if (response.data) {
-            if (pageNumber === 1) {
-                setCategories(response.data?.content);
-            } else {
-                setCategories((prev) => [...prev, ...response.data?.content || []]);
-            }
-            setPage(pageNumber);
-        }
-    };
-
-    const handleScroll = () => {
-        if (
-            dropdownRef.current &&
-            dropdownRef.current.scrollTop + dropdownRef.current.clientHeight >= dropdownRef.current.scrollHeight - 10 &&
-            !fetchingRef.current
-        ) {
-            fetchCategories(pageRef.current + 1);
+        if (response.isSuccess && response.data) {
+            setCategories(response.data || []);
         }
     };
 
     useEffect(() => {
-        const element = dropdownRef.current;
-        if (!element) return;
-        element.addEventListener('scroll', handleScroll);
-        return () => element.removeEventListener('scroll', handleScroll);
-    }, [page, isFetching]);
-
-    useEffect(() => {
-        if (showDropdown && categories.length === 0) {
-            fetchCategories(1);
-        }
-    }, [showDropdown]);
+        fetchCategories();
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -108,33 +74,19 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                         </div>
 
                         {/* Category */}
-                        <div className="relative">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">{t("category")}</label>
-                            <button
-                                type="button"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-left bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                onClick={() => setShowDropdown((prev) => !prev)}
-                            >
-                                {formData.categoryName || t("category")}
-                            </button>
-                            {showDropdown && (
-                                <ul
-                                    ref={dropdownRef}
-                                    className="absolute z-10 w-full max-h-40 overflow-y-auto mt-2 bg-white border border-gray-300 rounded-lg shadow-lg"
-                                >
-                                    {categories.map((category) => (
-                                        <li
-                                            key={category.id}
-                                            className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                                            onClick={() => handleCategorySelect(category)}
-                                        >
-                                            {category.name}
-                                        </li>
-                                    ))}
-                                    {isFetching && <li className="px-4 py-2 text-sm text-gray-500">Loading...</li>}
-                                </ul>
-                            )}
-                        </div>
+                        <Select
+                            onChange={handleCategorySelect}
+                            disabled={isFetching}
+                            style={{ width: 180, height: 40 }}
+                            placeholder="Select category"
+                            className="custom-select"
+                        >
+                            {categories.map((cat) => (
+                                <Option key={cat.id} value={cat.id} label={cat.name}>
+                                    {cat.name}
+                                </Option>
+                            ))}
+                        </Select>
 
                         {/* Price and Cost */}
                         <div className="grid grid-cols-2 gap-4">

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .custom-select .ant-select-selection-placeholder {
+        @apply text-base text-gray-400;
+    }
+}

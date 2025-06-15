@@ -22,7 +22,7 @@ const initialFormData = {
     cost: 0,
     total: 0,
     enable: false,
-    inStock: true,
+    inStock: false,
     discountPercent: 0,
     mainImageUrl: ''
 };
