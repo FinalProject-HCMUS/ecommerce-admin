@@ -82,7 +82,7 @@ const EditProductInformation: React.FC<EditProductInformationProps> = ({ formDat
                             value={formData.categoryId || ''}
                             disabled={isFetching}
                             style={{ width: 180, height: 40 }}
-                            placeholder="Select category"
+                            placeholder={t("selectCategory")}
                             className="custom-select"
                         >
                             {categories.map((cat) => (

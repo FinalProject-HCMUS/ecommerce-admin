@@ -78,7 +78,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                             onChange={handleCategorySelect}
                             disabled={isFetching}
                             style={{ width: 180, height: 40 }}
-                            placeholder="Select category"
+                            placeholder={t("selectCategory")}
                             className="custom-select"
                         >
                             {categories.map((cat) => (
