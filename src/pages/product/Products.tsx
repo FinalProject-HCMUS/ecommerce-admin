@@ -225,7 +225,6 @@ const Products = () => {
             {/* Range price */}
             <Collapse
               bordered={false}
-              defaultActiveKey={['1']}
               className="bg-white rounded-lg shadow min-w-[280px]"
               expandIconPosition="end"
               style={{ width: 300 }}
