@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CustomResponse } from "../types/color/common/CustomResponse";
+import { CustomResponse } from "../types/common/CustomResponse";
 import { User } from "../types/user/User";
 import { UserRequest } from "../types/user/UserRequest";
 

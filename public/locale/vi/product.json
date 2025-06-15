@@ -7,8 +7,8 @@
     "category": "Thể loại",
     "color": "Màu sắc",
     "size": "Kích thước",
-    "price": "Giá gốc",
-    "cost": "Giá bán",
+    "price": "Giá bán",
+    "cost": "Giá gốc",
     "stock": "Tồn kho",
     "status": "Trạng thái",
     "enable": "Kích hoạt",
@@ -46,5 +46,7 @@
     "maxHeight": "Chiều cao tối đa",
     "minWeight": "Cân nặng tối thiểu",
     "maxWeight": "Cân nặng tối đa",
-    "editVariant": "Chỉnh sửa tùy chọn sản phẩm"
+    "editVariant": "Chỉnh sửa tùy chọn sản phẩm",
+    "allSizes": "Tất cả kích thước",
+    "allColors": "Tất cả màu sắc"
 }

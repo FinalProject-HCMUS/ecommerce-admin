@@ -1,4 +1,4 @@
-import { Pageable } from "./common/Pageable";
+import { Pageable } from "../common/Pageable";
 import { Color } from "./Color";
 
 export interface ColorResponse {

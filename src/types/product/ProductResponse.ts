@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pageable } from "../color/common/Pageable";
+import { Pageable } from "../common/Pageable";
 import { Product } from "./Product";
 
 export interface ProductResponse {

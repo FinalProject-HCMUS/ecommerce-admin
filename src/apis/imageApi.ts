@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CustomResponse } from "../types/color/common/CustomResponse";
+import { CustomResponse } from "../types/common/CustomResponse";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

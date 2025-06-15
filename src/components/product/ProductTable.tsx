@@ -65,7 +65,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
                 <div className="text-sm text-gray-900">{product.categoryName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">${product.price}</div>
+                <div className="text-sm text-gray-900">{product.price.toLocaleString()}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{product.total}</div>
