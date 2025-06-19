@@ -71,7 +71,7 @@ const Sidebar = () => {
           }
         >
           <Settings size={20} />
-          <span>Settings</span>
+          <span>{t('settings')}</span>
         </NavLink>
       </nav>
 

@@ -18,6 +18,6 @@
     "deleteSuccess": "Delete size successfully",
     "deleteSize": "Delete Size",
     "search": "Search size by name",
-    "heightRange": "Height Range",
-    "weightRange": "Weight Range"
+    "heightRange": "Height range",
+    "weightRange": "Weight range"
 }

@@ -57,7 +57,6 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts(currentPage, selectedCategory, search, selectedSize, selectedColor, priceRange[0], priceRange[1]);
-    console.log(selectedSize);
 
   }, [currentPage, selectedCategory, search, selectedSize, selectedColor, priceRange]);
 
