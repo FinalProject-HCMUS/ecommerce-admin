@@ -17,10 +17,6 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const { t } = useTranslation('product');
-  const handleDeleteClick = (id: string) => {
-    setSelectedProductId(id);
-    setIsDeleteConfirmOpen(true); // Open the confirmation dialog
-  };
   const handleConfirmDelete = async () => {
     const response = await deleteProduct(selectedProductId!);
     if (!response.isSuccess) {
@@ -90,12 +86,6 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
                   className="text-blue-600 hover:text-blue-900 mr-4"
                 >
                   <Pencil size={16} />
-                </button>
-                <button
-                  onClick={() => handleDeleteClick(product.id)}
-                  className="text-red-600 hover:text-red-900"
-                >
-                  <Trash2 size={16} />
                 </button>
               </td>
             </tr>

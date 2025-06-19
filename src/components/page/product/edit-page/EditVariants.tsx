@@ -15,6 +15,7 @@ interface EditVariantsProps {
     setAddedProductColorSizes: React.Dispatch<React.SetStateAction<ProductColorSize[]>>;
     setProductColorSizes: React.Dispatch<React.SetStateAction<ProductColorSize[]>>;
     handleSubmit: () => void;
+    loading: boolean;
 }
 
 const EditVariants: React.FC<EditVariantsProps> = ({
@@ -23,6 +24,7 @@ const EditVariants: React.FC<EditVariantsProps> = ({
     handleSubmit,
     addedProductColorSizes,
     setAddedProductColorSizes,
+    loading
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation('product');
@@ -235,7 +237,8 @@ const EditVariants: React.FC<EditVariantsProps> = ({
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        disabled={loading}
+                        className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 duration-200 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                         {t("submit")}
                     </button>

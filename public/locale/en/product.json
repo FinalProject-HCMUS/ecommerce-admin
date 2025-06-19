@@ -49,5 +49,10 @@
     "editVariant": "Edit Product Variant",
     "allSizes": "All Sizes",
     "allColors": "All Colors",
-    "selectCategory": "Select Category"
+    "selectCategory": "Select Category",
+    "addProductSuccess": "Product added successfully",
+    "filledCondition": "Please fill in all required fields",
+    "imageRequired": "Please upload at least one image",
+    "mainImageRequired": "Please select a main image",
+    "editProductSuccess": "Product updated successfully"
 }

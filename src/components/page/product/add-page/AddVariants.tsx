@@ -13,12 +13,14 @@ interface AddVariantsProps {
     productColorSizes: ProductColorSize[];
     setProductColorSizes: React.Dispatch<React.SetStateAction<ProductColorSize[]>>;
     handleSubmit: () => void;
+    loading: boolean;
 }
 
 const AddVariants: React.FC<AddVariantsProps> = ({
     productColorSizes,
     setProductColorSizes,
     handleSubmit,
+    loading
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation('product');
@@ -196,7 +198,8 @@ const AddVariants: React.FC<AddVariantsProps> = ({
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        disabled={loading}
+                        className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 duration-200 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                         {t("submit")}
                     </button>
