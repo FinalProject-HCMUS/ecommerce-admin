@@ -24,10 +24,12 @@ const Sizes = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [heightRange, setHeightRange] = useState<[number, number]>([MIN_HEIGHT, MAX_HEIGHT]);
     const [weightRange, setWeightRange] = useState<[number, number]>([MIN_WEIGHT, MAX_WEIGHT]);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { t } = useTranslation('size');
 
     const fetchsizes = async (page: number, keysearch = '', minH = MIN_HEIGHT, maxH = MAX_HEIGHT, minW = MIN_WEIGHT, maxW = MAX_WEIGHT) => {
+        setLoading(true);
         const response = await getSizes(page - 1, ITEMS_PER_PAGE, keysearch, minH, maxH, minW, maxW);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
@@ -37,6 +39,7 @@ const Sizes = () => {
             setsizes(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -54,19 +57,6 @@ const Sizes = () => {
             setCurrentPage(1);
         }
     };
-
-    const handleWeightRangeChange = (index: 0 | 1, value: number) => {
-        const newRange: [number, number] = [...weightRange];
-        newRange[index] = value;
-        // Ensure min <= max
-        if (newRange[0] > newRange[1]) {
-            if (index === 0) newRange[1] = newRange[0];
-            else newRange[0] = newRange[1];
-        }
-        setWeightRange(newRange);
-        setCurrentPage(1);
-    };
-
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
@@ -183,15 +173,17 @@ const Sizes = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-lg shadow">
-                    <SizeTable
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <><SizeTable
                         refresh={refresh}
                         sizes={sizes}
                     />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        /></>}
                 </div>
             </div>
         </MotionPageWrapper>
