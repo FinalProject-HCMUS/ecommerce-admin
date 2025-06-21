@@ -10,5 +10,8 @@
     "editColor": "Chỉnh sửa màu",
     "deleteSuccess": "Xóa màu thành công",
     "deleteColor": "Xóa màu",
-    "search": "Tìm kiếm màu theo tên"
+    "search": "Tìm kiếm màu theo tên",
+    "enterColorHolder": "Nhập tên màu",
+    "addColorSuccess": "Thêm màu thành công",
+    "filledCondition": "Vui lòng điền vào các trường bắt buộc"
 }

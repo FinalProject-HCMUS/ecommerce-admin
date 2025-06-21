@@ -10,5 +10,8 @@
     "editColor": "Edit Color",
     "deleteSuccess": "Delete color successfully",
     "deleteColor": "Delete Color",
-    "search": "Search color by name"
+    "search": "Search color by name",
+    "enterColorHolder": "Enter color name",
+    "addColorSuccess": "Add color successfully",
+    "filledCondition": "Please fill in the required fields"
 }
