@@ -13,5 +13,6 @@
     "search": "Tìm kiếm màu theo tên",
     "enterColorHolder": "Nhập tên màu",
     "addColorSuccess": "Thêm màu thành công",
-    "filledCondition": "Vui lòng điền vào các trường bắt buộc"
+    "filledCondition": "Vui lòng điền vào các trường bắt buộc",
+    "updatedColor": "Cập nhật màu thành công"
 }

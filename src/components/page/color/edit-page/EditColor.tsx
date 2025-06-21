@@ -48,7 +48,7 @@ const EditColor: React.FC = () => {
             return;
         }
         setLoading(false);
-        toast.success("Color updated successfully!", { autoClose: 1000 });
+        toast.success(t("updatedColor"), { autoClose: 1000 });
         navigate("/colors");
     };
 
