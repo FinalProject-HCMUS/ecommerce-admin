@@ -2,5 +2,6 @@
     "adminSignin": "Admin Sign In",
     "password": "Password",
     "email": "Email",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "loginSuccess": " Login successful"
 }

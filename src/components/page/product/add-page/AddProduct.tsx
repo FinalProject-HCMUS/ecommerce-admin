@@ -11,6 +11,7 @@ import { uploadImages } from '../../../../apis/imageApi';
 import { ProductRequest } from '../../../../types/product/ProductRequest';
 import { addProduct, createProductColorSizes, updateProductImages } from '../../../../apis/productApi';
 import { ProductColorSizeRequest } from '../../../../types/product/ProductColorSizeRequest';
+import { useTranslation } from 'react-i18next';
 
 const initialFormData = {
     name: '',
@@ -22,7 +23,7 @@ const initialFormData = {
     cost: 0,
     total: 0,
     enable: false,
-    inStock: true,
+    inStock: false,
     discountPercent: 0,
     mainImageUrl: ''
 };
@@ -33,27 +34,33 @@ const AddProduct: React.FC = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [indexThumbnail, setIndexThumbnail] = useState<number>(-1);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const { t } = useTranslation('product');
     const navigate = useNavigate();
     const handleSubmit = async () => {
+        setLoading(true);
         if (!formData.name || !formData.description || !formData.categoryId || formData.price <= 0 || formData.cost <= 0) {
-            toast.error('Please fill in all required fields', {
+            toast.error(t("filledCondition"), {
                 autoClose: 1000,
                 position: 'top-right',
             });
+            setLoading(false);
             return;
         }
         if (images.length == 0) {
-            toast.error('Please add at least one image', {
+            toast.error(t("imageRequired"), {
                 autoClose: 1000,
                 position: 'top-right',
             });
+            setLoading(false);
             return;
         }
         if (formData.mainImageUrl === '') {
-            toast.error('Please select a thumbnail image', {
+            toast.error(t("mainImageRequired"), {
                 autoClose: 1000,
                 position: 'top-right',
             });
+            setLoading(false);
             return;
         }
         //upload images to cloudinary
@@ -104,22 +111,25 @@ const AddProduct: React.FC = () => {
                     autoClose: 1000,
                     position: 'top-right',
                 });
+                setLoading(false);
                 return;
             }
         }
-        toast.success('Product added successfully', {
+        setLoading(false);
+        toast.success(t('addProductSuccess'), {
             autoClose: 1000,
             position: 'top-right',
             onClose: () => {
                 navigate('/products');
             }
         });
+
     };
     return (
         <Routes>
             <Route path="information" element={<AddProductInformation formData={formData} setFormData={setFormData} />} />
             <Route path="images" element={<AddProductImage indexThumbnail={indexThumbnail} setIndexThumbnail={setIndexThumbnail} images={images} setImages={setImages} formData={formData} setFormData={setFormData} files={files} setFiles={setFiles} />} />
-            <Route path="variants" element={<AddVariants productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} />} />
+            <Route path="variants" element={<AddVariants productColorSizes={productColorSizes} setProductColorSizes={setProductColorSizes} handleSubmit={handleSubmit} loading={loading} />} />
         </Routes>
     );
 };

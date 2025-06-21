@@ -24,7 +24,7 @@ const AddOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
         // Handle the next step logic here
         //check fill all informations
         if (!formData.firstName || !formData.phoneNumber || !formData.address || !formData.paymentMethod || !formData.status) {
-            toast.error("Please fill in all required fields.", { autoClose: 1000, position: "top-right" });
+            toast.error(t("fillCondition"), { autoClose: 1000, position: "top-right" });
             return;
         }
         navigate("/orders/add/product");

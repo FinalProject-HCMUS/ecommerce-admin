@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Package, List, LogOut, Palette, RulerIcon, Info, Users, Boxes, MessageCircleMore, NotebookPen, BarChart3Icon, ChevronUp, ChevronDown } from 'lucide-react';
+import { Package, List, LogOut, Palette, RulerIcon, Info, Settings, Users, Boxes, MessageCircleMore, NotebookPen, BarChart3Icon, ChevronUp, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
@@ -159,6 +159,15 @@ const Sidebar = () => {
         >
           <Info size={20} />
           <span>{t('about')}</span>
+        </NavLink><NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isActive ? 'bg-blue-500 text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+            }`
+          }
+        >
+          <Settings size={20} />
+          <span>{t('settings')}</span>
         </NavLink>
 
       </nav>

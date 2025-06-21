@@ -18,19 +18,23 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
     const navigate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('size');
     const handleDeleteClick = (id: string) => {
         setSelectedSizeId(id);
         setIsDeleteConfirmOpen(true);
     };
     const handleConfirmDelete = async () => {
+        setLoading(true);
         const response = await deleteSize(selectedSizeId!);
         if (!response.isSuccess) {
             toast.error(response.message, {
                 autoClose: 1000, position: "top-right"
             });
+            setLoading(false);
             return;
         }
+        setLoading(false);
         toast.success(t('deleteSuccess'), {
             autoClose: 1000,
         });
@@ -91,6 +95,7 @@ const SizeTable: React.FC<SizeTableProps> = ({ sizes, refresh }) => {
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => { setIsDeleteConfirmOpen(false); }}
                 onConfirm={handleConfirmDelete}
+                loading={loading}
             />}
         </div>
     );

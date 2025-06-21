@@ -11,6 +11,7 @@ const EditSize: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const { t } = useTranslation('size');
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState<Size>({
         name: "",
         minHeight: 0,
@@ -46,18 +47,22 @@ const EditSize: React.FC = () => {
     };
 
     const handleSubmit = async () => {
+        setLoading(true);
         const { name, minHeight, maxHeight, minWeight, maxWeight } = formData;
 
         if (!name || minHeight <= 0 || maxHeight <= 0 || minWeight <= 0 || maxWeight <= 0) {
-            toast.error("Please fill in all fields.", { autoClose: 1000 });
+            toast.error(t("requiredFields"), { autoClose: 1000 });
+            setLoading(false);
             return;
         }
         if (minHeight > maxHeight) {
-            toast.error("Minimum height cannot be greater than maximum height.", { autoClose: 1000 });
+            toast.error(t("invalidHeight"), { autoClose: 1000 });
+            setLoading(false);
             return;
         }
         if (minWeight > maxWeight) {
-            toast.error("Minimum weight cannot be greater than maximum weight.", { autoClose: 1000 });
+            toast.error(t("invalidWeight"), { autoClose: 1000 });
+            setLoading(false);
             return;
         }
         const updatedSize: SizeRequest = {
@@ -72,7 +77,8 @@ const EditSize: React.FC = () => {
             toast.error(response.message, { autoClose: 1000 });
             return;
         }
-        toast.success("Size updated successfully!", {
+        setLoading(false);
+        toast.success(t("updatedSize"), {
             autoClose: 1000
             , onClose: () => {
                 navigate("/sizes");
@@ -170,7 +176,8 @@ const EditSize: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            disabled={loading}
+                            className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {t('save')}
                         </button>

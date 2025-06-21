@@ -29,12 +29,15 @@ const EditCustomer: React.FC = () => {
     const [photoPreview, setPhotoPreview] = useState<string>();
     const [file, setFile] = useState<File | null>(null);
     const [saving, setSaving] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('user');
     const navigate = useNavigate();
     const fetchUserById = async (id: string) => {
+        setLoading(true);
         const response = await getUserById(id);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: 'top-right' });
+            setLoading(false);
             return;
         }
         if (response.data) {
@@ -44,6 +47,7 @@ const EditCustomer: React.FC = () => {
             setUpdateUser(response.data);
             setPhotoPreview(response.data.photo);
         }
+        setLoading(false);
     }
     useEffect(() => {
         if (id) {
@@ -99,7 +103,7 @@ const EditCustomer: React.FC = () => {
             setSaving(false);
             return;
         }
-        toast.success('Profile updated successfully', {
+        toast.success(t("editCustomerSuccess"), {
             autoClose: 1000, position: 'top-right', onClose: () => {
                 navigate(-1);
             }
@@ -114,137 +118,141 @@ const EditCustomer: React.FC = () => {
                 </div>
                 <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-center mb-5">{t('personalInfo')}</h2>
-                    <div className="flex justify-center items-center mb-8">
-                        <div className="relative">
-                            <img
-                                src={photoPreview}
-                                alt="Profile"
-                                className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
-                            />
-                            <label className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
-                                <Camera size={18} />
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={handlePhotoChange}
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <>
+                        <div className="flex justify-center items-center mb-8">
+                            <div className="relative">
+                                <img
+                                    src={photoPreview}
+                                    alt="Profile"
+                                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
                                 />
-                            </label>
+                                <label className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
+                                    <Camera size={18} />
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handlePhotoChange}
+                                    />
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('firstName')}</label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                value={updateUser.firstName}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('firstName')}</label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={updateUser.firstName}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('lastName')}</label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={updateUser.lastName}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('email')}</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={updateUser.email}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('phone')}</label>
+                                <input
+                                    type="number"
+                                    name="phoneNumber"
+                                    value={updateUser.phoneNumber}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('address')}</label>
+                                <input
+                                    type="text"
+                                    name="address"
+                                    value={updateUser.address}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('weight')}</label>
+                                <input
+                                    type="number"
+                                    name="weight"
+                                    value={updateUser.weight}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('height')}</label>
+                                <input
+                                    type="number"
+                                    name="height"
+                                    value={updateUser.height}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('status')}</label>
+                                <select
+                                    name="enabled"
+                                    value={updateUser.enabled ? 'Enabled' : 'Disabled'}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="Enabled">{t('enable')}</option>
+                                    <option value="Disabled">{t('disable')}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium mb-1">{t('role')}</label>
+                                <input
+                                    type="text"
+                                    name="role"
+                                    value={updateUser.role}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    disabled
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('lastName')}</label>
-                            <input
-                                type="text"
-                                name="lastName"
-                                value={updateUser.lastName}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('email')}</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={updateUser.email}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('phone')}</label>
-                            <input
-                                type="number"
-                                name="phoneNumber"
-                                value={updateUser.phoneNumber}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('address')}</label>
-                            <input
-                                type="text"
-                                name="address"
-                                value={updateUser.address}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('weight')}</label>
-                            <input
-                                type="number"
-                                name="weight"
-                                value={updateUser.weight}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('height')}</label>
-                            <input
-                                type="number"
-                                name="height"
-                                value={updateUser.height}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('status')}</label>
-                            <select
-                                name="enabled"
-                                value={updateUser.enabled ? 'Enabled' : 'Disabled'}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        <div className="mt-8 flex justify-end">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    navigate(-1);
+                                }}
+                                className="mr-4 bg-gray-300 text-gray-700 px-8 py-2 rounded-full font-semibold hover:bg-gray-400 transition"
                             >
-                                <option value="Enabled">{t('enable')}</option>
-                                <option value="Disabled">{t('disable')}</option>
-                            </select>
+                                {t('cancel')}
+                            </button>
+                            <button
+                                type="submit"
+                                className={`bg-blue-600 text-white px-8 py-2 rounded-full font-semibold hover:bg-blue-700 transition ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={saving}
+                            >
+                                {t('save')}
+                            </button>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">{t('role')}</label>
-                            <input
-                                type="text"
-                                name="role"
-                                value={updateUser.role}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled
-                            />
-                        </div>
-                    </div>
-                    <div className="mt-8 flex justify-end">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                navigate(-1);
-                            }}
-                            className="mr-4 bg-gray-300 text-gray-700 px-8 py-2 rounded-full font-semibold hover:bg-gray-400 transition"
-                        >
-                            {t('cancel')}
-                        </button>
-                        <button
-                            type="submit"
-                            className={`bg-blue-600 text-white px-8 py-2 rounded-full font-semibold hover:bg-blue-700 transition ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            disabled={saving}
-                        >
-                            {t('save')}
-                        </button>
-                    </div>
+                    </>}
                 </form>
             </div>
         </MotionPageWrapper>

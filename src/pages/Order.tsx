@@ -17,13 +17,12 @@ const Orders = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [status, setStatus] = useState<string>('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { t } = useTranslation("order")
-    const fetchOrders = async (page: number, status: string) => {
+    const fetchOrders = async (page: number) => {
         setLoading(true);
-        const response = await getOrders(page - 1, ITEMS_PER_PAGE, status);
+        const response = await getOrders(page - 1, ITEMS_PER_PAGE);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
             return;
@@ -33,6 +32,7 @@ const Orders = () => {
             setOrders(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -42,50 +42,25 @@ const Orders = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-bold text-gray-900">{t('order')}</h1>
-                </div>
-                <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4 justify-between">
-                    <select
-                        name="status"
-                        value={status}
-                        onChange={(e) => {
-                            setStatus(e.target.value);
-                            setCurrentPage(1);
-                        }}
-                        className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
+                    <h1 className="text-2xl font-semibold text-gray-900">{t('order')}</h1>
+                    <button
+                        onClick={() => navigate('/orders/add/information')}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
                     >
-                        <option value="">{t('all')}</option>
-                        <option value="NEW">{t('new')}</option>
-                        <option value="PROCESSING">{t('processing')}</option>
-                        <option value="PACKAGED">{t('packaged')}</option>
-                        <option value="PICKED">{t('picked')}</option>
-                        <option value="SHIPPING">{t('shipping')}</option>
-                        <option value="DELIVERED">{t('delivered')}</option>
-                        <option value="REFUNDED">{t('refunded')}</option>
-                        <option value="CANCELLED">{t('cancelled')}</option>
-                    </select>
-                    <div>
-                        <button
-                            onClick={() => navigate('/orders/add/information')}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
-                        >
-                            <Plus size={20} />
-                            {t('addNewOrder')}
-                        </button>
-                    </div>
+                        <Plus size={20} />
+                        {t('addNewOrder')}
+                    </button>
                 </div>
-                <div className="bg-white rounded-2xl shadow-lg">
+
+                <div className="bg-white rounded-lg shadow">
                     {loading ? <div className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
-                    </div> : <>
-                        <OrderTable orders={orders} />
+                    </div> : <><OrderTable orders={orders} />
                         <Pagination
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={setCurrentPage}
-                        />
-                    </>}
+                        /></>}
                 </div>
             </div>
         </MotionPageWrapper>

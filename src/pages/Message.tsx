@@ -41,13 +41,14 @@ const Message: React.FC = () => {
             return;
         }
         if (response.data) {
-            // If first page, replace; else, append
-            setConversations(prev =>
-                conversationsPage === 0
-                    ? response.data!.content
-                    : [...prev, ...response.data!.content]
-            );
-            // If last page, stop loading more
+            setConversations(prev => {
+                if (conversationsPage === 0) {
+                    return response.data!.content;
+                }
+                const existingIds = new Set(prev.map(c => c.id));
+                const newItems = response.data!.content.filter(c => !existingIds.has(c.id));
+                return [...prev, ...newItems];
+            });
             if (conversationsPage + 1 >= response.data.totalPages) {
                 setHasMore(false);
             }
@@ -99,6 +100,7 @@ const Message: React.FC = () => {
             setSearch(searchInput);
             setConversationsPage(0);
             setHasMore(true);
+            setConversations([]);
         }
     }
     useEffect(() => {
@@ -204,34 +206,39 @@ const Message: React.FC = () => {
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                             />
                         </div>
-                        {loadingConversations ? (<div className="flex justify-center items-center h-[400px]">
-                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
-                        </div>) : <div ref={conversationRef} className="overflow-y-auto h-[calc(90vh-200px)]">
-                            {conversations.length == 0 ? <>
-                                <div className="flex justify-center items-center h-[400px]">
-                                    <p className="text-gray-500">{t('noConversation')}</p>
-                                </div>
-                            </> : conversations.map((c) => (
-                                <div
-                                    key={c.id + 1}
-                                    onClick={() => handleSelectUser(c.customer, c.id)}
-                                    className={`flex items-center p-4 cursor-pointer hover:bg-gray-100 ${selectedUser?.id === c.customer.id ? 'bg-gray-200' : ''
-                                        }`}
-                                >
-                                    <img
-                                        src={c.customer.photo || './images/user.png'}
-                                        alt={c.customer.firstName}
-                                        className="w-10 h-10 rounded-full object-cover"
-                                    />
-                                    <div className="ml-4">
-                                        <h4 className="text-sm font-medium text-gray-800">{c.customer.firstName} {c.customer.lastName}</h4>
-                                        <p className="text-xs text-gray-500">
-                                            {c.latestMessage ? c.latestMessage.content : t('noMessage')}
-                                        </p>
+                        {conversations.length === 0 && !loadingConversations ? (
+                            <div className="flex justify-center items-center h-[400px]">
+                                <p className="text-gray-500">{t('noConversation')}</p>
+                            </div>
+                        ) : (
+                            <div ref={conversationRef} className="overflow-y-auto h-[calc(90vh-200px)]">
+                                {conversations.map((c) => (
+                                    <div
+                                        key={c.id}
+                                        onClick={() => handleSelectUser(c.customer, c.id)}
+                                        className={`flex items-center p-4 cursor-pointer hover:bg-gray-100 ${selectedUser?.id === c.customer.id ? 'bg-gray-200' : ''}`}
+                                    >
+                                        <img
+                                            src={c.customer.photo || './images/user.png'}
+                                            alt={c.customer.firstName}
+                                            className="w-10 h-10 rounded-full object-cover"
+                                        />
+                                        <div className="ml-4">
+                                            <h4 className="text-sm font-medium text-gray-800">{c.customer.firstName} {c.customer.lastName}</h4>
+                                            <p className="text-xs text-gray-500">
+                                                {c.latestMessage ? c.latestMessage.content : t('noMessage')}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>}
+                                ))}
+                                {/* Loading spinner at the bottom */}
+                                {loadingConversations && (
+                                    <div className="flex justify-center items-center py-4">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500 border-solid"></div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     {/* Chat Window */}

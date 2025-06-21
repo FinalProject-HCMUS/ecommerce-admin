@@ -33,6 +33,7 @@ import OrderStatistics from './pages/statistics/OrderStatistics';
 import ProductCategories from './pages/statistics/ProductCategories';
 import RevenueAnalysis from './pages/statistics/RevenueAnalysis';
 import TopProduct from './pages/statistics/TopProducts';
+import Setting from './pages/Setting';
 
 function App() {
   return (
@@ -50,7 +51,7 @@ function App() {
             <Route path="/orders" element={<PrivateRoute element={<Orders />} />} />
             <Route path="/orders/add/*" element={<PrivateRoute element={<AddOrder />} />} />
             <Route path="/orders/edit/:id/*" element={<PrivateRoute element={<EditOrder />} />} />
-            <Route path="/" element={<Navigate to="/products" />} />
+            <Route path="/" element={<Navigate to="/customers" />} />
             <Route path="/products/add/*" element={<PrivateRoute element={<AddProduct />} />} />
             <Route path="/colors/add" element={<PrivateRoute element={<AddColor />} />} />
             <Route path="/colors/edit/:id" element={<PrivateRoute element={<EditColor />} />} />
@@ -71,6 +72,7 @@ function App() {
             <Route path="/about" element={<PrivateRoute element={<About />} />} />
             <Route path="/about/edit" element={<PrivateRoute element={<EditProfile />} />} />
             <Route path="/about/change-password" element={<PrivateRoute element={<ChangePassword />} />} />
+            <Route path="/settings" element={<PrivateRoute element={<Setting />} />} />
           </Route>
         </Routes>
       </AuthProvider>

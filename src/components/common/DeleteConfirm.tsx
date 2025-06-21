@@ -8,9 +8,10 @@ interface DeleteConfirmationModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    loading: boolean;
 }
 
-const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpen, onClose, onConfirm, title }) => {
+const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpen, onClose, onConfirm, title, loading }) => {
     const { t } = useTranslation('delete');
     if (!isOpen) return null;
     return (
@@ -39,7 +40,8 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpe
                             <button
                                 type="button"
                                 onClick={onConfirm}
-                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                disabled={loading}
+                                className={`px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 {t('delete')}
                             </button>

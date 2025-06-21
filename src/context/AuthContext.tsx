@@ -5,6 +5,7 @@ import { Login } from '../types/auth/Login';
 import { signin } from '../apis/authApi';
 import { User } from '../types/user/User';
 import { getProfile } from '../apis/userApi';
+import { useTranslation } from 'react-i18next';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<User | undefined>(undefined);
     const [loading, setLoading] = useState(true); // Add this
-
+    const { t } = useTranslation('login');
     const fetchUserProfile = async () => {
         const userResponse = await getProfile();
         if (!userResponse.isSuccess) {
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('refreshToken', response.data!.refreshToken);
         setIsAuthenticated(true);
         await fetchUserProfile();
-        toast.success('Login successful', {
+        toast.success(t("loginSuccess"), {
             autoClose: 1000,
             position: 'top-right',
             onClose: () => {
