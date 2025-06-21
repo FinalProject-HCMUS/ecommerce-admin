@@ -19,5 +19,10 @@
     "deleteSize": "Xóa kích thước",
     "search": "Tìm kiếm kích thước theo tên",
     "heightRange": "Phạm vi chiều cao",
-    "weightRange": "Phạm vi cân nặng"
+    "weightRange": "Phạm vi cân nặng",
+    "requiredFields": "Vui lòng điền vào tất cả các trường bắt buộc",
+    "invalidHeight": "Chiều cao tối thiểu không thể lớn hơn chiều cao tối đa",
+    "invalidWeight": "Cân nặng tối thiểu không thể lớn hơn cân nặng tối đa",
+    "addedSize": "Thêm kích thước thành công",
+    "updatedSize": "Cập nhật kích thước thành công"
 }

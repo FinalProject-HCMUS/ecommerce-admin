@@ -46,5 +46,13 @@
     "maxHeight": "Chiều cao tối đa",
     "minWeight": "Cân nặng tối thiểu",
     "maxWeight": "Cân nặng tối đa",
-    "editVariant": "Chỉnh sửa tùy chọn sản phẩm"
+    "editVariant": "Chỉnh sửa tùy chọn sản phẩm",
+    "allSizes": "Tất cả kích thước",
+    "allColors": "Tất cả màu sắc",
+    "selectCategory": "Chọn danh mục",
+    "addProductSuccess": "Thêm sản phẩm thành công",
+    "filledCondition": "Vui lòng điền đầy đủ thông tin bắt buộc",
+    "imageRequired": "Vui lòng tải lên ít nhất một hình ảnh",
+    "mainImageRequired": "Vui lòng chọn hình ảnh chính",
+    "editProductSuccess": "Cập nhật sản phẩm thành công"
 }

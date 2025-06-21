@@ -18,6 +18,11 @@
     "deleteSuccess": "Delete size successfully",
     "deleteSize": "Delete Size",
     "search": "Search size by name",
-    "heightRange": "Height Range",
-    "weightRange": "Weight Range"
+    "heightRange": "Height range",
+    "weightRange": "Weight range",
+    "requiredFields": "Please fill in all required fields",
+    "invalidHeight": "Minimum height cannot be greater than maximum height",
+    "invalidWeight": "Minimum weight cannot be greater than maximum weight",
+    "addedSize": "Added size successfully",
+    "updatedSize": "Updated size successfully"
 }
