@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createUser } from "../../../../apis/userApi";
 import { UserRequestCreated } from "../../../../types/user/UserRequestCreated";
+import { Eye, EyeOff } from "lucide-react";
 
 const AddCustomer: React.FC = () => {
     const [formData, setFormData] = useState<UserRequestCreated>({
@@ -21,6 +22,7 @@ const AddCustomer: React.FC = () => {
     });
     const [saving, setSaving] = useState(false);
     const { t } = useTranslation('user');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -98,14 +100,24 @@ const AddCustomer: React.FC = () => {
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">{t('password')}</label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">{t('phone')}</label>
