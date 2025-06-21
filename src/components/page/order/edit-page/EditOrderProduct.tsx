@@ -102,7 +102,7 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId) {
                 if (detail.limitedQuantity == detail.quantity) {
-                    toast.error("Limited quantity reached", { autoClose: 1000, position: 'top-right' });
+                    toast.error(t("limitedQuantity"), { autoClose: 1000, position: 'top-right' });
                     return detail;
                 }
                 else {
@@ -124,7 +124,7 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId) {
                 if (detail.quantity == 1) {
-                    toast.error("Quantity must be at least 1", { autoClose: 1000, position: 'top-right' });
+                    toast.error(t("quantityAtLeast"), { autoClose: 1000, position: 'top-right' });
                     return detail;
                 }
                 else {
@@ -143,12 +143,12 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
 
     const handleQuantityChange = (itemId: string, newQuantity: number) => {
         if (newQuantity < 1) {
-            toast.error("Quantity must be at least 1", { autoClose: 1000, position: 'top-right' });
+            toast.error(t("quantityAtLeast"), { autoClose: 1000, position: 'top-right' });
             return;
         }
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId && newQuantity > detail.limitedQuantity) {
-                toast.error("Limited quantity reached", { autoClose: 1000, position: 'top-right' });
+                toast.error(t("limitedQuantity"), { autoClose: 1000, position: 'top-right' });
                 return detail;
             }
             if (detail.itemId == itemId && newQuantity <= detail.limitedQuantity) {
@@ -226,11 +226,11 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
                                             <p className="text-sm text-gray-500">{t('color')}: {detail.color.name}</p>
                                         </div>
                                         <div className="text-sm font-medium">{detail.unitPrice.toFixed(2)}</div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center bg-gray-300 rounded-full px-2 py-1">
                                             <button
                                                 type="button"
                                                 onClick={() => handleDecreaseQuantity(detail.itemId)}
-                                                className="px-2 py-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                                className="px-2 py-1 bg-gray-300 rounded-lg hover:bg-gray-400"
                                             >
                                                 -
                                             </button>
@@ -243,7 +243,7 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
                                             <button
                                                 type="button"
                                                 onClick={() => handleIncreaseQuantity(detail.itemId)}
-                                                className="px-2 py-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                                className="px-2 py-1 bg-gray-300 rounded-lg hover:bg-gray-400"
                                             >
                                                 +
                                             </button>

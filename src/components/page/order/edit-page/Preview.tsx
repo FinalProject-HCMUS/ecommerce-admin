@@ -9,9 +9,10 @@ interface Props {
     formData: Order;
     orderDetails: OrderDetailResponse[];
     handleSubmit: () => void;
+    loading: boolean;
 }
 
-const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
+const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit, loading }) => {
     const navigate = useNavigate();
     const { t } = useTranslation("order");
     return (
@@ -81,8 +82,9 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit }) => {
                                 </button>
                                 <button
                                     type="button"
+                                    disabled={loading}
                                     onClick={handleSubmit}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    className={`px-4 py-2 rounded-lg text-white ${loading ? 'bg-gray-400 opacity-50 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} transition-colors`}
                                 >
                                     {t('update')}
                                 </button>

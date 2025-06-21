@@ -7,7 +7,7 @@
     "action": "Hành động",
     "order": "Đơn hàng",
     "addNewOrder": "Thêm đơn hàng mới",
-    "orderInfromation": "Thông tin đơn hàng",
+    "orderInformation": "Thông tin đơn hàng",
     "guide": "Vui lòng điền thông tin khách hàng bên dưới",
     "headerCustomer": "Thông tin khách hàng",
     "firstName": "Tên",
@@ -44,5 +44,11 @@
     "product": "Sản phẩm",
     "category": "Danh mục",
     "price": "Giá gốc",
-    "cost": "Giá bán"
+    "cost": "Giá bán",
+    "fillCondition": "Vui lòng điền đầy đủ các trường bắt buộc",
+    "orderMustHaveProduct": "Đơn hàng phải có ít nhất một sản phẩm",
+    "addedOrder": "Đã thêm đơn hàng thành công",
+    "updatedOrder": "Đã cập nhật đơn hàng thành công",
+    "limitedQuantity": "Số lượng sản phẩm hiện có nhỏ hơn số lượng bạn chọn",
+    "quantityAtLeast": "Số lượng phải ít nhất là 1"
 }

@@ -7,7 +7,7 @@
     "action": "action",
     "order": "Orders",
     "addNewOrder": "Add new order",
-    "orderInfromation": "Order Information",
+    "orderInformation": "Order Information",
     "guide": "Please fill in the customer infromation below",
     "headerCustomer": "Customer Information",
     "firstName": "First Name",
@@ -44,5 +44,11 @@
     "product": "Product",
     "category": "Category",
     "price": "Price",
-    "cost": "Cost"
+    "cost": "Cost",
+    "fillCondition": "Please fill in all required fields",
+    "orderMustHaveProduct": "Order must have at least one product",
+    "addedOrder": "Added order successfully",
+    "updatedOrder": "Updated order successfully",
+    "limitedQuantity": "Limited quantity is smaller than available quantity",
+    "quantityAtLeast": "Quantity must be at least 1"
 }

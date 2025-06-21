@@ -9,19 +9,24 @@ import { createListOrderDetails, createOrder } from "../../../../apis/orderApi";
 import { toast } from "react-toastify";
 import { OrderDetailCreated } from "../../../../types/order/OrderDetailCreated";
 import { OrderDetailCreatedUI } from "../../../../types/order/OrderDetailCreatedUI";
+import { useTranslation } from "react-i18next";
 
 const AddOrder: React.FC = () => {
     const [formData, setFormData] = useState<OrderCreatedRequest>(defaultOrderCreatedRequest);
     const [orderDetails, setOrderDetails] = useState<OrderDetailCreatedUI[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const { user } = useAuth();
+    const { t } = useTranslation("order");
     const navigate = useNavigate();
     const handleSubmit = async () => {
+        setLoading(true);
         const idUser = user?.id;
         formData.customerId = idUser;
         formData.deliveryDate = new Date().toISOString();
         const orderResponse = await createOrder(formData);
         if (!orderResponse.isSuccess) {
             toast.error(orderResponse.message, { autoClose: 1000, position: "top-right" });
+            setLoading(false);
             return;
         }
         //add order details
@@ -38,7 +43,8 @@ const AddOrder: React.FC = () => {
             toast.error(orderDetailsResponse.message, { autoClose: 1000, position: "top-right" });
             return;
         }
-        toast.success("Create order successfully", { autoClose: 1000, position: "top-right" });
+        toast.success(t("addedOrder"), { autoClose: 1000, position: "top-right" });
+        setLoading(false);
         navigate("/orders");
 
     }
@@ -60,6 +66,7 @@ const AddOrder: React.FC = () => {
                         formData={formData}
                         orderDetails={orderDetails}
                         handleSubmit={handleSubmit}
+                        loading={loading}
                     />} />
             </Routes>
         </>

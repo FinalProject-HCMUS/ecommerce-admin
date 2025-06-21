@@ -50,6 +50,16 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     useEffect(() => {
         fetchProducts(currentPage, search);
     }, [currentPage, search]);
+    useEffect(() => {
+        const newProductColorSizes: ProductColorSize[] = orderDetails.map((detail) => ({
+            id: detail.itemId,
+            color: detail.color,
+            productId: detail.product.id,
+            size: detail.size,
+            quantity: detail.limitedQuantity,
+        }));
+        setProductColorSizes(newProductColorSizes);
+    }, [])
     const handleProductSelect = (product: Product) => {
         //show product color size dialog
         setIsProductColorSizeDialogOpen(true);
@@ -88,7 +98,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId) {
                 if (detail.limitedQuantity == detail.quantity) {
-                    toast.error("Limited quantity reached", { autoClose: 1000, position: 'top-right' });
+                    toast.error(t("limitedQuantity"), { autoClose: 1000, position: 'top-right' });
                     return detail;
                 }
                 else {
@@ -110,7 +120,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId) {
                 if (detail.quantity == 1) {
-                    toast.error("Quantity must be at least 1", { autoClose: 1000, position: 'top-right' });
+                    toast.error(t("quantityAtLeast"), { autoClose: 1000, position: 'top-right' });
                     return detail;
                 }
                 else {
@@ -129,12 +139,12 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
 
     const handleQuantityChange = (itemId: string, newQuantity: number) => {
         if (newQuantity < 1) {
-            toast.error("Quantity must be at least 1", { autoClose: 1000, position: 'top-right' });
+            toast.error(t("quantityAtLeast"), { autoClose: 1000, position: 'top-right' });
             return;
         }
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId && newQuantity > detail.limitedQuantity) {
-                toast.error("Limited quantity reached", { autoClose: 1000, position: 'top-right' });
+                toast.error(t("limitedQuantity"), { autoClose: 1000, position: 'top-right' });
                 return detail;
             }
             if (detail.itemId == itemId && newQuantity <= detail.limitedQuantity) {
@@ -155,6 +165,13 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
             setSearch(searchInput.trim());
             setCurrentPage(1);
         }
+    }
+    const handleNextStep = () => {
+        if (orderDetails.length === 0) {
+            toast.error(t("orderMustHaveProduct"), { autoClose: 1000, position: "top-right" });
+            return;
+        }
+        navigate("/orders/add/preview");
     }
     return (
         <MotionPageWrapper>
@@ -212,11 +229,11 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                             <p className="text-sm text-gray-500">{t('color')}: {detail.color.name}</p>
                                         </div>
                                         <div className="text-sm font-medium">{detail.unitPrice.toFixed(2)}</div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="flex items-center bg-gray-300 rounded-full px-2 py-1">
                                             <button
                                                 type="button"
                                                 onClick={() => handleDecreaseQuantity(detail.itemId)}
-                                                className="px-2 py-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                                className="px-2 py-1 bg-gray-300 rounded-lg hover:bg-gray-400"
                                             >
                                                 -
                                             </button>
@@ -229,7 +246,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                             <button
                                                 type="button"
                                                 onClick={() => handleIncreaseQuantity(detail.itemId)}
-                                                className="px-2 py-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                                className="px-2 py-1 rounded-lg hover:bg-gray-400"
                                             >
                                                 +
                                             </button>
@@ -286,9 +303,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                         </button>
                         <button
                             type="button"
-                            onClick={() => {
-                                navigate("/orders/add/preview");
-                            }}
+                            onClick={handleNextStep}
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         >
                             {t('next')}
