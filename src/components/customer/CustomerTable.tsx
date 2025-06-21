@@ -1,10 +1,6 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import DeleteConfirmationModal from "../common/DeleteConfirm";
-import { toast } from "react-toastify";
-import { useState } from "react";
-import { deleteUser } from "../../apis/userApi";
 import { User } from "../../types/user/User";
 
 
@@ -12,30 +8,8 @@ interface CustomerTableProps {
     customers: User[];
     refresh: () => void;
 }
-const CustomerTable: React.FC<CustomerTableProps> = ({ customers, refresh }) => {
+const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
     const { t } = useTranslation();
-    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
-    const handleDeleteClick = (id: string) => {
-        setSelectedCustomerId(id);
-        setIsDeleteConfirmOpen(true);
-    };
-    const handleConfirmDelete = async () => {
-        const response = await deleteUser(selectedCustomerId!);
-        if (!response.isSuccess) {
-            toast.error(response.message, {
-                autoClose: 1000,
-                position: "top-right",
-            });
-            return;
-        }
-        toast.success("Customer deleted successfully", {
-            autoClose: 1000,
-            position: "top-right",
-        });
-        refresh();
-        setIsDeleteConfirmOpen(false);
-    };
     const navigate = useNavigate();
     return (
         <div className="overflow-x-auto">
@@ -90,23 +64,11 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, refresh }) => 
                                 >
                                     <Pencil size={16} />
                                 </button>
-                                <button
-                                    onClick={() => handleDeleteClick(customer.id)}
-                                    className="text-red-600 hover:text-red-900"
-                                >
-                                    <Trash2 size={16} />
-                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <DeleteConfirmationModal
-                title='Delete Customer'
-                isOpen={isDeleteConfirmOpen}
-                onClose={() => { setIsDeleteConfirmOpen(false); }}
-                onConfirm={handleConfirmDelete}
-            />
         </div>
     );
 };

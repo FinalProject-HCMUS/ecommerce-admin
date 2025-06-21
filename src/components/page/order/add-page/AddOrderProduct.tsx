@@ -29,18 +29,22 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     const [selectedProduct, setSelectedProduct] = useState<Product>({} as Product);
     const [isProductColorSizeDialogOpen, setIsProductColorSizeDialogOpen] = useState(false);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation("order");
     const navigate = useNavigate();
     const fetchProducts = async (page: number, keysearch = '') => {
+        setLoading(true);
         const response = await getProducts(page - 1, ITEMS_PER_PAGE, "createdAt,asc", '', keysearch);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
+            setLoading(false);
             return;
         }
         if (response.data) {
             setProducts(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -184,8 +188,11 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                 </button>
                             </div>
                         </div>
-                        <ProductPickerDialog products={products} onProductSelect={handleProductSelect} />
-                        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+                        {loading ? <div className="flex justify-center items-center h-[400px]">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                        </div> : <><ProductPickerDialog products={products} onProductSelect={handleProductSelect} />
+                            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+                        </>}
                     </div>
                     {/* Order Details */}
                     <div className="flex flex-col space-y-4 col-span-1 justify-between">

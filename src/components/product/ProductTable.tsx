@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import React from 'react';
+import { Pencil } from 'lucide-react';
 import { Product } from '../../types/product/Product';
-import DeleteConfirmationModal from '../common/DeleteConfirm';
 import { useNavigate } from 'react-router-dom';
-import { deleteProduct } from '../../apis/productApi';
-import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 interface ProductTableProps {
@@ -12,23 +9,9 @@ interface ProductTableProps {
   refresh(): void;
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
   const naviate = useNavigate();
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const { t } = useTranslation('product');
-  const handleConfirmDelete = async () => {
-    const response = await deleteProduct(selectedProductId!);
-    if (!response.isSuccess) {
-      alert(response.message);
-      return;
-    }
-    toast.success("Product deleted successfully", {
-      autoClose: 1000,
-    });
-    refresh();
-    setIsDeleteConfirmOpen(false);
-  };
 
   return (
     <div className="overflow-x-auto">
@@ -91,12 +74,6 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
             </tr>
           ))}
         </tbody>
-        <DeleteConfirmationModal
-          title='Delete Product'
-          isOpen={isDeleteConfirmOpen}
-          onClose={() => { setIsDeleteConfirmOpen(false); }}
-          onConfirm={handleConfirmDelete}
-        />
       </table>
     </div>
   );

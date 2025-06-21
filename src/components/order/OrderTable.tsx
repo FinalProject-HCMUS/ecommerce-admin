@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { format } from 'date-fns';
 import { Order } from '../../types/order/Order';
 import { useNavigate } from 'react-router-dom';
@@ -51,12 +51,6 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
                                     className="text-blue-600 hover:text-blue-900 mr-4"
                                 >
                                     <Pencil size={16} />
-                                </button>
-                                <button
-
-                                    className="text-red-600 hover:text-red-900"
-                                >
-                                    <Trash2 size={16} />
                                 </button>
                             </td>
                         </tr>

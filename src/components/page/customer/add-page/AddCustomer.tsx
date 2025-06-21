@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import MotionPageWrapper from "../../../common/MotionPage";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Camera } from "lucide-react";
-import { uploadImage } from "../../../../apis/imageApi";
 import { toast } from "react-toastify";
 import { createUser } from "../../../../apis/userApi";
 import { UserRequestCreated } from "../../../../types/user/UserRequestCreated";
@@ -18,12 +16,10 @@ const AddCustomer: React.FC = () => {
         weight: 0,
         height: 0,
         password: '',
-        photo: './images/default.png',
-
+        photo: 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png',
         enabled: true,
     });
     const [saving, setSaving] = useState(false);
-    const [file, setFile] = useState<File | null>(null);
     const { t } = useTranslation('user');
     const navigate = useNavigate();
 
@@ -35,32 +31,9 @@ const AddCustomer: React.FC = () => {
             [name]: type === 'checkbox' ? checked : value,
         }));
     };
-
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setFile(file);
-            const photoURL = URL.createObjectURL(file);
-            setFormData((prev) => ({
-                ...prev,
-                photo: photoURL,
-            }));
-        }
-    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
-        //add image if image change
-        if (file) {
-            const imageResponse = await uploadImage(file);
-            if (!imageResponse.isSuccess) {
-                toast.error(imageResponse.message, { autoClose: 1000, position: 'top-right' });
-                setSaving(false);
-                return;
-            }
-            formData!.photo = imageResponse.data!;
-        }
-        //add user
         const response = await createUser(formData);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: 'top-right' });
@@ -76,9 +49,9 @@ const AddCustomer: React.FC = () => {
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-semibold text-gray-900">{t('addCustomer')}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('addCustomer')}</h1>
                 </div>
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-8 max-w-4xl mx-auto mt-8">
+                <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-center mb-5">{t('personalInfo')}</h2>
                     <div className="flex justify-center items-center mb-8">
                         <div className="relative">
@@ -87,15 +60,6 @@ const AddCustomer: React.FC = () => {
                                 alt="User"
                                 className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
                             />
-                            <label className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
-                                <Camera size={18} />
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={handlePhotoChange}
-                                />
-                            </label>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

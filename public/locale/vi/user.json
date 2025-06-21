@@ -1,7 +1,7 @@
 {
     "customers": "Khách hàng",
     "addCustomer": "Thêm khách hàng",
-    "avater": "Hình đại diện",
+    "avatar": "Hình đại diện",
     "fullName": "Họ và tên",
     "email": "Email",
     "role": "Vai trò",
@@ -20,5 +20,7 @@
     "add": "Thêm",
     "cancel": "Hủy",
     "save": "Lưu",
-    "editUser": "Chỉnh sửa người dùng"
+    "editUser": "Chỉnh sửa người dùng",
+    "search": "Tìm kiếm khách hàng theo tên",
+    "addCustomerSuccess": "Thêm khách hàng thành công"
 }
