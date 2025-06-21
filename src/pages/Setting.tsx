@@ -22,6 +22,9 @@ const Setting: React.FC = () => {
         const response = await getServiceNames();
         if (response) {
             setServiceNames(response);
+            console.log(response);
+
+            console.log("Service Names:", response[0]);
             setSelectedServiceName(response[0] || "");
         }
         setLoadingServiceName(false);
@@ -55,6 +58,8 @@ const Setting: React.FC = () => {
         fetchServiceNames();
     }, [])
     useEffect(() => {
+        console.log("Selected Service Name:", selectedServiceName);
+
         if (selectedServiceName) {
             fetchSystemSettings(selectedServiceName);
         }
