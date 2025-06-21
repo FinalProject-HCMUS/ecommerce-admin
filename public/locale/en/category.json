@@ -11,5 +11,8 @@
     "cancel": "Cancel",
     "save": "Save",
     "editCategory": "Edit Category",
-    "search": "Search category by name"
+    "search": "Search category by name",
+    "filledCondition": "Please fill in the required fields",
+    "addedCategory": "Added category successfully",
+    "updatedCategory": "Updated category successfully"
 }

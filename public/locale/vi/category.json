@@ -11,5 +11,8 @@
     "cancel": "Hủy",
     "save": "Lưu",
     "editCategory": "Chỉnh sửa danh mục",
-    "search": "Tìm kiếm danh mục theo tên"
+    "search": "Tìm kiếm danh mục theo tên",
+    "filledCondition": "Vui lòng điền vào các trường bắt buộc",
+    "addedCategory": "Thêm danh mục thành công",
+    "updatedCategory": "Cập nhật danh mục thành công"
 }
