@@ -11,6 +11,7 @@ const EditColor: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Get the color ID from the URL
     const [colorName, setColorName] = useState("");
     const [colorCode, setColorCode] = useState("#000000");
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('color');
     const fetchColorById = async (id: string) => {
         const response = await getColorById(id);
@@ -35,12 +36,19 @@ const EditColor: React.FC = () => {
             name: colorName,
             code: colorCode,
         };
+        if (!colorName || !colorCode) {
+            toast.error(t("filledCondition"), { autoClose: 1000 });
+            return;
+        }
+        setLoading(true);
         const response = await updateColor(id!, newColor);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
+            setLoading(false);
             return;
         }
-        toast.success("Color updated successfully!", { autoClose: 1000 });
+        setLoading(false);
+        toast.success(t("updatedColor"), { autoClose: 1000 });
         navigate("/colors");
     };
 
@@ -106,7 +114,8 @@ const EditColor: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            disabled={loading}
+                            className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {t('save')}
                         </button>

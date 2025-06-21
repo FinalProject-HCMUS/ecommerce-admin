@@ -18,11 +18,13 @@ const Categories = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchInput, setSearchInput] = useState('');
+    const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const { t } = useTranslation('category');
 
     const fetchCategories = async (page: number, keysearch = '') => {
+        setLoading(true);
         const response = await getCategories(page - 1, ITEMS_PER_PAGE, keysearch);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
@@ -32,6 +34,7 @@ const Categories = () => {
             setCategories(response.data.content);
             setTotalPages(response.data.totalPages || 0);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -85,17 +88,18 @@ const Categories = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-lg shadow">
-                    <CategoryTable
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <><CategoryTable
                         refresh={refresh}
                         categories={categories}
                     />
-                    <div className="p-4">
                         <Pagination
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={setCurrentPage}
                         />
-                    </div>
+                    </>}
                 </div>
             </div>
         </MotionPageWrapper >

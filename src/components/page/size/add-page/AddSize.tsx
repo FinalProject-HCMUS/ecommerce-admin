@@ -13,18 +13,23 @@ const AddSize: React.FC = () => {
     const [maxHeight, setMaxHeight] = useState<number | "">("");
     const [minWeight, setMinWeight] = useState<number | "">("");
     const [maxWeight, setMaxWeight] = useState<number | "">("");
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('size');
     const handleSubmit = async () => {
+        setLoading(true);
         if (!sizeName || minHeight === "" || maxHeight === "" || minWeight === "" || maxWeight === "") {
-            toast.error("Please fill in all fields.", { autoClose: 1000, position: "top-right" });
+            toast.error(t("requiredFields"), { autoClose: 1000, position: "top-right" });
+            setLoading(false);
             return;
         }
         if (minHeight > maxHeight) {
-            toast.error("Minimum height cannot be greater than maximum height.", { autoClose: 1000, position: "top-right" });
+            toast.error(t("invalidHeight"), { autoClose: 1000, position: "top-right" });
+            setLoading(false);
             return;
         }
         if (minWeight > maxWeight) {
-            toast.error("Minimum weight cannot be greater than maximum weight.", { autoClose: 1000, position: "top-right" });
+            toast.error(t("invalidWeight"), { autoClose: 1000, position: "top-right" });
+            setLoading(false);
             return;
         }
         const newSize: SizeRequest =
@@ -38,9 +43,11 @@ const AddSize: React.FC = () => {
         const response = await addSize(newSize);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: "top-right" });
+            setLoading(false);
             return;
         }
-        toast.success("Size added successfully", {
+        setLoading(false);
+        toast.success(t("addedSize"), {
             autoClose: 1000,
             position: "top-right",
             onClose: () => {
@@ -134,7 +141,8 @@ const AddSize: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            disabled={loading}
+                            className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {t('save')}
                         </button>

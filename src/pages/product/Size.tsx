@@ -8,6 +8,8 @@ import { getSizes } from "../../apis/sizeApi";
 import SizeTable from "../../components/size/SizeTable";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Collapse, Slider } from "antd";
+const { Panel } = Collapse;
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const MIN_HEIGHT = 10;
@@ -22,10 +24,12 @@ const Sizes = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [heightRange, setHeightRange] = useState<[number, number]>([MIN_HEIGHT, MAX_HEIGHT]);
     const [weightRange, setWeightRange] = useState<[number, number]>([MIN_WEIGHT, MAX_WEIGHT]);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { t } = useTranslation('size');
 
     const fetchsizes = async (page: number, keysearch = '', minH = MIN_HEIGHT, maxH = MAX_HEIGHT, minW = MIN_WEIGHT, maxW = MAX_WEIGHT) => {
+        setLoading(true);
         const response = await getSizes(page - 1, ITEMS_PER_PAGE, keysearch, minH, maxH, minW, maxW);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
@@ -35,6 +39,7 @@ const Sizes = () => {
             setsizes(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -52,38 +57,14 @@ const Sizes = () => {
             setCurrentPage(1);
         }
     };
-
-    const handleHeightRangeChange = (index: 0 | 1, value: number) => {
-        const newRange: [number, number] = [...heightRange];
-        newRange[index] = value;
-        // Ensure min <= max
-        if (newRange[0] > newRange[1]) {
-            if (index === 0) newRange[1] = newRange[0];
-            else newRange[0] = newRange[1];
-        }
-        setHeightRange(newRange);
-        setCurrentPage(1);
-    };
-    const handleWeightRangeChange = (index: 0 | 1, value: number) => {
-        const newRange: [number, number] = [...weightRange];
-        newRange[index] = value;
-        // Ensure min <= max
-        if (newRange[0] > newRange[1]) {
-            if (index === 0) newRange[1] = newRange[0];
-            else newRange[0] = newRange[1];
-        }
-        setWeightRange(newRange);
-        setCurrentPage(1);
-    };
-
     return (
         <MotionPageWrapper>
             <div className="flex-1 bg-gray-100 p-8">
                 <div className="mb-8 flex justify-between items-center">
                     <h1 className="text-2xl font-semibold text-gray-900">{t('size')}</h1>
                 </div>
-                <div className="mb-4 flex flex-col md:flex-row md:items-center gap-4 justify-between">
-                    <div className="flex items-center space-x-4 gap-10">
+                <div className="mb-4 flex flex-col md:flex-row md:items-center gap-2 justify-between">
+                    <div className="flex items-center space-x-4 gap-2">
                         <div className="relative">
                             <input
                                 type="text"
@@ -103,64 +84,86 @@ const Sizes = () => {
                         </div>
                         {/* Height Range Filter UI */}
                         <div className="bg-gray-100">
-                            <div className="flex justify-between items-center mb-2">
-                                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t('heightRange')}</span>
-                                <span className="text-gray-500">{heightRange[0]} - {heightRange[1]} cm</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="range"
-                                    min={MIN_HEIGHT}
-                                    max={MAX_HEIGHT}
-                                    value={heightRange[0]}
-                                    onChange={e => handleHeightRangeChange(0, Number(e.target.value))}
-                                    className="w-full accent-blue-500"
-                                />
-                                <input
-                                    type="range"
-                                    min={MIN_HEIGHT}
-                                    max={MAX_HEIGHT}
-                                    value={heightRange[1]}
-                                    onChange={e => handleHeightRangeChange(1, Number(e.target.value))}
-                                    className="w-full accent-blue-500"
-                                />
-                            </div>
-                            <div className="flex justify-between mt-2 text-gray-500 text-sm">
-                                <span>{MIN_HEIGHT} cm</span>
-                                <span>{MAX_HEIGHT} cm</span>
-                            </div>
+                            <Collapse
+                                bordered={false}
+                                className="bg-white rounded-lg shadow min-w-[280px]"
+                                expandIconPosition="end"
+                                style={{ width: 300 }}
+                            >
+                                <Panel
+                                    header={
+                                        <span className="text-gray-900  text-base">
+                                            {t('heightRange')}
+                                        </span>
+                                    }
+                                    key="1"
+                                >
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-gray-900 font-medium text-sm">
+                                            {heightRange[0]} cm
+                                        </span>
+                                        <span className="text-gray-900 font-medium text-sm">
+                                            {heightRange[1]} cm
+                                        </span>
+                                    </div>
+                                    <Slider
+                                        range
+                                        min={MIN_HEIGHT}
+                                        max={MAX_HEIGHT}
+                                        value={heightRange}
+                                        onChange={setHeightRange}
+                                        tooltip={
+                                            {
+                                                formatter: value => `${value} cm`
+                                            }}
+                                        step={10}
+                                        dotStyle={{ display: 'none' }}
+                                    />
+                                </Panel>
+                            </Collapse>
+
                         </div>
                         {/* Weight Range Filter UI */}
                         <div className="bg-gray-100">
-                            <div className="flex justify-between items-center mb-2">
-                                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t('weightRange')}</span>
-                                <span className="text-gray-500">{weightRange[0]} - {weightRange[1]} kg</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="range"
-                                    min={MIN_WEIGHT}
-                                    max={MAX_WEIGHT}
-                                    value={weightRange[0]}
-                                    onChange={e => handleWeightRangeChange(0, Number(e.target.value))}
-                                    className="w-full accent-blue-500"
-                                />
-                                <input
-                                    type="range"
-                                    min={MIN_WEIGHT}
-                                    max={MAX_WEIGHT}
-                                    value={weightRange[1]}
-                                    onChange={e => handleWeightRangeChange(1, Number(e.target.value))}
-                                    className="w-full accent-blue-500"
-                                />
-                            </div>
-                            <div className="flex justify-between mt-2 text-gray-500 text-sm">
-                                <span>{MIN_WEIGHT} kg</span>
-                                <span>{MAX_WEIGHT} kg</span>
-                            </div>
+                            <Collapse
+                                bordered={false}
+                                className="bg-white rounded-lg shadow min-w-[280px]"
+                                expandIconPosition="end"
+                                style={{ width: 300 }}
+                            >
+                                <Panel
+                                    header={
+                                        <span className="text-gray-900  text-base">
+                                            {t('weightRange')}
+                                        </span>
+                                    }
+                                    key="1"
+                                >
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-gray-900 font-medium text-sm">
+                                            {weightRange[0]} kg
+                                        </span>
+                                        <span className="text-gray-900 font-medium text-sm">
+                                            {weightRange[1]} kg
+                                        </span>
+                                    </div>
+                                    <Slider
+                                        range
+                                        min={MIN_WEIGHT}
+                                        max={MAX_WEIGHT}
+                                        value={weightRange}
+                                        onChange={setWeightRange}
+                                        tooltip={
+                                            {
+                                                formatter: value => `${value} kg`
+                                            }}
+                                        step={10}
+                                        dotStyle={{ display: 'none' }}
+                                    />
+                                </Panel>
+                            </Collapse>
                         </div>
                     </div>
-
                     <button
                         onClick={() => navigate('/sizes/add')}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-sizes"
@@ -170,15 +173,17 @@ const Sizes = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-lg shadow">
-                    <SizeTable
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <><SizeTable
                         refresh={refresh}
                         sizes={sizes}
                     />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
-                    />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                        /></>}
                 </div>
             </div>
         </MotionPageWrapper>

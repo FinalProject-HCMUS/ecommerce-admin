@@ -30,7 +30,7 @@ const About: React.FC = () => {
                     </div>
                     <div className='ml-auto '>
                         <button onClick={() => { navigate("/about/change-password") }} className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition">
-                            Change Password<KeyRound size={16} className="ml-1" />
+                            {t("changePassword")}<KeyRound size={16} className="ml-1" />
                         </button>
                     </div>
                 </div>

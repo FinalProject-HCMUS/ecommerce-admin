@@ -18,7 +18,7 @@ i18n
         },
         ns: ['sidebar', 'product', 'pagination',
             'common', 'color', 'size', 'delete',
-            'profile', 'login', 'category', 'user', 'order'
+            'profile', 'login', 'category', 'setting', 'user', 'order'
         ],
         defaultNS: 'sidebar',
     });
