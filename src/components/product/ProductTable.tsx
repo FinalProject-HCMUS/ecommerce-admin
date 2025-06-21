@@ -12,7 +12,7 @@ interface ProductTableProps {
 const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
   const naviate = useNavigate();
-  const { t } = useTranslation('product');
+  const { t, i18n } = useTranslation('product');
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
