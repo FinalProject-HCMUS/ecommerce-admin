@@ -19,6 +19,7 @@ import About from './pages/About';
 import EditProfile from './components/page/about/edit-page/EditProfile';
 import Sizes from './pages/product/Size';
 import ChangePassword from './components/page/about/edit-page/ChangePassword';
+import Setting from './pages/Setting';
 import Customers from './pages/Customers';
 import Orders from './pages/Order';
 import AddCustomer from './components/page/customer/add-page/AddCustomer';

@@ -17,13 +17,17 @@ interface ProductColorSizeProps {
 const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClose, onPick, productColorSizesSelected, productId }) => {
     const [variants, setVariants] = useState<ProductColorSize[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('order');
     const fetchProductColorSizes = async (id: string) => {
+        setLoading(true);
         const productColorSizesResponse = await getProductColorSizes(id);
         if (!productColorSizesResponse.isSuccess) {
             toast.error('Failed to fetch product color sizes', { autoClose: 1000, position: 'top-right' });
+            setLoading(false);
             return;
         }
+        setLoading(false);
         setVariants(productColorSizesResponse.data || []);
     };
 
@@ -59,7 +63,15 @@ const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClo
                                 <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">{t('quantity')}</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-100">
+                        {loading ? <tbody>
+                            <tr>
+                                <td colSpan={4}>
+                                    <div className="flex justify-center items-center h-[200px]">
+                                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody> : <tbody className="bg-white divide-y divide-gray-100">
                             {variants.length === 0 && (
                                 <tr>
                                     <td colSpan={4} className="text-center py-6 text-gray-400">
@@ -96,7 +108,7 @@ const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClo
                                     </tr>
                                 );
                             })}
-                        </tbody>
+                        </tbody>}
                     </table>
                 </div>
             </div>

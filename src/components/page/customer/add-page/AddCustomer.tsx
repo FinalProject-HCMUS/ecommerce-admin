@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import MotionPageWrapper from "../../../common/MotionPage";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Camera } from "lucide-react";
-import { uploadImage } from "../../../../apis/imageApi";
 import { toast } from "react-toastify";
 import { createUser } from "../../../../apis/userApi";
 import { UserRequestCreated } from "../../../../types/user/UserRequestCreated";
+import { Eye, EyeOff } from "lucide-react";
 
 const AddCustomer: React.FC = () => {
     const [formData, setFormData] = useState<UserRequestCreated>({
@@ -22,8 +21,8 @@ const AddCustomer: React.FC = () => {
         enabled: true,
     });
     const [saving, setSaving] = useState(false);
-    const [file, setFile] = useState<File | null>(null);
     const { t } = useTranslation('user');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -34,32 +33,9 @@ const AddCustomer: React.FC = () => {
             [name]: type === 'checkbox' ? checked : value,
         }));
     };
-
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setFile(file);
-            const photoURL = URL.createObjectURL(file);
-            setFormData((prev) => ({
-                ...prev,
-                photo: photoURL,
-            }));
-        }
-    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
-        //add image if image change
-        if (file) {
-            const imageResponse = await uploadImage(file);
-            if (!imageResponse.isSuccess) {
-                toast.error(imageResponse.message, { autoClose: 1000, position: 'top-right' });
-                setSaving(false);
-                return;
-            }
-            formData!.photo = imageResponse.data!;
-        }
-        //add user
         const response = await createUser(formData);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: 'top-right' });
@@ -86,15 +62,6 @@ const AddCustomer: React.FC = () => {
                                 alt="User"
                                 className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
                             />
-                            <label className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
-                                <Camera size={18} />
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={handlePhotoChange}
-                                />
-                            </label>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -133,14 +100,24 @@ const AddCustomer: React.FC = () => {
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">{t('password')}</label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">{t('phone')}</label>

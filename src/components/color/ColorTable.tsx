@@ -18,17 +18,24 @@ const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
     const naviate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedColorId, setSelectedColorId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('color');
     const handleDeleteClick = (id: string) => {
         setSelectedColorId(id);
         setIsDeleteConfirmOpen(true); // Open the confirmation dialog
     };
     const handleConfirmDelete = async () => {
+        setLoading(true);
         const response = await deleteColor(selectedColorId!);
         if (!response.isSuccess) {
-            alert(response.message);
+            toast.error(response.message || t('deleteFailed'), {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            setLoading(false);
             return;
         }
+        setLoading(false);
         toast.success(t('deleteSuccess'), {
             autoClose: 1000,
         });
@@ -78,6 +85,7 @@ const ColorTable: React.FC<ColorTableProps> = ({ refresh, colors }) => {
                 </tbody>
             </table>
             {isDeleteConfirmOpen && <DeleteConfirmationModal
+                loading={loading}
                 title={t('deleteColor')}
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => { setIsDeleteConfirmOpen(false); }}

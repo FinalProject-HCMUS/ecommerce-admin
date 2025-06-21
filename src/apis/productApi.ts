@@ -11,11 +11,13 @@ import { ProductColorSizeResponse } from '../types/product/ProductColorSizeRespo
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getProducts = async (page: number, perpage: number, sort: string = "createdAt,asc", category: string = "", keysearch: string = ""): Promise<CustomResponse<ProductResponse>> => {
+export const getProducts = async (page: number, perpage: number, sort: string = "createdAt,asc", category: string = "", keysearch: string = "", size: string = "", color: string = ""
+  , fromprice: number = 0, toprice: number = 30000000
+): Promise<CustomResponse<ProductResponse>> => {
   try {
     const response = await axios.get<CustomResponse<ProductResponse>>(`${API_URL}/products`, {
       params: {
-        page, perpage, sort, category, keysearch
+        page, perpage, sort, category, keysearch, size, color, fromprice, toprice
       },
     });
     return response.data

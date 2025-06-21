@@ -22,5 +22,6 @@
     "save": "Save",
     "editUser": "Edit User",
     "search": "Search customer by name",
-    "addCustomerSuccess": "Customer added successfully"
+    "addCustomerSuccess": "Customer added successfully",
+    "editCustomerSuccess": "Customer updated successfully"
 }

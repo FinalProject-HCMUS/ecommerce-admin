@@ -96,6 +96,66 @@ export const deleteUser = async (id: string): Promise<CustomResponse<User>> => {
         return error.response.data;
     }
 }
+export const getUsers = async (page: number, perpage: number, keyword: string): Promise<CustomResponse<UserResponse>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.get<CustomResponse<UserResponse>>(`${API_URL}/users/search`, {
+            params: {
+                page, perpage, keyword
+            },
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+
+export const getUserById = async (id: string): Promise<CustomResponse<User>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.get<CustomResponse<User>>(`${API_URL}/users/${id}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+export const createUser = async (user: UserRequestCreated): Promise<CustomResponse<User>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.post<CustomResponse<User>>(`${API_URL}/users`, user,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
+export const deleteUser = async (id: string): Promise<CustomResponse<User>> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await axios.delete<CustomResponse<User>>(`${API_URL}/users/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
 export const changePassword = async (id: string, currentPassword: string, newPassword: string, confirmPassword: string): Promise<CustomResponse<string>> => {
     try {
         const accessToken = localStorage.getItem("accessToken");

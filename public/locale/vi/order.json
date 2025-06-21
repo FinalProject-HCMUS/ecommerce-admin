@@ -45,5 +45,10 @@
     "category": "Danh mục",
     "price": "Giá gốc",
     "cost": "Giá bán",
-    "all": "Tất cả"
+    "fillCondition": "Vui lòng điền đầy đủ các trường bắt buộc",
+    "orderMustHaveProduct": "Đơn hàng phải có ít nhất một sản phẩm",
+    "addedOrder": "Đã thêm đơn hàng thành công",
+    "updatedOrder": "Đã cập nhật đơn hàng thành công",
+    "limitedQuantity": "Số lượng sản phẩm hiện có nhỏ hơn số lượng bạn chọn",
+    "quantityAtLeast": "Số lượng phải ít nhất là 1"
 }

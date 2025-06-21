@@ -2,5 +2,6 @@
     "adminSignin": "Đăng nhập quản trị viên",
     "password": "Mật khẩu",
     "email": "Email",
-    "signIn": "Đăng nhập"
+    "signIn": "Đăng nhập",
+    "loginSuccess": "Đăng nhập thành công"
 }

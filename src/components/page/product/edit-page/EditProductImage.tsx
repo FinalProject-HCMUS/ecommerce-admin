@@ -5,6 +5,7 @@ import MotionPageWrapper from '../../../common/MotionPage';
 import { ProductImage } from '../../../../types/product/ProductImage';
 import { Product } from '../../../../types/product/Product';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface EditProductImageProps {
     files: File[];
@@ -78,24 +79,33 @@ const EditProductImage: React.FC<EditProductImageProps> = ({ images, setImages, 
                         {/* Product Images */}
                         {images.length > 0 && (
                             <div className="flex justify-center space-x-4 mb-6">
-                                {images.map((image, index) => (
-                                    <div key={index} className="relative">
-                                        <img
-                                            src={image.url}
-                                            alt={`Product ${index}`}
-                                            className={`h-24 w-24 object-cover rounded-lg cursor-pointer ${formData.mainImageUrl === image.url ? 'border-2 border-blue-500' : 'border border-gray-300'
-                                                }`}
-                                            onClick={() => handleSetThumbnail(image.url, index)}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveImage(index)}
-                                            className="absolute top-0 right-0 bg-red-600 rounded-full p-1 shadow-md"
+                                <AnimatePresence>
+                                    {images.map((image, index) => (
+                                        <motion.div
+                                            key={image.url}
+                                            className="relative"
+                                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                                            transition={{ duration: 0.5, delay: index * 0.05 }}
                                         >
-                                            <X color="white" size={16} />
-                                        </button>
-                                    </div>
-                                ))}
+                                            <img
+                                                src={image.url}
+                                                alt={`Product ${index}`}
+                                                className={`h-24 w-24 object-cover rounded-lg cursor-pointer ${formData.mainImageUrl === image.url ? 'border-2 border-blue-500' : 'border border-gray-300'
+                                                    }`}
+                                                onClick={() => handleSetThumbnail(image.url, index)}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveImage(index)}
+                                                className="absolute top-0 right-0 bg-red-600 rounded-full p-1 shadow-md"
+                                            >
+                                                <X color="white" size={16} />
+                                            </button>
+                                        </motion.div>
+                                    ))}
+                                </AnimatePresence>
                             </div>
                         )}
 

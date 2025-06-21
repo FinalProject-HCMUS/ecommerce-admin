@@ -15,7 +15,7 @@ const AddCategory: React.FC = () => {
 
     const handleSubmit = async () => {
         if (!categoryName || !categoryDescription) {
-            toast.error("Please fill in all fields.", {
+            toast.error(t("filledCondition"), {
                 autoClose: 1000, position: "top-right"
             });
             return;
@@ -33,7 +33,7 @@ const AddCategory: React.FC = () => {
             setSaving(false);
             return;
         }
-        toast.success("Category added successfully", {
+        toast.success(t("addedCategory"), {
             autoClose: 1000,
             onClose: () => {
                 navigate("/categories");

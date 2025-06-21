@@ -17,6 +17,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) =>
     const navigate = useNavigate();
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation('category');
     const handleDeleteClick = (id: string) => {
         setSelectedCategoryId(id);
@@ -24,11 +25,17 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) =>
     };
 
     const handleConfirmDelete = async () => {
+        setLoading(true);
         const response = await deleteCategory(selectedCategoryId!);
         if (!response.isSuccess) {
-            alert(response.message);
+            toast.error(response.message, {
+                autoClose: 1000,
+                position: 'top-right',
+            });
+            setLoading(false);
             return;
         }
+        setLoading(false);
         toast.success("Category deleted successfully", {
             autoClose: 1000,
         });
@@ -76,6 +83,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, refresh }) =>
                 </tbody>
             </table>
             <DeleteConfirmationModal
+                loading={loading}
                 title={t('deleteCategory')}
                 isOpen={isDeleteConfirmOpen}
                 onClose={() => { setIsDeleteConfirmOpen(false); }}

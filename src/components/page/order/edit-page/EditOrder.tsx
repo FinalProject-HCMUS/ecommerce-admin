@@ -7,12 +7,15 @@ import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { defaultOrder, Order } from "../../../../types/order/Order";
 import { createOrderDetail, getOrderById, getOrderDetailByOrderId, updateOrder, updateOrderDetail } from "../../../../apis/orderApi";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const EditOrder: React.FC = () => {
     const [formData, setFormData] = useState<Order>(defaultOrder);
     const [orderDetails, setOrderDetails] = useState<OrderDetailResponse[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { t } = useTranslation("order");
     const fetchData = async () => {
         if (!id) return;
         const response = await getOrderById(id);
@@ -33,8 +36,7 @@ const EditOrder: React.FC = () => {
         fetchData();
     }, []);
     const handleSubmit = async () => {
-        console.log("formData", formData);
-        console.log("orderDetails", orderDetails);
+        setLoading(true);
         //update order information
         const orderResponse = await updateOrder(id!, formData);
         if (!orderResponse.isSuccess) {
@@ -42,6 +44,7 @@ const EditOrder: React.FC = () => {
                 autoClose: 1000,
                 position: "top-right"
             });
+            setLoading(false);
             return;
         }
         //update order details
@@ -53,6 +56,7 @@ const EditOrder: React.FC = () => {
                         autoClose: 1000,
                         position: "top-right"
                     });
+                    setLoading(false);
                     return;
                 }
             }
@@ -63,16 +67,22 @@ const EditOrder: React.FC = () => {
                         autoClose: 1000,
                         position: "top-right"
                     });
+                    setLoading(false);
                     return;
                 }
             }
         });
-        toast.success("Update order successfully", {
+        toast.success(t("updatedOrder"), {
             autoClose: 1000,
             position: "top-right"
         });
+        setLoading(false);
         navigate("/orders");
     }
+    if (!formData.id)
+        return <div className="flex justify-center items-center h-[400px]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+        </div>;
     return (
         <>
             <Routes>
@@ -91,6 +101,8 @@ const EditOrder: React.FC = () => {
                         formData={formData}
                         orderDetails={orderDetails}
                         handleSubmit={handleSubmit}
+                        loading={loading}
+
                     />} />
             </Routes>
         </>

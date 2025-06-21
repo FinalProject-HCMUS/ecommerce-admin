@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import React from 'react';
+import { Pencil } from 'lucide-react';
 import { Product } from '../../types/product/Product';
-import DeleteConfirmationModal from '../common/DeleteConfirm';
 import { useNavigate } from 'react-router-dom';
-import { deleteProduct } from '../../apis/productApi';
-import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 interface ProductTableProps {
@@ -13,28 +10,9 @@ interface ProductTableProps {
 }
 
 const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
-const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
   const naviate = useNavigate();
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-  const { t, i18n } = useTranslation('product');
-  const handleDeleteClick = (id: string) => {
-    setSelectedProductId(id);
-    setIsDeleteConfirmOpen(true); // Open the confirmation dialog
-  };
-  const handleConfirmDelete = async () => {
-    const response = await deleteProduct(selectedProductId!);
-    if (!response.isSuccess) {
-      alert(response.message);
-      return;
-    }
-    toast.success("Product deleted successfully", {
-      autoClose: 1000,
-    });
-    refresh();
-    setIsDeleteConfirmOpen(false);
-  };
-
+  const { t } = useTranslation('product');
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -96,22 +74,10 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, refresh }) => {
                 >
                   <Pencil size={16} />
                 </button>
-                <button
-                  onClick={() => handleDeleteClick(product.id)}
-                  className="text-red-600 hover:text-red-900"
-                >
-                  <Trash2 size={16} />
-                </button>
               </td>
             </tr>
           ))}
         </tbody>
-        <DeleteConfirmationModal
-          title='Delete Product'
-          isOpen={isDeleteConfirmOpen}
-          onClose={() => { setIsDeleteConfirmOpen(false); }}
-          onConfirm={handleConfirmDelete}
-        />
       </table>
     </div>
   );

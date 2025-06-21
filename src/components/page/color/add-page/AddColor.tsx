@@ -12,22 +12,30 @@ const AddColor: React.FC = () => {
     const { t } = useTranslation('color');
     const [colorName, setColorName] = useState("");
     const [colorCode, setColorCode] = useState("#000000");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
         if (!colorName || !colorCode) {
-            alert("Please fill in all fields.");
+            toast.error(t("filledCondition"), {
+                autoClose: 1000, position: "top-right"
+            });
             return;
         }
         const colorRequest: ColorRequest = {
             name: colorName,
             code: colorCode
         };
+        setLoading(true);
         const response = await addColor(colorRequest);
         if (!response.isSuccess) {
-            alert(response.message);
+            toast.error(response.message || "Failed to add color", {
+                autoClose: 1000, position: "top-right"
+            });
+            setLoading(false);
             return;
         }
-        toast.success("Color added successfully", {
+        setLoading(false);
+        toast.success(t("addColorSuccess"), {
             autoClose: 1000,
             onClose: () => {
                 navigate("/colors");
@@ -51,7 +59,7 @@ const AddColor: React.FC = () => {
                                 value={colorName}
                                 onChange={(e) => setColorName(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter color name"
+                                placeholder={t('enterColorHolder')}
                             />
                         </div>
 
@@ -97,7 +105,8 @@ const AddColor: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            disabled={loading}
+                            className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {t('save')}
                         </button>
