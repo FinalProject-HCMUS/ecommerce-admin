@@ -20,6 +20,7 @@ const Blogs: React.FC = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
     const [blogToDelete, setBlogToDelete] = React.useState<Blog | null>(null);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { t } = useTranslation('blog');
     const fetchBlogs = async (page: number, keysearch = '') => {
@@ -58,10 +59,13 @@ const Blogs: React.FC = () => {
     const confirmDelete = async () => {
         if (blogToDelete) {
             try {
+                setLoading(true);
                 await deleteBlog(blogToDelete.id);
+                setLoading(false);
                 toast.success('Blog deleted successfully!', { autoClose: 1000 });
                 fetchBlogs(currentPage);
             } catch (error) {
+                setLoading(false);
                 console.error('Failed to delete blog:', error);
                 toast.error('Failed to delete blog. Please try again.');
             }
@@ -130,6 +134,7 @@ const Blogs: React.FC = () => {
                         isOpen={!!blogToDelete}
                         onClose={() => setBlogToDelete(null)}
                         onConfirm={confirmDelete}
+                        loading={loading}
                     />
                     {/* Pagination */}
                     <motion.div
