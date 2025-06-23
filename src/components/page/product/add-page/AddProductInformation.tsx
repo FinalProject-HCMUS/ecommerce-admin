@@ -18,7 +18,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
     const navigate = useNavigate();
     const [isFetching, setIsFetching] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
-    const { t } = useTranslation('product')
+    const { t, i18n } = useTranslation('product')
     const handleCategorySelect = (categoryId: string | number) => {
         const category = categories.find(cat => cat.id === categoryId);
         if (!category) return;
@@ -148,6 +148,7 @@ const AddProductInformation: React.FC<AddProductInformationProps> = ({ formData,
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">{t("description")}</label>
                             <ReactQuill
+                                key={i18n.language}
                                 value={formData.description}
                                 onChange={(value) => setFormData((prev) => ({ ...prev, description: value }))}
                                 placeholder={t("placeholder")}
