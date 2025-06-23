@@ -13,5 +13,10 @@
     "supportImage": "JPEG, PNG are allowed",
     "image": "Image",
     "preview": "Preview",
-    "editBlog": "Edit Blog"
+    "editBlog": "Edit Blog",
+    "addedSuccessfully": "Blog added successfully",
+    "updatedSuccessfully": "Blog updated successfully",
+    "needImage": "You need to upload an image",
+    "filledInformation": "Please fill in all the information",
+    "deleteBlog": "Delete Blog"
 }

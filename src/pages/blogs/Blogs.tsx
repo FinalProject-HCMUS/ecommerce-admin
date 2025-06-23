@@ -130,7 +130,7 @@ const Blogs: React.FC = () => {
                         ))}
                     </motion.div>
                     <DeleteConfirmationModal
-                        title='Delete Blog'
+                        title={t('deleteBlog')}
                         isOpen={!!blogToDelete}
                         onClose={() => setBlogToDelete(null)}
                         onConfirm={confirmDelete}

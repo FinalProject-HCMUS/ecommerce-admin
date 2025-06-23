@@ -16,23 +16,26 @@ const AddBlog: React.FC = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { t } = useTranslation('blog');
+    const { t, i18n } = useTranslation('blog');
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) {
-            toast.error('Please fill in all fields!', { position: "top-right", autoClose: 1000 });
+            toast.error(t('filledInformation'), { position: "top-right", autoClose: 1000 });
             return;
         }
         setIsModalOpen(true);
     };
     const handleSubmit = async (image: File | null) => {
+        setLoading(true);
         if (image) {
             //add image to cloudinary
             const imageResposne = await uploadImage(image);
             if (!imageResposne.isSuccess) {
                 toast.error(imageResposne.message, { position: "top-right", autoClose: 1000 });
+                setLoading(false);
                 return;
             }
             const newBlog: BlogRequest = {
@@ -44,13 +47,17 @@ const AddBlog: React.FC = () => {
             const response = await addNewBlog(newBlog); // Replace with actual API call
             if (!response.isSuccess) {
                 toast.error(response.message, { position: "top-right", autoClose: 1000 });
+                setLoading(false);
                 return;
             }
-            toast.success('Blog created successfully!', { position: "top-right", autoClose: 1000 });
+            setLoading(false);
+            toast.success(t('addedSuccessfully'), { position: "top-right", autoClose: 1000 });
             setIsModalOpen(false);
             navigate('/blogs');
         } else {
-            toast.error('Please upload an image!', { position: "top-right", autoClose: 1000 });
+            toast.error(t('needImage'), { position: "top-right", autoClose: 1000 });
+            setLoading(false);
+            return;
         }
     }
     const modules = {
@@ -104,6 +111,7 @@ const AddBlog: React.FC = () => {
                     {/* React Quill Editor */}
                     <div className="mb-16">
                         <ReactQuill
+                            key={i18n.language}
                             value={content}
                             onChange={setContent}
                             modules={modules}
@@ -122,8 +130,9 @@ const AddBlog: React.FC = () => {
                             {t('back')}
                         </button>
                         <button
+                            disabled={loading}
                             onClick={handleNextStep}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                            className={`px-6 py-2 ${loading ? 'bg-gray-400 opacity-50' : 'bg-blue-600'} text-white rounded-lg hover:bg-blue-700 transition-colors`}
                         >
                             {t('next')}
                         </button>
@@ -137,6 +146,7 @@ const AddBlog: React.FC = () => {
                     onClose={() => setIsModalOpen(false)}
                     onSubmit={handleSubmit}
                     imageUrl={null}
+                    loading={loading}
                 />
             )}
         </MotionPageWrapper>

@@ -7,9 +7,10 @@ interface UploadImageModalProps {
     onClose: () => void;
     onSubmit: (image: File | null) => void;
     imageUrl?: string | null;
+    loading: boolean
 }
 
-const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, imageUrl }) => {
+const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, imageUrl, loading }) => {
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const { t } = useTranslation('blog');
@@ -112,8 +113,9 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({ onClose, onSubmit, 
                             {t('back')}
                         </button>
                         <button
+                            disabled={loading}
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                            className={`px-6 py-2 ${loading ? 'bg-gray-400 opacity-50 cursor-not-allowed' : 'bg-blue-600'} text-white rounded-lg hover:bg-blue-700 transition-colors`}
                         >
                             {t('submit')}
                         </button>

@@ -18,13 +18,17 @@ const EditBlog: React.FC = () => {
     const [content, setContent] = useState('');
     const [image, setImage] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [editLoading, setEditLoading] = useState(false);
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { t } = useTranslation('blog');
+    const { t, i18n } = useTranslation('blog');
     const getBlog = async () => {
+        setLoading(true);
         const response = await getBlogById(id || '');
         if (!response.isSuccess) {
             toast.error(response.message, { position: 'top-right', autoClose: 1000 });
+            setLoading(false);
             return;
         }
         if (response.data) {
@@ -33,21 +37,24 @@ const EditBlog: React.FC = () => {
             setImage(response.data.image);
             setBlog(response.data);
         }
+        setLoading(false);
     }
     useEffect(() => {
         getBlog();
     }, []);
 
+
     const handleNextStep = (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim() || !content.trim()) {
-            toast.error('Please fill in all fields!', { position: 'top-right', autoClose: 1000 });
+            toast.error(t('filledInformation'), { position: 'top-right', autoClose: 1000 });
             return;
         }
         setIsModalOpen(true);
     };
 
     const handleSubmit = async (newImage: File | null) => {
+        setEditLoading(true);
         let updatedBlog: Blog = {
             ...blog!,
             userId: user!.id,
@@ -58,6 +65,7 @@ const EditBlog: React.FC = () => {
             const imageResposne = await uploadImage(newImage);
             if (!imageResposne.isSuccess) {
                 toast.error(imageResposne.message, { position: "top-right", autoClose: 1000 });
+                setEditLoading(false);
                 return;
             }
             updatedBlog = {
@@ -65,14 +73,14 @@ const EditBlog: React.FC = () => {
                 image: imageResposne.data!,
             };
         }
-        console.log('updatedBlog', updatedBlog);
-
         const response = await updateBlog(id!, updatedBlog);
         if (!response.isSuccess) {
             toast.error(response.message, { position: 'top-right', autoClose: 1000 });
+            setEditLoading(false);
             return;
         }
-        toast.success('Blog updated successfully!', { position: 'top-right', autoClose: 1000 });
+        setEditLoading(false);
+        toast.success(t('updatedSuccessfully'), { position: 'top-right', autoClose: 1000 });
         setIsModalOpen(false);
         navigate('/blogs');
     };
@@ -114,42 +122,48 @@ const EditBlog: React.FC = () => {
             <div className="flex-1 bg-gray-100 p-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('editBlog')}</h1>
                 <div className="bg-white rounded-2xl shadow-lg p-6">
-                    {/* Title Input */}
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            placeholder={t('blogTitle')}
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                        />
-                    </div>
-                    {/* React Quill Editor */}
-                    <div className="mb-16">
-                        <ReactQuill
-                            value={content}
-                            onChange={setContent}
-                            modules={modules}
-                            formats={formats}
-                            placeholder={t('blogContectPlaceholder')}
-                            className="h-96"
-                        />
-                    </div>
-                    {/* Action Buttons */}
-                    <div className="flex justify-end space-x-4">
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                        >
-                            {t('back')}
-                        </button>
-                        <button
-                            onClick={handleNextStep}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                        >
-                            {t('next')}
-                        </button>
-                    </div>
+                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                    </div> : <>
+                        {/* Title Input */}
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                placeholder={t('blogTitle')}
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            />
+                        </div>
+                        {/* React Quill Editor */}
+                        <div className="mb-16">
+                            <ReactQuill
+                                key={i18n.language} // Reset editor on language change
+                                value={content}
+                                onChange={setContent}
+                                modules={modules}
+                                formats={formats}
+                                placeholder={t('blogContentPlaceholder')}
+                                className="h-96"
+                            />
+                        </div>
+                        {/* Action Buttons */}
+                        <div className="flex justify-end space-x-4">
+                            <button
+                                onClick={() => navigate(-1)}
+                                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                            >
+                                {t('back')}
+                            </button>
+                            <button
+                                onClick={handleNextStep}
+                                disabled={editLoading}
+                                className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${editLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            >
+                                {t('next')}
+                            </button>
+                        </div>
+                    </>}
                 </div>
             </div>
 
@@ -159,6 +173,7 @@ const EditBlog: React.FC = () => {
                     onClose={() => setIsModalOpen(false)}
                     onSubmit={handleSubmit}
                     imageUrl={image}
+                    loading={editLoading}
                 />
             )}
         </MotionPageWrapper>
