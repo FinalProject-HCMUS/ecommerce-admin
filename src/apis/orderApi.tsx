@@ -10,13 +10,16 @@ import { OrderDetailResponse } from "../types/order/OrderDetailResponse";
 import { OrderDetailUpdate } from "../types/order/OrderDetailUpdate";
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const getOrders = async (page: number, perpage: number): Promise<CustomResponse<OrderResponse>> => {
+export const getOrders = async (page: number, perpage: number, status: string, paymentMethod: string, keyword: string): Promise<CustomResponse<OrderResponse>> => {
     try {
         const accessToken = localStorage.getItem("accessToken");
         const response = await axios.get<CustomResponse<OrderResponse>>(`${API_URL}/orders`, {
             params: {
                 page,
                 perpage,
+                status,
+                paymentMethod,
+                keyword
             },
             headers: {
                 Authorization: `Bearer ${accessToken}`,
