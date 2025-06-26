@@ -91,10 +91,6 @@ const Products = () => {
   }, []);
 
   const navigate = useNavigate();
-  const refresh = () => {
-    fetchProducts(1, selectedCategory, search);
-    setCurrentPage(1);
-  };
   const handleAddProduct = () => {
     navigate('/products/add/information');
   };
@@ -276,7 +272,6 @@ const Products = () => {
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
           </div> : <>
             <ProductTable
-              refresh={refresh}
               products={products}
             />
             <Pagination
