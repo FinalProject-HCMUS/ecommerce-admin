@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import ColorPickerDialog from '../../../src/components/color/ColorPickerDialog';
 import React from 'react';
 import { vi } from 'vitest';
