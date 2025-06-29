@@ -51,7 +51,6 @@ const ChangePassword: React.FC = () => {
     const isConfirmValid = confirmPassword === newPassword && confirmPassword.length > 0;
 
     const handleSubmit = async (e: React.FormEvent) => {
-        alert("Submitting form");
         e.preventDefault();
         if (!isNewValid || !isConfirmValid) {
             toast.error("Please ensure your new password meets all requirements.", { autoClose: 1000, position: "top-right" });

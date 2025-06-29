@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import DeleteConfirmationModal from '../../../src/components/common/DeleteConfirm';
 import React from 'react';
 import { vi } from 'vitest';
