@@ -17,7 +17,7 @@ import { getColors } from '../../apis/colorApi';
 import { Collapse, Select, Slider } from 'antd';
 const { Panel } = Collapse;
 const { Option } = Select;
-
+import React from 'react';
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const MIN_PRICE = 0;
 const MAX_PRICE = 3000000;
@@ -268,7 +268,7 @@ const Products = () => {
           </div>
         </div>
         <div className="bg-white rounded-lg shadow">
-          {loading ? <div className="flex justify-center items-center h-[400px]">
+          {loading ? <div role='status' className="flex justify-center items-center h-[400px]">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
           </div> : <>
             <ProductTable

@@ -29,9 +29,10 @@ const Login = () => {
                 <MotionPageWrapper>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('email')}</label>
+                            <label htmlFor='email' className="block text-sm font-medium text-gray-700 mb-2">{t('email')}</label>
                             <input
                                 type="text"
+                                id='email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -39,8 +40,9 @@ const Login = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">{t('password')}</label>
+                            <label htmlFor='password' className="block text-sm font-medium text-gray-700 mb-2">{t('password')}</label>
                             <input
+                                id='password'
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
