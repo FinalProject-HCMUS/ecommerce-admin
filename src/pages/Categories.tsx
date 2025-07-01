@@ -9,7 +9,7 @@ import MotionPageWrapper from '../components/common/MotionPage';
 import { Category } from '../types/category/Category';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
+import React from 'react';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -88,7 +88,7 @@ const Categories = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-lg shadow">
-                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                    {loading ? <div role='status' className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <><CategoryTable
                         refresh={refresh}

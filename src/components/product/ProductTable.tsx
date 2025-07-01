@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 interface ProductTableProps {
   products: Product[];
-  refresh(): void;
 }
 
 const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
