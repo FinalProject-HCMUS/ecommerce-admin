@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Select } from 'antd';
 import { OrderStatus } from '../types/order/OrderStatus';
 import { PaymentMethod } from '../types/order/PaymentMethod';
-
+import React from 'react';
 const { Option } = Select;
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 
@@ -123,7 +123,7 @@ const Orders = () => {
                 </div>
 
                 <div className="bg-white rounded-lg shadow">
-                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                    {loading ? <div role='status' className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <>
                         <OrderTable orders={orders} />

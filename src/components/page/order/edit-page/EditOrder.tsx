@@ -80,7 +80,7 @@ const EditOrder: React.FC = () => {
         navigate("/orders");
     }
     if (!formData.id)
-        return <div className="flex justify-center items-center h-[400px]">
+        return <div role="status" className="flex justify-center items-center h-[400px]">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
         </div>;
     return (

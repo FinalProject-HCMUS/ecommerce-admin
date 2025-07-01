@@ -29,6 +29,8 @@ const customers = [
         phoneNumber: '1234567890',
         role: 'User',
         enabled: true,
+        weight: 70,
+        height: 175,
     },
     {
         id: '2',
@@ -40,6 +42,8 @@ const customers = [
         phoneNumber: '0987654321',
         role: 'Admin',
         enabled: false,
+        weight: 60,
+        height: 165,
     },
 ];
 

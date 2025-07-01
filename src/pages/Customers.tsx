@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../apis/userApi";
 import { User } from "../types/user/User";
-
+import React from "react";
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const Customers = () => {
     const [customers, setCustomers] = useState<User[]>([]);
@@ -79,7 +79,7 @@ const Customers = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-2xl shadow-lg">
-                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                    {loading ? <div role="status" className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <><CustomerTable
                         customers={customers}
