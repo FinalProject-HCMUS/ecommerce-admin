@@ -8,7 +8,7 @@ import { getColors } from "../../apis/colorApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import React from "react";
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const Colors = () => {
     const [colors, setColors] = useState<Color[]>([]);
@@ -81,7 +81,7 @@ const Colors = () => {
                     </button>
                 </div>
                 <div className="bg-white rounded-lg shadow">
-                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                    {loading ? <div role="status" className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <><ColorTable
                         refresh={refresh}

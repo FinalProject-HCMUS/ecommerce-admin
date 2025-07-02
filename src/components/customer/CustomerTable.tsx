@@ -2,7 +2,7 @@ import { Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../types/user/User";
-
+import React from "react";
 
 interface CustomerTableProps {
     customers: User[];

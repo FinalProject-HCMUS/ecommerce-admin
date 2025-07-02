@@ -8,7 +8,6 @@ import { SystemSettingUpdate } from "../types/settings/SystemSettingUpdate";
 import { toast } from "react-toastify";
 const { Option } = Select;
 
-
 const Setting: React.FC = () => {
     const { t } = useTranslation("setting");
     const [selectedServiceName, setSelectedServiceName] = useState("");
@@ -22,9 +21,6 @@ const Setting: React.FC = () => {
         const response = await getServiceNames();
         if (response) {
             setServiceNames(response);
-            console.log(response);
-
-            console.log("Service Names:", response[0]);
             setSelectedServiceName(response[0] || "");
         }
         setLoadingServiceName(false);
@@ -58,8 +54,6 @@ const Setting: React.FC = () => {
         fetchServiceNames();
     }, [])
     useEffect(() => {
-        console.log("Selected Service Name:", selectedServiceName);
-
         if (selectedServiceName) {
             fetchSystemSettings(selectedServiceName);
         }
@@ -101,7 +95,7 @@ const Setting: React.FC = () => {
                     </Select>
                     {
                         loadSystemSettings ? (
-                            <div className="flex justify-center items-center h-[400px]">
+                            <div role="status" className="flex justify-center items-center h-[400px]">
                                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                             </div>
                         ) :

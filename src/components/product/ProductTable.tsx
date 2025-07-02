@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 interface ProductTableProps {
   products: Product[];
-  refresh(): void;
 }
 
 const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;

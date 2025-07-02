@@ -66,9 +66,10 @@ const AddCustomer: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('firstName')}</label>
+                            <label htmlFor="firstName" className="block text-sm font-medium mb-1">{t('firstName')}</label>
                             <input
                                 type="text"
+                                id="firstName"
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
@@ -77,9 +78,10 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('lastName')}</label>
+                            <label htmlFor="lastName" className="block text-sm font-medium mb-1">{t('lastName')}</label>
                             <input
                                 type="text"
+                                id="lastName"
                                 name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
@@ -88,8 +90,9 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('email')}</label>
+                            <label htmlFor="email" className="block text-sm font-medium mb-1">{t('email')}</label>
                             <input
+                                id="email"
                                 type="email"
                                 name="email"
                                 value={formData.email}
@@ -99,9 +102,10 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('password')}</label>
+                            <label htmlFor="password" className="block text-sm font-medium mb-1">{t('password')}</label>
                             <div className="relative">
                                 <input
+                                    id="password"
                                     type={showPassword ? 'text' : 'password'}
                                     name="password"
                                     value={formData.password}
@@ -120,9 +124,10 @@ const AddCustomer: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('phone')}</label>
+                            <label htmlFor="phone" className="block text-sm font-medium mb-1">{t('phone')}</label>
                             <input
                                 type="tel"
+                                id="phone"
                                 name="phoneNumber"
                                 value={formData.phoneNumber}
                                 onChange={handleChange}
@@ -131,8 +136,9 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('address')}</label>
+                            <label htmlFor="address" className="block text-sm font-medium mb-1">{t('address')}</label>
                             <input
+                                id="address"
                                 type="text"
                                 name="address"
                                 value={formData.address}
@@ -142,8 +148,9 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('weight')}</label>
+                            <label htmlFor="weight" className="block text-sm font-medium mb-1">{t('weight')}</label>
                             <input
+                                id="weight"
                                 type="number"
                                 name="weight"
                                 value={formData.weight}
@@ -153,8 +160,9 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('height')}</label>
+                            <label htmlFor="height" className="block text-sm font-medium mb-1">{t('height')}</label>
                             <input
+                                id="height"
                                 type="number"
                                 name="height"
                                 value={formData.height}
@@ -164,8 +172,9 @@ const AddCustomer: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('status')}</label>
+                            <label htmlFor="status" className="block text-sm font-medium mb-1">{t('status')}</label>
                             <select
+                                id="status"
                                 name="enabled"
                                 value={formData.enabled ? 'Enabled' : 'Disabled'}
                                 onChange={(e) =>

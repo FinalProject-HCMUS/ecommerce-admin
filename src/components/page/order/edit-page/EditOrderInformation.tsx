@@ -40,8 +40,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                         <div>
                             <h3 className="text-lg font-semibold mb-4">{t('headerCustomer')}</h3>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">{t('firstName')}</label>
+                                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">{t('firstName')}</label>
                                 <input
+                                    id="firstName"
                                     type="text"
                                     name="firstName"
                                     value={formData.firstName}
@@ -51,8 +52,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">{t('lastName')}</label>
+                                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">{t('lastName')}</label>
                                 <input
+                                    id="lastName"
                                     type="text"
                                     name="lastName"
                                     value={formData.lastName}
@@ -62,8 +64,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">{t('phone')}</label>
+                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">{t('phone')}</label>
                                 <input
+                                    id="phone"
                                     type="text"
                                     name="phoneNumber"
                                     value={formData.phoneNumber}
@@ -73,8 +76,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">{t('address')}</label>
+                                <label htmlFor="address" className="block text-sm font-medium text-gray-700">{t('address')}</label>
                                 <textarea
+                                    id="address"
                                     name="address"
                                     value={formData.address}
                                     onChange={handleChange}
@@ -84,8 +88,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">{t('paymentMethod')}</label>
+                                <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700">{t('paymentMethod')}</label>
                                 <select
+                                    id="paymentMethod"
                                     name="paymentMethod"
                                     value={formData.paymentMethod}
                                     onChange={handleChange}
@@ -98,8 +103,9 @@ const EditOrderInformation: React.FC<Props> = ({ formData, setFormData }) => {
                                 </select>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">{t('status')}</label>
+                                <label htmlFor="status" className="block text-sm font-medium text-gray-700">{t('status')}</label>
                                 <select
+                                    id="status"
                                     name="status"
                                     value={formData.status}
                                     onChange={handleChange}

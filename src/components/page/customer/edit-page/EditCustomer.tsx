@@ -118,7 +118,7 @@ const EditCustomer: React.FC = () => {
                 </div>
                 <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto mt-8">
                     <h2 className="text-2xl font-bold text-center mb-5">{t('personalInfo')}</h2>
-                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                    {loading ? <div role='status' className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <>
                         <div className="flex justify-center items-center mb-8">
@@ -128,11 +128,13 @@ const EditCustomer: React.FC = () => {
                                     alt="Profile"
                                     className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
                                 />
-                                <label className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
+                                <label htmlFor='profile' className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
                                     <Camera size={18} />
                                     <input
+                                        id="profile"
                                         type="file"
                                         accept="image/*"
+                                        data-testid="profile-input"
                                         className="hidden"
                                         onChange={handlePhotoChange}
                                     />
@@ -141,8 +143,9 @@ const EditCustomer: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('firstName')}</label>
+                                <label htmlFor='firstName' className="block text-sm font-medium mb-1">{t('firstName')}</label>
                                 <input
+                                    id='firstName'
                                     type="text"
                                     name="firstName"
                                     value={updateUser.firstName}
@@ -151,8 +154,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('lastName')}</label>
+                                <label htmlFor='lastName' className="block text-sm font-medium mb-1">{t('lastName')}</label>
                                 <input
+                                    id='lastName'
                                     type="text"
                                     name="lastName"
                                     value={updateUser.lastName}
@@ -161,8 +165,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('email')}</label>
+                                <label htmlFor='email' className="block text-sm font-medium mb-1">{t('email')}</label>
                                 <input
+                                    id='email'
                                     type="email"
                                     name="email"
                                     value={updateUser.email}
@@ -171,8 +176,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('phone')}</label>
+                                <label htmlFor='phone' className="block text-sm font-medium mb-1">{t('phone')}</label>
                                 <input
+                                    id='phone'
                                     type="number"
                                     name="phoneNumber"
                                     value={updateUser.phoneNumber}
@@ -181,8 +187,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('address')}</label>
+                                <label htmlFor='address' className="block text-sm font-medium mb-1">{t('address')}</label>
                                 <input
+                                    id='address'
                                     type="text"
                                     name="address"
                                     value={updateUser.address}
@@ -191,8 +198,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('weight')}</label>
+                                <label htmlFor='weight' className="block text-sm font-medium mb-1">{t('weight')}</label>
                                 <input
+                                    id='weight'
                                     type="number"
                                     name="weight"
                                     value={updateUser.weight}
@@ -201,8 +209,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('height')}</label>
+                                <label htmlFor='heigth' className="block text-sm font-medium mb-1">{t('height')}</label>
                                 <input
+                                    id='height'
                                     type="number"
                                     name="height"
                                     value={updateUser.height}
@@ -211,8 +220,9 @@ const EditCustomer: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">{t('status')}</label>
+                                <label htmlFor='status' className="block text-sm font-medium mb-1">{t('status')}</label>
                                 <select
+                                    id='status'
                                     name="enabled"
                                     value={updateUser.enabled ? 'Enabled' : 'Disabled'}
                                     onChange={handleChange}
