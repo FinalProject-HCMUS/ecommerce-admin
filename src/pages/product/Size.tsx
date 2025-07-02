@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Collapse, Slider } from "antd";
 const { Panel } = Collapse;
+import { Collapse, Slider } from "antd";
+const { Panel } = Collapse;
 
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const MIN_HEIGHT = 10;

@@ -127,8 +127,7 @@ const Orders = () => {
                 <div className="bg-white rounded-lg shadow">
                     {loading ? <div role='status' className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
-                    </div> : <>
-                        <OrderTable orders={orders} />
+                    </div> : <><OrderTable orders={orders} />
                         <Pagination
                             currentPage={currentPage}
                             totalPages={totalPages}

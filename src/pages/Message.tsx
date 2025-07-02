@@ -49,6 +49,14 @@ const Message: React.FC = () => {
                 const newItems = response.data!.content.filter(c => !existingIds.has(c.id));
                 return [...prev, ...newItems];
             });
+            setConversations(prev => {
+                if (conversationsPage === 0) {
+                    return response.data!.content;
+                }
+                const existingIds = new Set(prev.map(c => c.id));
+                const newItems = response.data!.content.filter(c => !existingIds.has(c.id));
+                return [...prev, ...newItems];
+            });
             if (conversationsPage + 1 >= response.data.totalPages) {
                 setHasMore(false);
             }

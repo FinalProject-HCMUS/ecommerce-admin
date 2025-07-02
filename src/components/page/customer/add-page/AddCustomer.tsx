@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { createUser } from "../../../../apis/userApi";
 import { UserRequestCreated } from "../../../../types/user/UserRequestCreated";
 import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 const AddCustomer: React.FC = () => {
     const [formData, setFormData] = useState<UserRequestCreated>({
@@ -22,6 +23,7 @@ const AddCustomer: React.FC = () => {
     });
     const [saving, setSaving] = useState(false);
     const { t } = useTranslation('user');
+    const [showPassword, setShowPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 

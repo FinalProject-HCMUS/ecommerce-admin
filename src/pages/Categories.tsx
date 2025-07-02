@@ -19,6 +19,7 @@ const Categories = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [searchInput, setSearchInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const { t } = useTranslation('category');
