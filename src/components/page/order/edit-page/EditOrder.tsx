@@ -8,16 +8,13 @@ import { defaultOrder, Order } from "../../../../types/order/Order";
 import { createOrderDetail, getOrderById, getOrderDetailByOrderId, updateOrder, updateOrderDetail } from "../../../../apis/orderApi";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { useTranslation } from "react-i18next";
 
 const EditOrder: React.FC = () => {
     const [formData, setFormData] = useState<Order>(defaultOrder);
     const [orderDetails, setOrderDetails] = useState<OrderDetailResponse[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { t } = useTranslation("order");
     const { t } = useTranslation("order");
     const fetchData = async () => {
         if (!id) return;
@@ -40,7 +37,6 @@ const EditOrder: React.FC = () => {
     }, []);
     const handleSubmit = async () => {
         setLoading(true);
-        setLoading(true);
         //update order information
         const orderResponse = await updateOrder(id!, formData);
         if (!orderResponse.isSuccess) {
@@ -48,7 +44,6 @@ const EditOrder: React.FC = () => {
                 autoClose: 1000,
                 position: "top-right"
             });
-            setLoading(false);
             setLoading(false);
             return;
         }
@@ -62,7 +57,6 @@ const EditOrder: React.FC = () => {
                         position: "top-right"
                     });
                     setLoading(false);
-                    setLoading(false);
                     return;
                 }
             }
@@ -74,49 +68,44 @@ const EditOrder: React.FC = () => {
                         position: "top-right"
                     });
                     setLoading(false);
-                    setLoading(false);
                     return;
                 }
             }
         });
         toast.success(t("updatedOrder"), {
-            toast.success(t("updatedOrder"), {
-                autoClose: 1000,
-                position: "top-right"
-            });
-            setLoading(false);
+            autoClose: 1000,
+            position: "top-right"
+        });
         setLoading(false);
         navigate("/orders");
-        }
+    }
     if (!formData.id)
-            return <div role="status" className="flex justify-center items-center h-[400px]">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
-            </div>;
-        return (
-            <>
-                <Routes>
-                    <Route path="/information" element={
-                        <EditOrderInformation
-                            formData={formData} setFormData={setFormData} />} />
-                    <Route path="/product" element={
-                        <EditOrderProduct
-                            orderDetails={orderDetails}
-                            setOrderDetails={setOrderDetails}
-                            formData={formData}
-                            setFormData={setFormData}
-                        />} />
-                    <Route path="/preview" element={
-                        <Preview
-                            formData={formData}
-                            orderDetails={orderDetails}
-                            handleSubmit={handleSubmit}
-                            loading={loading}
+        return <div role="status" className="flex justify-center items-center h-[400px]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+        </div>;
+    return (
+        <>
+            <Routes>
+                <Route path="/information" element={
+                    <EditOrderInformation
+                        formData={formData} setFormData={setFormData} />} />
+                <Route path="/product" element={
+                    <EditOrderProduct
+                        orderDetails={orderDetails}
+                        setOrderDetails={setOrderDetails}
+                        formData={formData}
+                        setFormData={setFormData}
+                    />} />
+                <Route path="/preview" element={
+                    <Preview
+                        formData={formData}
+                        orderDetails={orderDetails}
+                        handleSubmit={handleSubmit}
+                        loading={loading}
 
-                            loading={loading}
-
-                        />} />
-                </Routes>
-            </>
-        );
-    };
-    export default EditOrder;
+                    />} />
+            </Routes>
+        </>
+    );
+};
+export default EditOrder;

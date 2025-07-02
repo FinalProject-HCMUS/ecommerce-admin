@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import React from 'react';
 import { vi } from 'vitest';
 import Categories from '../../src/pages/Categories';
