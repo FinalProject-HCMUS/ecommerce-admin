@@ -61,6 +61,18 @@ vi.mock('react-toastify', () => ({
     },
 }));
 
+// Mock currency utilities
+vi.mock('../../../src/utils/currency', () => ({
+    formatPrice: (amount: number) => `₫${amount.toLocaleString()}`,
+}));
+
+// Mock i18n for currency utility
+vi.mock('../../../src/config/i18n', () => ({
+    default: {
+        language: 'vi'
+    }
+}));
+
 import { getProducts } from '../../../src/apis/productApi';
 import { getAllCategories } from '../../../src/apis/categoryApi';
 import { getSizes } from '../../../src/apis/sizeApi';

@@ -3,6 +3,7 @@ import { Pencil } from 'lucide-react';
 import { Product } from '../../types/product/Product';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { formatPrice } from '../../utils/currency';
 
 interface ProductTableProps {
   products: Product[];
@@ -43,7 +44,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
                 <div className="text-sm text-gray-900">{product.categoryName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{product.price.toLocaleString()}</div>
+                <div className="text-sm text-gray-900">{formatPrice(product.price)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{product.total}</div>
