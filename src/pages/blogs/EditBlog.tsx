@@ -123,7 +123,7 @@ const EditBlog: React.FC = () => {
                 <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('editBlog')}</h1>
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                     {loading ? <div className="flex justify-center items-center h-[400px]">
-                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                        <div role="status" className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <>
                         {/* Title Input */}
                         <div className="mb-4">

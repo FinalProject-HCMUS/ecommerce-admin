@@ -24,7 +24,6 @@ const TopProduct: React.FC = () => {
         }
         if (response.data) {
             setProducts(response.data.products);
-            setLoading(false);
         }
     }
     useEffect(() => {
@@ -36,7 +35,7 @@ const TopProduct: React.FC = () => {
             <div className="p-8 bg-gray-100 min-h-screen">
                 <h1 className="text-3xl font-bold mb-6">{t('statistics')}</h1>
                 <div className="bg-white shadow-lg rounded-2xl p-6">
-                    {loading ? <div className="flex justify-center items-center h-[400px]">
+                    {loading ? <div role="status" className="flex justify-center items-center h-[400px]">
                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                     </div> : <div>
                         <div className="flex justify-between items-center mb-6">

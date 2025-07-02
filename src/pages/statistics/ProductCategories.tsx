@@ -43,12 +43,13 @@ const ProductCategories: React.FC = () => {
         const response = await getProductCategories();
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000, position: "top-right" });
+            setLoading(false);
             return;
         }
         if (response.data) {
             setProductCategories(response.data);
-            setLoading(false);
         }
+        setLoading(false);
     }
     const generateColors = (count: number) => {
         {
@@ -89,9 +90,9 @@ const ProductCategories: React.FC = () => {
             },
             tooltip: {
                 callbacks: {
-                    label: function (context: any) {
+                    label: function (context: { label?: string; raw: unknown }) {
                         const label = context.label || '';
-                        const value = context.raw;
+                        const value = context.raw as number;
                         const percent = ((value / productCategoryDataArr.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
                         return `${label}: ${value} (${percent}%)`;
                     }
@@ -111,7 +112,7 @@ const ProductCategories: React.FC = () => {
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center tracking-tight">{t('productCategory')}</h2>
 
                     {loading ? (
-                        <div className="flex justify-center items-center h-[400px]">
+                        <div role="status" className="flex justify-center items-center h-[400px]">
                             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                         </div>
                     ) : <div className="flex flex-col md:flex-row items-center justify-center gap-8">

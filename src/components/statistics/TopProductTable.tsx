@@ -1,14 +1,14 @@
 import React from 'react';
 import { BestSellerProduct } from '../../types/statistics/BestSellerProduct';
 import { useTranslation } from 'react-i18next';
+import { formatProductCost } from '../../utils/currency';
 
 
 interface TopProductTableProps {
     products: BestSellerProduct[];
 }
-const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
-    const { t, i18n } = useTranslation("statistics");
+    const { t } = useTranslation("statistics");
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -34,9 +34,7 @@ const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                    {i18n.language === 'vi'
-                                        ? product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                        : (product.price / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                    {formatProductCost(product.price)}
                                 </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -44,9 +42,7 @@ const TopProductTable: React.FC<TopProductTableProps> = ({ products }) => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                    {i18n.language === 'vi'
-                                        ? product.revenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                        : (product.revenue / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                                    {formatProductCost(product.revenue)}
                                 </div>
                             </td>
                         </tr>

@@ -2,13 +2,14 @@ import React from 'react';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { IncompletedOrder } from '../../types/statistics/IncompletedOrder';
+import { formatProductCost } from '../../utils/currency';
 
 interface OrderTableProps {
     orders: IncompletedOrder[];
 }
-const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
+
 const IncompleteOrderTable: React.FC<OrderTableProps> = ({ orders }) => {
-    const { t, i18n } = useTranslation("statistics")
+    const { t } = useTranslation("statistics")
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -37,10 +38,7 @@ const IncompleteOrderTable: React.FC<OrderTableProps> = ({ orders }) => {
 
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">
-                                    {i18n.language === 'vi'
-                                        ? order.revenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                        : (order.revenue / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-
+                                    {formatProductCost(order.revenue)}
                                 </div>
                             </td>
                         </tr>

@@ -233,7 +233,7 @@ const Message: React.FC = () => {
                                 ))}
                                 {/* Loading spinner at the bottom */}
                                 {loadingConversations && (
-                                    <div className="flex justify-center items-center py-4">
+                                    <div role="status" className="flex justify-center items-center py-4">
                                         <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500 border-solid"></div>
                                     </div>
                                 )}
@@ -259,7 +259,7 @@ const Message: React.FC = () => {
                                 </div>
 
                                 {/* Chat Messages */}
-                                {loadingMessages || sendingMessage ? <div className="flex justify-center items-center h-[400px]">
+                                {loadingMessages || sendingMessage ? <div role="status" className="flex justify-center items-center h-[400px]">
                                     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                                 </div> : <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
                                     {chatMessages.map((message) => (
