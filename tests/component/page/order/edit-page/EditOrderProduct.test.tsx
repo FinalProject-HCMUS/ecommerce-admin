@@ -10,13 +10,23 @@ vi.mock('react-router-dom', () => ({
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
         t: (key: string) => key,
+        i18n: {
+            language: 'en'
+        }
     }),
+    initReactI18next: {
+        type: '3rdParty',
+        init: () => { }
+    }
 }));
 vi.mock('react-toastify', () => ({
     toast: {
         error: vi.fn(),
         success: vi.fn(),
     },
+}));
+vi.mock('../../../../../src/utils/currency', () => ({
+    formatProductCost: (amount: number) => `$${amount.toFixed(2)}`,
 }));
 vi.mock('../../../../../src/apis/productApi', () => ({
     getProducts: vi.fn().mockResolvedValue({

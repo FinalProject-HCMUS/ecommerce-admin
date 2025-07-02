@@ -4,6 +4,7 @@ import MotionPageWrapper from "../../../common/MotionPage";
 import { useNavigate } from "react-router-dom";
 import { Order } from "../../../../types/order/Order";
 import { useTranslation } from "react-i18next";
+import { formatProductCost } from "../../../../utils/currency";
 
 interface Props {
     formData: Order;
@@ -62,7 +63,7 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit, loadin
                                                 <p className="text-sm text-gray-500">{t('size')}: {detail.size.name}</p>
                                                 <p className="text-sm text-gray-500">{t('color')}: {detail.color.name}</p>
                                             </div>
-                                            <div className="text-sm font-medium">{detail.unitPrice.toFixed(2)}</div>
+                                            <div className="text-sm font-medium">{formatProductCost(detail.unitPrice)}</div>
                                             <div className="flex items-center space-x-2">
                                                 <span className="w-12 text-center border border-gray-300 rounded-lg bg-gray-100">
                                                     x{detail.quantity}
@@ -96,15 +97,15 @@ const Preview: React.FC<Props> = ({ formData, orderDetails, handleSubmit, loadin
                         <div className="space-y-2">
                             <div className="flex justify-between">
                                 <span className="text-sm text-gray-500">{t('subtotal')}</span>
-                                <span className="text-sm font-medium">${formData.productCost.toFixed(2)}</span>
+                                <span className="text-sm font-medium">{formatProductCost(formData.productCost)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-sm text-gray-500">{t('shippingCost')}</span>
-                                <span className="text-sm font-medium">${formData.shippingCost.toFixed(2)}</span>
+                                <span className="text-sm font-medium">{formatProductCost(formData.shippingCost)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-sm text-gray-500">{t('total')}</span>
-                                <span className="text-lg font-semibold">${formData.total.toFixed(2)}</span>
+                                <span className="text-lg font-semibold">{formatProductCost(formData.total)}</span>
                             </div>
                         </div>
                     </div>

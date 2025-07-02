@@ -1,6 +1,7 @@
 import { MousePointer2 } from "lucide-react";
 import { Product } from "../../types/product/Product";
 import { useTranslation } from "react-i18next";
+import { formatProductCost } from "../../utils/currency";
 
 interface ProductTableProps {
     products: Product[];
@@ -38,10 +39,10 @@ const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductS
                                 <div className="text-sm text-gray-900">{product.categoryName}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">${product.price}</div>
+                                <div className="text-sm text-gray-900">{formatProductCost(product.price)}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{product.cost}</div>
+                                <div className="text-sm text-gray-900">{formatProductCost(product.cost)}</div>
                             </td>
                             <td className="px-10 py-4 whitespace-nowrap">
                                 <button
