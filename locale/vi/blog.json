@@ -14,5 +14,10 @@
     "supportImage": "Hỗ trợ: JPEG, PNG",
     "image": "Hình ảnh",
     "preview": "Xem trước",
-    "editBlog": "Chỉnh sửa bài viết"
+    "editBlog": "Chỉnh sửa bài viết",
+    "addedSuccessfully": "Bài viết đã được thêm thành công",
+    "updatedSuccessfully": "Bài viết đã được cập nhật thành công",
+    "needImage": "Bạn cần tải lên một hình ảnh",
+    "filledInformation": "Vui lòng điền đầy đủ thông tin",
+    "deleteBlog": "Xoá bài viết"
 }
