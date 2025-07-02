@@ -18,6 +18,7 @@ import { Collapse, Select, Slider } from 'antd';
 const { Panel } = Collapse;
 const { Option } = Select;
 import React from 'react';
+import { formatPrice } from '../../utils/currency';
 const ITEMS_PER_PAGE = import.meta.env.VITE_ITEMS_PER_PAGE;
 const MIN_PRICE = 0;
 const MAX_PRICE = 3000000;
@@ -235,10 +236,10 @@ const Products = () => {
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-gray-900 font-medium text-sm">
-                    ₫{priceRange[0].toLocaleString()}
+                    {formatPrice(priceRange[0])}
                   </span>
                   <span className="text-gray-900 font-medium text-sm">
-                    ₫{priceRange[1].toLocaleString()}
+                    {formatPrice(priceRange[1])}
                   </span>
                 </div>
                 <Slider
@@ -249,7 +250,7 @@ const Products = () => {
                   onChange={setPriceRange}
                   tooltip={
                     {
-                      formatter: value => `₫${value!.toLocaleString()}`
+                      formatter: value => formatPrice(value!)
                     }}
                   step={1000}
                   dotStyle={{ display: 'none' }}

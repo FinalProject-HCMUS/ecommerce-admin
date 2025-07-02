@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import React from 'react';
 import { vi } from 'vitest';
 import Preview from '../../../../../src/components/page/order/edit-page/Preview';
@@ -16,11 +17,21 @@ vi.mock('react-router-dom', async () => {
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
         t: (key: string) => key,
+        i18n: {
+            language: 'en'
+        }
     }),
+    initReactI18next: {
+        type: '3rdParty',
+        init: () => { }
+    }
 }));
 vi.mock('../../../../../src/components/common/MotionPage', () => ({
     __esModule: true,
     default: ({ children }: any) => <div>{children}</div>,
+}));
+vi.mock('../../../../../src/utils/currency', () => ({
+    formatProductCost: (amount: number) => `$${amount.toFixed(2)}`,
 }));
 
 describe('Preview', () => {

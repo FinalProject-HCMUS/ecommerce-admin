@@ -18,6 +18,18 @@ vi.mock('react-i18next', () => ({
     }),
 }));
 
+// Mock the currency utility
+vi.mock('../../../src/utils/currency', () => ({
+    formatPrice: (amount: number) => `₫${amount.toLocaleString()}`,
+}));
+
+// Mock i18n for currency utility
+vi.mock('../../../src/config/i18n', () => ({
+    default: {
+        language: 'vi'
+    }
+}));
+
 const products = [
     {
         id: '1',
@@ -64,8 +76,8 @@ describe('ProductTable', () => {
         expect(screen.getByText('Product 2')).toBeInTheDocument();
         expect(screen.getByText('Category A')).toBeInTheDocument();
         expect(screen.getByText('Category B')).toBeInTheDocument();
-        expect(screen.getByText('1,000')).toBeInTheDocument();
-        expect(screen.getByText('2,000')).toBeInTheDocument();
+        expect(screen.getByText('₫1,000')).toBeInTheDocument();
+        expect(screen.getByText('₫2,000')).toBeInTheDocument();
         expect(screen.getByText('10')).toBeInTheDocument();
         expect(screen.getByText('0')).toBeInTheDocument();
         expect(screen.getByText('In Stock')).toBeInTheDocument();

@@ -8,6 +8,7 @@ import Pagination from "../../../common/Pagination";
 import { getProducts } from "../../../../apis/productApi";
 import { toast } from "react-toastify";
 import { ProductColorSize } from "../../../../types/product/ProductColorSize";
+import { formatProductCost } from "../../../../utils/currency";
 import ProductColorSizeDialog from "../../../product/ProductColorSizeDialog";
 import { Search, X } from "lucide-react";
 import { Order } from "../../../../types/order/Order";
@@ -226,12 +227,8 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
                                             <p className="text-sm text-gray-500">{t('size')}: {detail.size.name}</p>
                                             <p className="text-sm text-gray-500">{t('color')}: {detail.color.name}</p>
                                         </div>
-                                        <div className="text-sm font-medium">
-                                            {i18n.language === 'vi'
-                                                ? detail.unitPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                                : (detail.unitPrice / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                                        </div>
-                                        <div className="flex items-center space-x-2">
+                                        <div className="text-sm font-medium">{formatProductCost(detail.unitPrice)}</div>
+                                        <div className="flex items-center bg-gray-300 rounded-full px-2 py-1">
                                             <button
                                                 type="button"
                                                 onClick={() => handleDecreaseQuantity(detail.itemId)}
@@ -270,27 +267,15 @@ const EditOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, form
                             <div className="space-y-2">
                                 <div className="flex justify-between">
                                     <span className="text-sm text-gray-500">{t('subtotal')}</span>
-                                    <span className="text-sm font-medium">
-                                        {i18n.language === 'vi'
-                                            ? formData.productCost.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                            : (formData.productCost / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                                    </span>
+                                    <span className="text-sm font-medium">{formatProductCost(formData.productCost)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-sm text-gray-500">{t('shippingCost')}</span>
-                                    <span className="text-sm font-medium">
-                                        {i18n.language === 'vi'
-                                            ? formData.shippingCost.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                            : (formData.shippingCost / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                                    </span>
+                                    <span className="text-sm font-medium">{formatProductCost(formData.shippingCost)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-sm text-gray-500">{t('total')}</span>
-                                    <span className="text-lg font-semibold">
-                                        {i18n.language === 'vi'
-                                            ? formData.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
-                                            : (formData.total / VND_TO_USD).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                                    </span>
+                                    <span className="text-lg font-semibold">{formatProductCost(formData.total)}</span>
                                 </div>
                             </div>
                         </div>
