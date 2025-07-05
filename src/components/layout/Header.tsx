@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import LanguageToggle from '../common/LanguageToggle';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import React from 'react';
 const Header = () => {
   const [lang, setLang] = useState<string>();
   const { i18n } = useTranslation();

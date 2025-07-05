@@ -6,7 +6,7 @@ import { signin } from '../apis/authApi';
 import { User } from '../types/user/User';
 import { getProfile } from '../apis/userApi';
 import { useTranslation } from 'react-i18next';
-
+import React from 'react';
 interface AuthContextType {
     isAuthenticated: boolean;
     login: (credentials: Login, navigate: ReturnType<typeof useNavigate>) => void;

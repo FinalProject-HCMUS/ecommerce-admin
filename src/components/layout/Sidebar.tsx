@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Package, List, LogOut, Palette, RulerIcon, Info, Settings, Users, Boxes } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-
+import React from 'react';
 const Sidebar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
