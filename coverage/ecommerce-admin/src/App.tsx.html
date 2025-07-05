@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/65</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/65</span>
             </div>
         
             
@@ -119,7 +119,25 @@
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -143,6 +161,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -197,6 +221,12 @@
 <span class="cstat-no" title="statement not covered" >import Sizes from './pages/product/Size';</span>
 <span class="cstat-no" title="statement not covered" >import ChangePassword from './components/page/about/edit-page/ChangePassword';</span>
 <span class="cstat-no" title="statement not covered" >import Setting from './pages/Setting';</span>
+<span class="cstat-no" title="statement not covered" >import Customers from './pages/Customers';</span>
+<span class="cstat-no" title="statement not covered" >import Orders from './pages/Order';</span>
+<span class="cstat-no" title="statement not covered" >import AddCustomer from './components/page/customer/add-page/AddCustomer';</span>
+<span class="cstat-no" title="statement not covered" >import EditCustomer from './components/page/customer/edit-page/EditCustomer';</span>
+<span class="cstat-no" title="statement not covered" >import AddOrder from './components/page/order/add-page/AddOrder';</span>
+<span class="cstat-no" title="statement not covered" >import EditOrder from './components/page/order/edit-page/EditOrder';</span>
 &nbsp;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >function App() {</span>
@@ -209,13 +239,19 @@
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/colors" element={&lt;PrivateRoute element={Color} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/sizes" element={&lt;PrivateRoute element={Sizes} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/products" element={&lt;PrivateRoute element={Products} /&gt;} /&gt;</span>
-<span class="cstat-no" title="statement not covered" >            &lt;Route path="/categories" element={&lt;PrivateRoute element={Categories} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/customers" element={&lt;PrivateRoute element={Customers} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/customers/add" element={&lt;PrivateRoute element={AddCustomer} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/customers/edit/:id" element={&lt;PrivateRoute element={EditCustomer} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/orders" element={&lt;PrivateRoute element={Orders} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/orders/add/*" element={&lt;PrivateRoute element={AddOrder} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/orders/edit/:id/*" element={&lt;PrivateRoute element={EditOrder} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/" element={&lt;Navigate to="/products" /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/products/add/*" element={&lt;PrivateRoute element={AddProduct} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/colors/add" element={&lt;PrivateRoute element={AddColor} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/colors/edit/:id" element={&lt;PrivateRoute element={EditColor} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/sizes/add" element={&lt;PrivateRoute element={AddSize} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/sizes/edit/:id" element={&lt;PrivateRoute element={EditSize} /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Route path="/categories" element={&lt;PrivateRoute element={Categories} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/categories/add" element={&lt;PrivateRoute element={AddCategory} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/categories/edit/:id" element={&lt;PrivateRoute element={EditCategory} /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >            &lt;Route path="/products/edit/:id/*" element={&lt;PrivateRoute element={EditProduct} /&gt;} /&gt;</span>
@@ -238,7 +274,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-05T17:08:01.986Z
+                at 2025-07-05T17:35:23.505Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -92,7 +92,7 @@ describe('i18n Configuration', () => {
                 },
                 ns: ['sidebar', 'product', 'pagination',
                     'common', 'color', 'size', 'delete',
-                    'profile', 'login', 'category', 'setting'],
+                    'profile', 'login', 'category', 'setting', 'user', 'order'],
                 defaultNS: 'sidebar',
             });
         });
@@ -129,7 +129,7 @@ describe('i18n Configuration', () => {
             const expectedNamespaces = [
                 'sidebar', 'product', 'pagination',
                 'common', 'color', 'size', 'delete',
-                'profile', 'login', 'category', 'setting'
+                'profile', 'login', 'category', 'setting', 'user', 'order'
             ];
             expect(config).toHaveProperty('ns');
             expect(config.ns).toEqual(expectedNamespaces);
