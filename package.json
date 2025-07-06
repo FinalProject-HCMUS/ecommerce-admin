@@ -55,13 +55,14 @@
     "eslint-plugin-react-refresh": "^0.4.11",
     "globals": "^15.9.0",
     "jest": "^30.0.3",
+    "jsdom": "^26.1.0",
     "msw": "^2.10.2",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.4.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
-    "vite": "^5.4.2"
-  },
-  "homepage": "https://finalproject-hcmus.github.io/ecommerce-admin/"
+    "vite": "^5.4.2",
+    "vitest": "^3.2.4"
+  }
 }

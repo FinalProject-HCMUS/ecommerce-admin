@@ -172,8 +172,23 @@ describe('EditBlog', () => {
     });
 
     beforeEach(() => {
-        vi.clearAllMocks();
+        // Reset all mocks to clear any previous implementations
+        mockGetBlogById.mockReset();
+        mockUpdateBlog.mockReset();
+        mockUploadImage.mockReset();
+        mockNavigate.mockReset();
+        vi.mocked(mockToast.error).mockReset();
+        vi.mocked(mockToast.success).mockReset();
+
+        // Set default mock implementations
         mockGetBlogById.mockResolvedValue(createSuccessResponse(mockBlog));
+        mockUpdateBlog.mockResolvedValue(createSuccessResponse(mockBlog));
+        mockUploadImage.mockResolvedValue(createSuccessResponse('https://example.com/uploaded-image.jpg'));
+    });
+
+    afterEach(() => {
+        // Ensure mocks are properly reset after each test
+        vi.clearAllMocks();
     });
 
     it('renders loading state initially', () => {
@@ -353,6 +368,7 @@ describe('EditBlog', () => {
     });
 
     it('handles successful blog update with new image', async () => {
+        // Set up fresh mock responses
         mockUploadImage.mockResolvedValue(createSuccessResponse('https://example.com/new-image.jpg'));
         mockUpdateBlog.mockResolvedValue(createSuccessResponse(mockBlog));
 
@@ -401,6 +417,7 @@ describe('EditBlog', () => {
     });
 
     it('handles blog update without new image', async () => {
+        // Set up fresh mock response
         mockUpdateBlog.mockResolvedValue(createSuccessResponse(mockBlog));
 
         render(<EditBlogWrapper />);
@@ -441,6 +458,7 @@ describe('EditBlog', () => {
     });
 
     it('handles image upload error', async () => {
+        // Set up error response for upload
         mockUploadImage.mockResolvedValue(createErrorResponse('Failed to upload image'));
 
         render(<EditBlogWrapper />);
@@ -471,6 +489,7 @@ describe('EditBlog', () => {
     });
 
     it('handles blog update error', async () => {
+        // Set up responses - upload succeeds but update fails
         mockUploadImage.mockResolvedValue(createSuccessResponse('https://example.com/new-image.jpg'));
         mockUpdateBlog.mockResolvedValue(createErrorResponse('Failed to update blog'));
 
@@ -518,8 +537,12 @@ describe('EditBlog', () => {
     });
 
     it('disables next button when loading', async () => {
-        // Mock a slow update operation
-        mockUpdateBlog.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)));
+        // Mock a slow update operation that still returns proper structure
+        mockUpdateBlog.mockImplementation(() =>
+            new Promise(resolve =>
+                setTimeout(() => resolve(createSuccessResponse(mockBlog)), 1000)
+            )
+        );
 
         render(<EditBlogWrapper />);
 
@@ -613,7 +636,7 @@ describe('EditBlog', () => {
     });
 
     it('shows submit button loading state in modal', async () => {
-        // Mock a slow update operation
+        // Mock a slow update operation that never resolves but would return proper structure
         mockUpdateBlog.mockImplementation(() => new Promise(() => { })); // Never resolves
 
         render(<EditBlogWrapper />);
