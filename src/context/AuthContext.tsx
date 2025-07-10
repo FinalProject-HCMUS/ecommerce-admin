@@ -13,7 +13,7 @@ interface AuthContextType {
     logout: (navigate: ReturnType<typeof useNavigate>) => void;
     user: User | undefined;
     setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-    loading: boolean; // Add this
+    loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<User | undefined>(undefined);
-    const [loading, setLoading] = useState(true); // Add this
+    const [loading, setLoading] = useState(true);
     const { t } = useTranslation('login');
     const fetchUserProfile = async () => {
         const userResponse = await getProfile();
