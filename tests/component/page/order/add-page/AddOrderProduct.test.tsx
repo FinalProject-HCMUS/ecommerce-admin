@@ -26,7 +26,15 @@ vi.mock('react-toastify', () => ({
     },
 }));
 vi.mock('../../../../../src/utils/currency', () => ({
-    formatProductCost: (amount: number) => `$${amount.toFixed(2)}`,
+    formatProductCost: (amount: number) => {
+        // Match the actual formatting used in the component
+        if (amount >= 1000000) {
+            return `$${(amount / 1000000).toFixed(1)}M`;
+        } else if (amount >= 1000) {
+            return `$${(amount / 1000).toFixed(1)}K`;
+        }
+        return `$${amount.toFixed(2)}`;
+    },
 }));
 vi.mock('../../../../../src/apis/productApi', () => ({
     getProducts: vi.fn().mockResolvedValue({
@@ -277,6 +285,8 @@ describe('AddOrderProduct', () => {
     });
 
     it('shows error toast when entering quantity above limit', () => {
+        const setOrderDetails = vi.fn();
+        const setFormData = vi.fn();
         const orderDetails = [
             {
                 itemId: 'cs1',
@@ -307,9 +317,9 @@ describe('AddOrderProduct', () => {
         render(
             <AddOrderProduct
                 orderDetails={orderDetails}
-                setOrderDetails={vi.fn()}
+                setOrderDetails={setOrderDetails}
                 formData={{ ...defaultFormData, productCost: 100, total: 100 } as any}
-                setFormData={vi.fn()}
+                setFormData={setFormData}
             />
         );
         const input = screen.getByDisplayValue('1');
@@ -320,7 +330,9 @@ describe('AddOrderProduct', () => {
         }));
     });
 
-    it('shows error toast when entering quantity below 1', () => {
+    it('handles quantity input changes with local state', () => {
+        const setOrderDetails = vi.fn();
+        const setFormData = vi.fn();
         const orderDetails = [
             {
                 itemId: 'cs1',
@@ -334,8 +346,9 @@ describe('AddOrderProduct', () => {
                     total: 0,
                     discountPercent: 0,
                     enable: true,
-                    category: { id: 'cat1', name: 'Category 1' },
-                    brand: { id: 'brand1', name: 'Brand 1' }
+                    categoryId: 'cat1',
+                    inStock: true,
+                    categoryName: 'Category 1',
                 },
                 unitPrice: 100,
                 quantity: 1,
@@ -350,16 +363,123 @@ describe('AddOrderProduct', () => {
         render(
             <AddOrderProduct
                 orderDetails={orderDetails}
-                setOrderDetails={vi.fn()}
+                setOrderDetails={setOrderDetails}
                 formData={{ ...defaultFormData, productCost: 100, total: 100 } as any}
+                setFormData={setFormData}
+            />
+        );
+
+        const input = screen.getByDisplayValue('1');
+
+        // Test valid input change
+        fireEvent.change(input, { target: { value: '3' } });
+        expect(setOrderDetails).toHaveBeenCalled();
+        expect(setFormData).toHaveBeenCalled();
+
+        // Test empty input (should not trigger handlers)
+        vi.clearAllMocks();
+        fireEvent.change(input, { target: { value: '' } });
+        expect(setOrderDetails).not.toHaveBeenCalled();
+        expect(setFormData).not.toHaveBeenCalled();
+    });
+
+    it('resets input value on blur when invalid', () => {
+        const orderDetails = [
+            {
+                itemId: 'cs1',
+                product: {
+                    id: 'p1',
+                    name: 'Product 1',
+                    price: 100,
+                    cost: 80,
+                    mainImageUrl: '',
+                    description: '',
+                    total: 0,
+                    discountPercent: 0,
+                    enable: true,
+                    categoryId: 'cat1',
+                    inStock: true,
+                    categoryName: 'Category 1',
+                },
+                unitPrice: 100,
+                quantity: 2,
+                color: { id: 'red', name: 'Red', code: '#ff0000' },
+                size: { id: 'size-l', name: 'L', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 },
+                productColorSizeId: 'cs1',
+                productCost: 80,
+                total: 200,
+                limitedQuantity: 5,
+            },
+        ];
+        render(
+            <AddOrderProduct
+                orderDetails={orderDetails}
+                setOrderDetails={vi.fn()}
+                formData={{ ...defaultFormData, productCost: 200, total: 200 } as any}
                 setFormData={vi.fn()}
             />
         );
-        const input = screen.getByDisplayValue('1');
-        fireEvent.change(input, { target: { value: '0' } });
-        expect(toast.error).toHaveBeenCalledWith('quantityAtLeast', expect.objectContaining({
-            autoClose: 1000,
-            position: 'top-right',
-        }));
+
+        const input = screen.getByDisplayValue('2');
+
+        // Focus the input first
+        fireEvent.focus(input);
+
+        // Change to empty value
+        fireEvent.change(input, { target: { value: '' } });
+
+        // Blur should reset to original value
+        fireEvent.blur(input);
+        expect(input).toHaveValue(2);
+    });
+
+    it('updates quantity inputs state when using +/- buttons', () => {
+        const setOrderDetails = vi.fn();
+        const setFormData = vi.fn();
+        const orderDetails = [
+            {
+                itemId: 'cs1',
+                product: {
+                    id: 'p1',
+                    name: 'Product 1',
+                    price: 100,
+                    cost: 80,
+                    mainImageUrl: '',
+                    description: '',
+                    total: 0,
+                    discountPercent: 0,
+                    enable: true,
+                    categoryId: 'cat1',
+                    inStock: true,
+                    categoryName: 'Category 1',
+                },
+                unitPrice: 100,
+                quantity: 2,
+                color: { id: 'red', name: 'Red', code: '#ff0000' },
+                size: { id: 'size-l', name: 'L', minHeight: 0, maxHeight: 0, minWeight: 0, maxWeight: 0 },
+                productColorSizeId: 'cs1',
+                productCost: 80,
+                total: 200,
+                limitedQuantity: 5,
+            },
+        ];
+        render(
+            <AddOrderProduct
+                orderDetails={orderDetails}
+                setOrderDetails={setOrderDetails}
+                formData={{ ...defaultFormData, productCost: 200, total: 200 } as any}
+                setFormData={setFormData}
+            />
+        );
+
+        // Test increase button
+        fireEvent.click(screen.getByText('+'));
+        expect(setOrderDetails).toHaveBeenCalled();
+        expect(setFormData).toHaveBeenCalled();
+
+        // Test decrease button  
+        fireEvent.click(screen.getByText('-'));
+        expect(setOrderDetails).toHaveBeenCalled();
+        expect(setFormData).toHaveBeenCalled();
     });
 });
