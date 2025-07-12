@@ -546,7 +546,7 @@ describe('Message', () => {
 
         await waitFor(() => {
             const photo = screen.getByAltText('John');
-            expect(photo).toHaveAttribute('src', './images/user.png');
+            expect(photo).toHaveAttribute('src', 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png');
         });
     });
 

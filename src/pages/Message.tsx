@@ -249,7 +249,7 @@ const Message: React.FC = () => {
                                         className={`flex items-center p-4 cursor-pointer hover:bg-gray-100 ${selectedUser?.id === c.customer.id ? 'bg-gray-200' : ''}`}
                                     >
                                         <img
-                                            src={c.customer.photo || './images/user.png'}
+                                            src={c.customer.photo || 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png'}
                                             alt={c.customer.firstName}
                                             className="w-10 h-10 rounded-full object-cover"
                                         />
@@ -278,7 +278,7 @@ const Message: React.FC = () => {
                                 {/* Chat Header */}
                                 <div className="flex items-center p-4 bg-gray-50 border-b border-gray-200 flex-shrink-0">
                                     <img
-                                        src={selectedUser.photo || './images/user.png'}
+                                        src={selectedUser.photo || 'https://res.cloudinary.com/djjbs0a2v/image/upload/v1747887269/default_ebfqam.png'}
                                         alt={selectedUser.firstName}
                                         className="w-10 h-10 rounded-full object-cover"
                                     />
