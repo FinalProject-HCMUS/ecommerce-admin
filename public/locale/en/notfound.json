@@ -1,0 +1,9 @@
+{
+    "title": "Page Not Found",
+    "description": "Oops! The page you're looking for doesn't exist.",
+    "subDescription": "It might have been moved, deleted, or you entered the wrong URL.",
+    "goBack": "Go Back",
+    "goHome": "Go Home",
+    "needHelp": "Need Help?",
+    "helpDescription": "If you believe this is an error, please contact the system administrator or try refreshing the page."
+}

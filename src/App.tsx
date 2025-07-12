@@ -26,6 +26,7 @@ import AddCustomer from './components/page/customer/add-page/AddCustomer';
 import EditCustomer from './components/page/customer/edit-page/EditCustomer';
 import AddOrder from './components/page/order/add-page/AddOrder';
 import EditOrder from './components/page/order/edit-page/EditOrder';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -58,7 +59,10 @@ function App() {
             <Route path="/about/edit" element={<PrivateRoute element={EditProfile} />} />
             <Route path="/about/change-password" element={<PrivateRoute element={ChangePassword} />} />
             <Route path="settings" element={<PrivateRoute element={Setting} />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
+          {/* Catch routes outside AdminLayout */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
       <ToastContainer />
