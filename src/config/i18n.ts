@@ -19,7 +19,7 @@ i18n
         ns: ['sidebar', 'product', 'pagination',
             'common', 'color', 'size', 'delete',
             'profile', 'login', 'category', 'setting', 'user', 'order', 'blog', 'message',
-            'statistics'
+            'statistics', 'notfound'
         ],
         defaultNS: 'sidebar',
         load: 'languageOnly'

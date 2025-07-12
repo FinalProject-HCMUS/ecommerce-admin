@@ -34,6 +34,8 @@ import ProductCategories from './pages/statistics/ProductCategories';
 import RevenueAnalysis from './pages/statistics/RevenueAnalysis';
 import TopProduct from './pages/statistics/TopProducts';
 import Setting from './pages/Setting';
+import NotFound from './pages/NotFound';
+
 function App() {
   return (
     <Router basename="/ecommerce-admin">
@@ -72,7 +74,11 @@ function App() {
             <Route path="/about/edit" element={<PrivateRoute element={EditProfile} />} />
             <Route path="/about/change-password" element={<PrivateRoute element={ChangePassword} />} />
             <Route path="/settings" element={<PrivateRoute element={Setting} />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
+
+          {/* Catch routes outside AdminLayout */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
       <ToastContainer />

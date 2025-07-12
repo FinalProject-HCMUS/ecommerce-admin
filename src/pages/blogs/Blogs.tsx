@@ -5,7 +5,7 @@ import BlogCard from '../../components/blogs/BlogCard';
 import { Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Blog } from '../../types/blog/blog';
+import { Blog } from '../../types/blog/Blog';
 import { toast } from 'react-toastify';
 import DeleteConfirmationModal from '../../components/common/DeleteConfirm';
 import { useTranslation } from 'react-i18next';
@@ -20,19 +20,24 @@ const Blogs: React.FC = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
     const [blogToDelete, setBlogToDelete] = React.useState<Blog | null>(null);
+    const [loadingBlogs, setLoadingBlogs] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { t } = useTranslation('blog');
     const fetchBlogs = async (page: number, keysearch = '') => {
+        setLoadingBlogs(true);
         const response = await getBlogs(page - 1, ITEMS_PER_PAGE, "createdAt,asc", keysearch);
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 1000 });
+            setLoadingBlogs(false);
             return;
         }
         if (response.data) {
+            setLoadingBlogs(false);
             setBlogs(response.data.content || []);
             setTotalPages(response.data.totalPages || 0);
         }
+        setLoading(false);
     }
     useEffect(() => {
         fetchBlogs(currentPage, search);
@@ -117,18 +122,25 @@ const Blogs: React.FC = () => {
 
                 {/* Blog Cards */}
                 <div className="bg-white shadow-lg rounded-2xl">
-                    <motion.div
-                        className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        {blogs.map((blog) => (
-                            <motion.div key={blog.id} variants={itemVariants}>
-                                <BlogCard blog={blog} onDelete={handleDelete} />
-                            </motion.div>
-                        ))}
-                    </motion.div>
+                    {loadingBlogs ? (
+                        <div role='status' className="flex justify-center items-center h-[500px]">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+                        </div>
+                    ) : (
+                        <motion.div
+                            className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            {blogs.map((blog) => (
+                                <motion.div key={blog.id} variants={itemVariants}>
+                                    <BlogCard blog={blog} onDelete={handleDelete} />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    )}
+
                     <DeleteConfirmationModal
                         title={t('deleteBlog')}
                         isOpen={!!blogToDelete}
@@ -136,18 +148,21 @@ const Blogs: React.FC = () => {
                         onConfirm={confirmDelete}
                         loading={loading}
                     />
+
                     {/* Pagination */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                    >
-                        <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={setCurrentPage}
-                        />
-                    </motion.div>
+                    {!loadingBlogs && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
+                            <Pagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={setCurrentPage}
+                            />
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </MotionPageWrapper>
