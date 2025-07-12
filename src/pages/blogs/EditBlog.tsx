@@ -5,7 +5,7 @@ import MotionPageWrapper from '../../components/common/MotionPage';
 import { useNavigate, useParams } from 'react-router-dom';
 import UploadImageModal from '../../components/blogs/UploadImageModal';
 import { toast } from 'react-toastify';
-import { Blog } from '../../types/blog/blog';
+import { Blog } from '../../types/blog/Blog';
 import { uploadImage } from '../../apis/imageApi';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';

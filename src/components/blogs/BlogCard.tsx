@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
-import { Blog } from '../../types/blog/blog';
+import { Blog } from '../../types/blog/Blog';
 
 interface BlogCardProps {
     blog: Blog;

@@ -66,7 +66,7 @@ const ProductColorSizeDialog: React.FC<ProductColorSizeProps> = ({ isOpen, onClo
                         {loading ? <tbody>
                             <tr>
                                 <td colSpan={4}>
-                                    <div className="flex justify-center items-center h-[200px]">
+                                    <div role='status' className="flex justify-center items-center h-[200px]">
                                         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
                                     </div>
                                 </td>

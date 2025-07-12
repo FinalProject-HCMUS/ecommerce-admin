@@ -95,9 +95,10 @@ const EditProfile: React.FC = () => {
                                 alt="Profile"
                                 className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
                             />
-                            <label className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
+                            <label htmlFor='Camera' className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer">
                                 <Camera size={18} />
                                 <input
+                                    id='Camera'
                                     type="file"
                                     accept="image/*"
                                     className="hidden"
@@ -108,8 +109,9 @@ const EditProfile: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('firstName')}</label>
+                            <label htmlFor='FirstName' className="block text-sm font-medium mb-1">{t('firstName')}</label>
                             <input
+                                id='FirstName'
                                 type="text"
                                 name="firstName"
                                 value={updateUser.firstName}
@@ -118,8 +120,9 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('lastName')}</label>
+                            <label htmlFor='LastName' className="block text-sm font-medium mb-1">{t('lastName')}</label>
                             <input
+                                id='LastName'
                                 type="text"
                                 name="lastName"
                                 value={updateUser.lastName}
@@ -128,8 +131,9 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('email')}</label>
+                            <label htmlFor='Email' className="block text-sm font-medium mb-1">{t('email')}</label>
                             <input
+                                id='Email'
                                 type="email"
                                 name="email"
                                 value={updateUser.email}
@@ -138,8 +142,9 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('phone')}</label>
+                            <label htmlFor='Phone' className="block text-sm font-medium mb-1">{t('phone')}</label>
                             <input
+                                id='Phone'
                                 type="number"
                                 name="phoneNumber"
                                 value={updateUser.phoneNumber}
@@ -148,8 +153,9 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('address')}</label>
+                            <label htmlFor='Address' className="block text-sm font-medium mb-1">{t('address')}</label>
                             <input
+                                id='Address'
                                 type="text"
                                 name="address"
                                 value={updateUser.address}
@@ -158,18 +164,20 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('weight')}</label>
+                            <label htmlFor='Weight' className="block text-sm font-medium mb-1">{t('weight')}</label>
                             <input
                                 type="number"
                                 name="weight"
+                                id='Weight'
                                 value={updateUser.weight}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('height')}</label>
+                            <label htmlFor='Height' className="block text-sm font-medium mb-1">{t('height')}</label>
                             <input
+                                id='Height'
                                 type="number"
                                 name="height"
                                 value={updateUser.height}
@@ -178,8 +186,9 @@ const EditProfile: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">{t('userRole')}</label>
+                            <label htmlFor='Role' className="block text-sm font-medium mb-1">{t('userRole')}</label>
                             <input
+                                id='Role'
                                 type="text"
                                 name="role"
                                 value={updateUser.role}

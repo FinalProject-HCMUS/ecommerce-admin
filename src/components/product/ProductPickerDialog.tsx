@@ -2,14 +2,14 @@ import { MousePointer2 } from "lucide-react";
 import { Product } from "../../types/product/Product";
 import { useTranslation } from "react-i18next";
 import { formatProductCost } from "../../utils/currency";
-
+import React from "react";
 interface ProductTableProps {
     products: Product[];
     onProductSelect: (product: Product) => void;
 }
 const VND_TO_USD = import.meta.env.VITE_VND_TO_USD;
 const ProductPickerDialog: React.FC<ProductTableProps> = ({ products, onProductSelect }) => {
-    const { t, i18n } = useTranslation("order");
+    const { t } = useTranslation("order");
     return (
         <div className="overflow-x-auto border border-gray-300 rounded-lg shadow-md">
             <table className="min-w-full divide-y divide-gray-200">

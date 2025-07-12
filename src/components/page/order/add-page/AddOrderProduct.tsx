@@ -32,6 +32,7 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
     const [isProductColorSizeDialogOpen, setIsProductColorSizeDialogOpen] = useState(false);
     const [productColorSizes, setProductColorSizes] = useState<ProductColorSize[]>([]);
     const [loading, setLoading] = useState(false);
+    const [quantityInputs, setQuantityInputs] = useState<{ [key: string]: string }>({});
     const { t, i18n } = useTranslation("order");
     const navigate = useNavigate();
     const fetchProducts = async (page: number, keysearch = '') => {
@@ -106,15 +107,19 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                 else {
                     setFormData((prev) => {
                         return { ...prev, productCost: prev.productCost + detail.unitPrice, total: prev.total + detail.unitPrice };
+                    });
 
-                    }
-                    );
+                    // Update the input state as well
+                    setQuantityInputs(prev => ({
+                        ...prev,
+                        [itemId]: (detail.quantity + 1).toString()
+                    }));
+
                     return { ...detail, quantity: detail.quantity + 1, total: detail.total + detail.unitPrice };
                 }
             }
             return detail;
-        }
-        );
+        });
         setOrderDetails(updatedDetails);
     };
 
@@ -128,22 +133,28 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                 else {
                     setFormData((prev) => {
                         return { ...prev, productCost: prev.productCost - detail.unitPrice, total: prev.total - detail.unitPrice };
-                    }
-                    );
+                    });
+                    // Update the input state as well
+                    setQuantityInputs(prev => ({
+                        ...prev,
+                        [itemId]: (detail.quantity - 1).toString()
+                    }));
+
                     return { ...detail, quantity: detail.quantity - 1, total: detail.total - detail.unitPrice };
                 }
             }
             return detail;
-        }
-        );
+        });
         setOrderDetails(updatedDetails);
     };
 
     const handleQuantityChange = (itemId: string, newQuantity: number) => {
-        if (newQuantity < 1) {
+        // Handle empty or invalid input
+        if (isNaN(newQuantity) || newQuantity < 1) {
             toast.error(t("quantityAtLeast"), { autoClose: 1000, position: 'top-right' });
             return;
         }
+
         const updatedDetails = orderDetails.map((detail) => {
             if (detail.itemId == itemId && newQuantity > detail.limitedQuantity) {
                 toast.error(t("limitedQuantity"), { autoClose: 1000, position: 'top-right' });
@@ -162,6 +173,48 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         );
         setOrderDetails(updatedDetails);
     };
+
+    // Add new function to handle input changes
+    const handleQuantityInputChange = (itemId: string, value: string) => {
+        // Update local input state
+        setQuantityInputs(prev => ({
+            ...prev,
+            [itemId]: value
+        }));
+
+        // If value is empty, don't update the main state yet
+        if (value === '') {
+            return;
+        }
+        // Check if the value is a valid number
+        const numValue = parseInt(value);
+        if (!isNaN(numValue) && numValue >= 1) {
+            handleQuantityChange(itemId, numValue);
+        }
+    };
+
+    const handleQuantityInputBlur = (itemId: string, currentQuantity: number) => {
+        const inputValue = quantityInputs[itemId];
+
+        // If input is empty or invalid, reset to current quantity
+        if (!inputValue || isNaN(parseInt(inputValue)) || parseInt(inputValue) < 1) {
+            setQuantityInputs(prev => ({
+                ...prev,
+                [itemId]: currentQuantity.toString()
+            }));
+        }
+    };
+
+    const handleQuantityInputFocus = (itemId: string, currentQuantity: number) => {
+        // Initialize input state if not exists
+        if (!quantityInputs[itemId]) {
+            setQuantityInputs(prev => ({
+                ...prev,
+                [itemId]: currentQuantity.toString()
+            }));
+        }
+    };
+
     const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             setSearch(searchInput.trim());
@@ -241,8 +294,12 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
                                             </button>
                                             <input
                                                 type="number"
-                                                value={detail.quantity}
-                                                onChange={(e) => handleQuantityChange(detail.itemId, parseInt(e.target.value))}
+                                                value={quantityInputs[detail.itemId] ?? detail.quantity}
+                                                onChange={(e) => handleQuantityInputChange(detail.itemId, e.target.value)}
+                                                onBlur={() => handleQuantityInputBlur(detail.itemId, detail.quantity)}
+                                                onFocus={() => handleQuantityInputFocus(detail.itemId, detail.quantity)}
+                                                min="1"
+                                                max={detail.limitedQuantity}
                                                 className="w-12 text-center border border-gray-300 rounded-lg"
                                             />
                                             <button

@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Package, List, LogOut, Palette, RulerIcon, Info, Settings, Users, Boxes, MessageCircleMore, NotebookPen, BarChart3Icon, ChevronUp, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 import { useState } from 'react';
 
 const Sidebar = () => {
@@ -169,7 +170,6 @@ const Sidebar = () => {
           <Settings size={20} />
           <span>{t('settings')}</span>
         </NavLink>
-
       </nav>
 
       <div className="p-4 border-t border-gray-200">

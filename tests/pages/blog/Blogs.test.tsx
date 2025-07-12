@@ -228,8 +228,21 @@ describe('Blogs', () => {
     });
 
     beforeEach(() => {
-        vi.clearAllMocks();
+        // Reset all mocks to clear any previous implementations
+        mockGetBlogs.mockReset();
+        mockDeleteBlog.mockReset();
+        mockNavigate.mockReset();
+        vi.mocked(mockToast.error).mockReset();
+        vi.mocked(mockToast.success).mockReset();
+
+        // Set default mock implementations
         mockGetBlogs.mockResolvedValue(createSuccessResponse(mockBlogResponse));
+        mockDeleteBlog.mockResolvedValue(createSuccessResponse(mockBlog1));
+    });
+
+    afterEach(() => {
+        // Ensure mocks are properly reset after each test
+        vi.clearAllMocks();
     });
 
     it('renders the blogs page correctly', async () => {
@@ -277,8 +290,10 @@ describe('Blogs', () => {
 
         expect(searchInput).toHaveValue('First Blog');
 
-        // Clear previous calls and simulate Enter key press
+        // Clear previous calls and set up new mock response
         mockGetBlogs.mockClear();
+        mockGetBlogs.mockResolvedValue(createSuccessResponse(mockBlogResponse));
+
         fireEvent.keyDown(searchInput, { key: 'Enter' });
 
         await waitFor(() => {
@@ -331,8 +346,10 @@ describe('Blogs', () => {
         expect(screen.getByTestId('current-page')).toHaveTextContent('1');
         expect(screen.getByTestId('total-pages')).toHaveTextContent('2');
 
-        // Click next page
+        // Click next page - ensure mock returns proper response
         mockGetBlogs.mockClear();
+        mockGetBlogs.mockResolvedValue(createSuccessResponse(multiPageResponse));
+
         const nextButton = screen.getByTestId('next-page');
         fireEvent.click(nextButton);
 
@@ -374,7 +391,9 @@ describe('Blogs', () => {
     });
 
     it('handles successful blog deletion', async () => {
+        // Set up fresh mock responses
         mockDeleteBlog.mockResolvedValue(createSuccessResponse(mockBlog1));
+        mockGetBlogs.mockResolvedValue(createSuccessResponse(mockBlogResponse));
 
         render(<BlogsWrapper />);
 
@@ -500,6 +519,9 @@ describe('Blogs', () => {
         });
 
         // Go to page 2
+        mockGetBlogs.mockClear();
+        mockGetBlogs.mockResolvedValue(createSuccessResponse(multiPageResponse));
+
         const nextButton = screen.getByTestId('next-page');
         fireEvent.click(nextButton);
 
@@ -507,7 +529,10 @@ describe('Blogs', () => {
             expect(screen.getByTestId('current-page')).toHaveTextContent('2');
         });
 
-        // Perform search
+        // Perform search - ensure mock returns proper response
+        mockGetBlogs.mockClear();
+        mockGetBlogs.mockResolvedValue(createSuccessResponse(multiPageResponse));
+
         const searchInput = screen.getByPlaceholderText('Search blogs');
         fireEvent.change(searchInput, { target: { value: 'search term' } });
         fireEvent.keyDown(searchInput, { key: 'Enter' });
@@ -519,8 +544,12 @@ describe('Blogs', () => {
     });
 
     it('disables confirm button when deletion is in progress', async () => {
-        // Mock a slow delete operation
-        mockDeleteBlog.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)));
+        // Mock a slow delete operation that still returns proper structure
+        mockDeleteBlog.mockImplementation(() =>
+            new Promise(resolve =>
+                setTimeout(() => resolve(createSuccessResponse(mockBlog1)), 1000)
+            )
+        );
 
         render(<BlogsWrapper />);
 
