@@ -186,7 +186,6 @@ const AddOrderProduct: React.FC<Props> = ({ orderDetails, setOrderDetails, formD
         if (value === '') {
             return;
         }
-
         // Check if the value is a valid number
         const numValue = parseInt(value);
         if (!isNaN(numValue) && numValue >= 1) {
