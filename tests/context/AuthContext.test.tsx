@@ -242,9 +242,6 @@ describe('AuthContext', () => {
             mockSignin.mockResolvedValue(mockLoginResponse);
             mockGetProfile.mockResolvedValue(mockUserResponse);
 
-            // Spy on console.error since that's what actually gets called
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-
             renderWithAuthProvider(<TestComponent />);
 
             await act(async () => {
@@ -252,14 +249,14 @@ describe('AuthContext', () => {
             });
 
             await waitFor(() => {
-                expect(consoleSpy).toHaveBeenCalledWith('Failed to fetch user profile:', 'Profile fetch failed');
+                expect(mockToast.error).toHaveBeenCalledWith('Profile fetch failed', {
+                    autoClose: 1000,
+                    position: 'top-center'
+                });
             });
 
             expect(screen.getByTestId('auth-status')).toHaveTextContent('authenticated');
             expect(screen.getByTestId('user-email')).toHaveTextContent('no user');
-
-            // Restore console.error
-            consoleSpy.mockRestore();
         });
     });
 
