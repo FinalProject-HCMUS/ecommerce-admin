@@ -11,3 +11,11 @@ export const signin = async (login: Login): Promise<CustomResponse<LoginResponse
         return error.response.data;
     }
 }
+export const refreshToken = async (refreshToken: string): Promise<CustomResponse<LoginResponse>> => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/refresh-token`, { refreshToken });
+        return response.data;
+    } catch (error: any) {
+        return error.response.data;
+    }
+}
