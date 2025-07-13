@@ -20,7 +20,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<User | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState(true);
     const { t } = useTranslation('login');
+
     const fetchUserProfile = async () => {
         const userResponse = await getProfile();
         if (!userResponse.isSuccess) {
@@ -56,12 +58,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem('refreshToken');
         navigate('/login');
     };
+    useEffect(() => {
+        const initializeAuth = async () => {
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (accessToken && refreshToken) {
+                setIsAuthenticated(true);
+                await fetchUserProfile();
+            }
+            setIsLoading(false);
+        };
+
+        initializeAuth();
+    }, []);
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && !user) {
             fetchUserProfile();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, user]);
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+            </div>
+        );
+    }
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, login, logout, user, setUser }}>
