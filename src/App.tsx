@@ -20,6 +20,7 @@ import EditProfile from './components/page/about/edit-page/EditProfile';
 import Sizes from './pages/product/Size';
 import ChangePassword from './components/page/about/edit-page/ChangePassword';
 import Setting from './pages/Setting';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -46,7 +47,10 @@ function App() {
             <Route path="/about/edit" element={<PrivateRoute element={EditProfile} />} />
             <Route path="/about/change-password" element={<PrivateRoute element={ChangePassword} />} />
             <Route path="settings" element={<PrivateRoute element={Setting} />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
+          {/* Catch routes outside AdminLayout */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
       <ToastContainer />
