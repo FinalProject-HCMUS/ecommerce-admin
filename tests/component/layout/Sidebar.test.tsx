@@ -22,7 +22,9 @@ testI18n.init({
                 categories: 'Categories',
                 about: 'About',
                 settings: 'Settings',
-                logout: 'Logout'
+                logout: 'Logout',
+                orders: 'Orders',
+                customers: 'Customers'
             }
         }
     },
@@ -57,6 +59,8 @@ vi.mock('lucide-react', () => ({
     RulerIcon: () => React.createElement('div', { 'data-testid': 'ruler-icon' }),
     Info: () => React.createElement('div', { 'data-testid': 'info-icon' }),
     Settings: () => React.createElement('div', { 'data-testid': 'settings-icon' }),
+    Users: () => React.createElement('div', { 'data-testid': 'users-icon' }),
+    Boxes: () => React.createElement('div', { 'data-testid': 'boxes-icon' })
 }));
 
 // Mock APIs
@@ -98,6 +102,8 @@ describe('Sidebar', () => {
         expect(screen.getByText('About')).toBeInTheDocument();
         expect(screen.getByText('Settings')).toBeInTheDocument();
         expect(screen.getByText('Logout')).toBeInTheDocument();
+        expect(screen.getByText('Orders')).toBeInTheDocument();
+        expect(screen.getByText('Customers')).toBeInTheDocument();
     });
     it('renders all navigation links with correct hrefs', () => {
         renderSidebar();
@@ -108,6 +114,8 @@ describe('Sidebar', () => {
         expect(screen.getByRole('link', { name: /categories/i })).toHaveAttribute('href', '/categories');
         expect(screen.getByRole('link', { name: /about/i })).toHaveAttribute('href', '/about');
         expect(screen.getByRole('link', { name: /settings/i })).toHaveAttribute('href', '/settings');
+        expect(screen.getByRole('link', { name: /customers/i })).toHaveAttribute('href', '/customers');
+        expect(screen.getByRole('link', { name: /orders/i })).toHaveAttribute('href', '/orders');
     });
 
     it('applies active styling to current route', () => {
@@ -134,6 +142,8 @@ describe('Sidebar', () => {
         expect(screen.getByTestId('list-icon')).toBeInTheDocument();
         expect(screen.getByTestId('info-icon')).toBeInTheDocument();
         expect(screen.getByTestId('settings-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('boxes-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('users-icon')).toBeInTheDocument();
         expect(screen.getByTestId('logout-icon')).toBeInTheDocument();
     });
 
@@ -182,6 +192,8 @@ describe('Sidebar', () => {
             { path: '/categories', name: 'Categories' },
             { path: '/about', name: 'About' },
             { path: '/settings', name: 'Settings' },
+            { path: '/customers', name: 'Customers' },
+            { path: '/orders', name: 'Orders' },
         ];
 
         routes.forEach(({ path, name }) => {
