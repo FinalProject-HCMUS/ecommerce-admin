@@ -11,7 +11,7 @@ import apiClient from "./axiosConfig";
 
 export const getOrders = async (page: number, perpage: number, status: string, paymentMethod: string, keyword: string, sort: string = "createdAt,asc"): Promise<CustomResponse<OrderResponse>> => {
     try {
-        const response = await apiClient.get<CustomResponse<OrderResponse>>(`/orders/search`, {
+        const response = await apiClient.get<CustomResponse<OrderResponse>>(`/orders`, {
             params: { page, perpage, status, paymentMethod, keyword, sort }
         });
         return response.data;
