@@ -9,7 +9,7 @@ interface CustomerTableProps {
     refresh: () => void;
 }
 const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('user');
     const navigate = useNavigate();
     return (
         <div className="overflow-x-auto">
