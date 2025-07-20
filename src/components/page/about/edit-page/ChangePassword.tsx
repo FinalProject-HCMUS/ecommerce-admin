@@ -61,6 +61,7 @@ const ChangePassword: React.FC = () => {
         if (!response.isSuccess) {
             toast.error(response.message, { autoClose: 2000, position: "top-right" });
             setSaving(false);
+            return;
         }
         toast.success("Password changed successfully!", { autoClose: 1000, position: "top-right" });
         navigate("/about");
