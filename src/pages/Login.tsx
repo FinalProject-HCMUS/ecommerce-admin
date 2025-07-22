@@ -8,7 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
     const [email, setEmail] = useState('admin@gmail.com');
-    const [password, setPassword] = useState('12345678');
+    const [password, setPassword] = useState('12345678Aaa@');
     const [showPassword, setShowPassword] = useState(false);
     const [saving, setSaving] = useState(false);
     const { login } = useAuth();
