@@ -41,7 +41,7 @@ describe('Login page', () => {
         const emailInput = screen.getByLabelText('email', { selector: 'input' });
         const passwordInput = screen.getByLabelText('password', { selector: 'input' });
         expect(emailInput).toHaveValue('admin@gmail.com');
-        expect(passwordInput).toHaveValue('12345678');
+        expect(passwordInput).toHaveValue('12345678Aaa@');
         expect(screen.getByText('signIn')).toBeInTheDocument();
     });
 
